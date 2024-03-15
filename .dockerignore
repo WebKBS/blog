@@ -1,0 +1,38 @@
+# 임시 파일 및 빌드 결과물
+node_modules/
+.cache/
+.next/
+out/
+.DS_Store
+*.log
+
+# 개발 환경 파일
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# 특정 개발 환경에 관련된 파일
+coverage/
+coverage-final.json
+.electron-next/
+
+# 개인 정보가 포함된 파일
+*.secret
+*.key
+*.pem
+
+# npm 패키지 관련 캐시 파일
+package-lock.json
+yarn.lock
+
+# IDE 설정 파일
+.idea/
+.vscode/
+
+# 환경 설정 파일
+.git
+
+# 기타
+README.md

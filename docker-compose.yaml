@@ -1,0 +1,13 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+      args:
+        MY_SECRET_TOEKN: ${MY_SECRET_TOEKN}
+    ports:
+      - '3000:3000'
+    tty: true
+    stdin_open: true
+    env_file:
+      - .env
