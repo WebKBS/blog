@@ -1,6 +1,7 @@
 import Link from 'next/link';
-import Navigation from '../Navigation/Navigation';
+import Navigation from '../Navigation';
 import SideMenuButton from '../SideMenu/SideMenuButton';
+import Sns from '../Sns';
 import ThemeToggleButton from './ThemeToggleButton';
 
 const Header = () => {
@@ -11,8 +12,13 @@ const Header = () => {
         <h1 className="text-xl font-bold uppercase">
           <Link href="/">StoryLog</Link>
         </h1>
-        <Navigation className="ml-auto mr-8 hidden font-semibold md:flex md:items-center md:gap-6" />
-        <ThemeToggleButton />
+        <nav className="hidden ml-auto md:block">
+          <Navigation className="mr-8 hidden font-semibold md:flex md:items-center md:gap-6" />
+        </nav>
+        <div className="flex items-center gap-2">
+          <ThemeToggleButton />
+          <Sns className="hidden md:flex md:items-center md:gap-2" />
+        </div>
       </div>
     </header>
   );

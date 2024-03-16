@@ -2,6 +2,7 @@
 
 import { useMenuToggle } from '@/store/common';
 import Navigation from '../Navigation/Navigation';
+import Sns from '../Sns';
 import SideMenuButton from './SideMenuButton';
 
 const SideMenu = () => {
@@ -19,7 +20,12 @@ const SideMenu = () => {
       />
       <div className="absolute left-0 top-0 h-full w-full max-w-80 overflow-y-auto bg-gray-100 px-8 py-20 dark:bg-gray-800">
         <SideMenuButton className="absolute left-4 top-4" />
-        <Navigation className="flex w-full flex-col gap-4 text-xl font-semibold" />
+        <nav>
+          <Navigation className="flex w-full flex-col gap-4 text-xl font-semibold" />
+        </nav>
+        <div>
+          <Sns className="mt-8 flex justify-center gap-4" />
+        </div>
       </div>
     </aside>
   );

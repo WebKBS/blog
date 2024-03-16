@@ -1,6 +1,6 @@
-import Footer from '@/components/Footer.tsx/Footer';
-import Header from '@/components/Header/Header';
-import SideMenu from '@/components/SideMenu/SideMenu';
+import Footer from '@/components/Footer';
+import Header from '@/components/Header';
+import SideMenu from '@/components/SideMenu';
 import { defaultData } from '@/config/defaultData';
 import { cn } from '@/lib/utils';
 import { ThemeProvider } from '@/providers/ThemeProvider';

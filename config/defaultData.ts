@@ -11,8 +11,7 @@ export const defaultData = {
 };
 
 export const navigationData = [
-  { name: 'Home', href: '/' },
-  { name: 'Html', href: '/html' },
-  { name: 'Javascript', href: '/javascript' },
-  { name: 'React', href: '/react' },
+  { name: 'home', href: '/' },
+  { name: 'blog', href: '/blog' },
+  { name: 'life', href: '/life' },
 ];
