@@ -1,4 +1,6 @@
+import Footer from '@/components/Footer.tsx/Footer';
 import Header from '@/components/Header/Header';
+import SideMenu from '@/components/SideMenu/SideMenu';
 import { defaultData } from '@/config/defaultData';
 import { cn } from '@/lib/utils';
 import { ThemeProvider } from '@/providers/ThemeProvider';
@@ -36,7 +38,9 @@ export default function RootLayout({
           <div className="min-h-dvh flex flex-col">
             <Header />
             <main className="flex-1">{children}</main>
+            <Footer />
           </div>
+          <SideMenu />
         </ThemeProvider>
       </body>
     </html>

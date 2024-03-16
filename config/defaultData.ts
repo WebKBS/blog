@@ -9,3 +9,10 @@ export const defaultData = {
     gitbook: '',
   },
 };
+
+export const navigationData = [
+  { name: 'Home', href: '/' },
+  { name: 'Html', href: '/html' },
+  { name: 'Javascript', href: '/javascript' },
+  { name: 'React', href: '/react' },
+];
