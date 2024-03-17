@@ -1,14 +1,23 @@
-import { posts } from '#site/content';
+import Tags from './_components/tags';
 
 export const metadata = {
   title: 'blog',
-  description: '블로그 홈',
+  description: '기술 블로그 홈',
 };
 
 const BlogPage = () => {
-  console.log(posts.length);
-
-  return <section className="container">BlogPage</section>;
+  return (
+    <section className="container py-12">
+      <h2 className="text-2xl font-semibold">기술 블로그</h2>
+      <hr className="mt-4" />
+      <div className="py-4">
+        <h3>블로그 태그</h3>
+        <ul>
+          <Tags />
+        </ul>
+      </div>
+    </section>
+  );
 };
 
 export default BlogPage;
