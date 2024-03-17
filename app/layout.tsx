@@ -12,8 +12,8 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: {
-    default: 'StoryLog',
-    template: '%s - StoryLog',
+    default: 'RecodeLog',
+    template: '%s - RecodeLog',
   },
   description: '나만의 개발 블로그, 기록 또 기록',
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? defaultData.url),

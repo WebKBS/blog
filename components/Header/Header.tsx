@@ -10,7 +10,7 @@ const Header = () => {
       <div className="flex w-full items-center justify-between max-w-screen-xl mx-auto">
         <SideMenuButton className="md:hidden" />
         <h1 className="text-xl font-bold uppercase">
-          <Link href="/">StoryLog</Link>
+          <Link href="/">RecodeLog</Link>
         </h1>
         <nav className="hidden ml-auto md:block">
           <Navigation className="mr-8 hidden font-semibold md:flex md:items-center md:gap-6" />

@@ -1,7 +1,7 @@
 export const defaultData = {
-  title: 'StoryLog',
+  title: 'RecodeLog',
   description: '나만의 개발 블로그, 기록 또 기록',
-  url: 'https://storylog.kr',
+  url: 'https://Recodelog.kr',
   author: 'devK',
   email: 'dev21c2020@gmail.com',
   links: {
