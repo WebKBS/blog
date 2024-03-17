@@ -15,3 +15,5 @@ export const navigationData = [
   { name: 'blog', href: '/blog' },
   { name: 'life', href: '/life' },
 ];
+
+export type DefaultData = typeof defaultData;

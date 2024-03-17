@@ -11,7 +11,10 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'StoryLog',
+  title: {
+    default: 'StoryLog',
+    template: '%s - StoryLog',
+  },
   description: '나만의 개발 블로그, 기록 또 기록',
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? defaultData.url),
 };
