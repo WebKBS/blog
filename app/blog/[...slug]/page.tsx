@@ -1,4 +1,5 @@
 import { posts } from '#site/content';
+import { notFound } from 'next/navigation';
 
 interface BlogDetailProps {
   params: {
@@ -21,7 +22,10 @@ const getPost = (params: BlogDetailProps['params']) => {
 
 const BlogDetail = ({ params: { slug } }: BlogDetailProps) => {
   const post = getPost({ slug });
-  // console.log(post);
+
+  if (!post) {
+    return notFound();
+  }
 
   return (
     <section className="py-12 max-w-screen-lg px-6 mx-auto">
