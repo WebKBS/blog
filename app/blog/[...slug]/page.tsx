@@ -22,14 +22,16 @@ const getPost = (params: BlogDetailProps['params']) => {
 
 const BlogDetail = ({ params: { slug } }: BlogDetailProps) => {
   const post = getPost({ slug });
+  console.log(slug);
 
-  if (!post) {
+  if (!post || !post.published) {
     return notFound();
   }
 
   return (
     <section className="py-12 max-w-screen-lg px-6 mx-auto">
       <h2>{post.title}</h2>
+      <div>{post.body}</div>
     </section>
   );
 };
