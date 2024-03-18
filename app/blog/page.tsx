@@ -23,13 +23,11 @@ const BlogPage = ({ searchParams }: { searchParams: { tag?: string } }) => {
           <Tags />
         </ul>
       </div>
-      <div>
-        <ul className="flex flex-col gap-4">
-          {tagPage.length > 0
-            ? tagPage.map((post) => <LinkCard key={post.slug} {...post} />)
-            : posts.map((post) => <LinkCard key={post.slug} {...post} />)}
-        </ul>
-      </div>
+      <ul className="flex flex-col gap-4">
+        {tagPage.length > 0
+          ? tagPage.map((post) => <LinkCard key={post.slug} {...post} />)
+          : posts.map((post) => <LinkCard key={post.slug} {...post} />)}
+      </ul>
     </section>
   );
 };
