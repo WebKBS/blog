@@ -19,7 +19,7 @@ const BlogPage = ({ searchParams }: { searchParams: { tag?: string } }) => {
       <hr className="mt-4" />
       <div className="py-4">
         <h3>블로그 태그</h3>
-        <ul>
+        <ul className="flex flex-wrap gap-4">
           <Tags />
         </ul>
       </div>
