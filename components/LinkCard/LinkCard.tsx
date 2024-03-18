@@ -1,4 +1,5 @@
 import { formatDate } from '@/lib/utils';
+import Image, { StaticImageData } from 'next/image';
 import Link from 'next/link';
 
 interface LinkCardProps {
@@ -7,11 +8,19 @@ interface LinkCardProps {
   date: string;
   tags: string[];
   slug: string;
+  cover?: StaticImageData;
 }
 
-const LinkCard = ({ title, description, date, tags, slug }: LinkCardProps) => {
+const LinkCard = ({
+  title,
+  description,
+  date,
+  tags,
+  slug,
+  cover,
+}: LinkCardProps) => {
   return (
-    <li>
+    <li className="border rounded-md flex justify-between  overflow-hidden px-4 py-4">
       <div>
         <h2>{title}</h2>
         <p>{description}</p>
@@ -19,6 +28,9 @@ const LinkCard = ({ title, description, date, tags, slug }: LinkCardProps) => {
         <p>{tags}</p>
         <Link href={`/${slug}`}>Read more</Link>
       </div>
+      {cover ? (
+        <Image src={cover} alt={title} width={200} height={200} />
+      ) : null}
     </li>
   );
 };

@@ -14,17 +14,15 @@ const BlogPage = ({ searchParams }: { searchParams: { tag?: string } }) => {
   );
 
   return (
-    <section className="container py-12">
+    <section className="py-12 max-w-screen-lg px-6 mx-auto">
       <h2 className="text-2xl font-semibold">기술 블로그</h2>
-      <hr className="mt-4" />
-      <div className="py-4">
-        <h3>블로그 태그</h3>
+      <div className="py-4 mb-4">
         <ul className="flex flex-wrap gap-4">
           <Tags />
         </ul>
       </div>
       <div>
-        <ul>
+        <ul className="flex flex-col gap-4">
           {tagPage.length > 0
             ? tagPage.map((post) => <LinkCard key={post.slug} {...post} />)
             : posts.map((post) => <LinkCard key={post.slug} {...post} />)}

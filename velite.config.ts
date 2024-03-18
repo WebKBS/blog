@@ -17,7 +17,7 @@ const posts = defineCollection({
       title: s.string().max(100),
       description: s.string().max(200),
       date: s.isodate(),
-      // cover: s.image().optional(),
+      cover: s.image().optional(),
       publised: s.boolean().default(false),
       body: s.mdx(),
       tags: s.array(s.string()),
