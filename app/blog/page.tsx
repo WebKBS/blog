@@ -13,11 +13,13 @@ const BlogPage = ({ searchParams }: { searchParams: { tag?: string } }) => {
     post.tags.includes(tagParam?.toLocaleLowerCase() || '')
   );
 
+  console.log(posts.length);
+
   return (
     <section className="py-12 max-w-screen-lg px-6 mx-auto">
       <h2 className="text-2xl font-semibold">기술 블로그</h2>
       <div className="py-4 mb-4">
-        <ul className="flex flex-wrap gap-4">
+        <ul className="flex flex-wrap gap-2">
           <Tags />
         </ul>
       </div>

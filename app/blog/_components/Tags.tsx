@@ -42,7 +42,10 @@ const Tags = () => {
             href={{ pathname, search: `?tag=${tag}` }}
             scroll={false}
           >
-            {tag} ({count})
+            {tag}{' '}
+            <span className="rounded-md w-4 h-4 flex items-center justify-center border border-white ml-2">
+              {count}
+            </span>
           </Link>
         </li>
       ))}

@@ -20,17 +20,28 @@ const LinkCard = ({
   cover,
 }: LinkCardProps) => {
   return (
-    <li className="border rounded-md flex justify-between  overflow-hidden px-4 py-4">
-      <div>
-        <h2>{title}</h2>
-        <p>{description}</p>
-        <time dateTime={date}>{formatDate(date)}</time>
-        <p>{tags}</p>
-        <Link href={`/${slug}`}>Read more</Link>
-      </div>
-      {cover ? (
-        <Image src={cover} alt={title} width={200} height={200} />
-      ) : null}
+    <li>
+      <Link
+        href={`/${slug}`}
+        className="border rounded-md flex flex-col overflow-hidden px-4 py-4 gap-4"
+      >
+        <div className="w-full relative pt-[100%] overflow-hidden">
+          {cover ? (
+            <Image
+              src={cover}
+              alt={title}
+              fill
+              className="w-full h-auto rounded-sm max-w-xl hover:scale-105 transition-transform duration-300 ease-in-out"
+            />
+          ) : null}
+        </div>
+        <div>
+          <h2>{title}</h2>
+          <p>{description}</p>
+          <time dateTime={date}>{formatDate(date)}</time>
+          <p>{tags}</p>
+        </div>
+      </Link>
     </li>
   );
 };
