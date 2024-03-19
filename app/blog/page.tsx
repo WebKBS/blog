@@ -13,7 +13,7 @@ const BlogPage = ({ searchParams }: { searchParams: { tag?: string } }) => {
     post.tags.includes(tagParam?.toLocaleLowerCase() || '')
   );
 
-  console.log(posts.length);
+  // console.log(posts.length);
 
   return (
     <section className="py-12 max-w-screen-lg px-6 mx-auto">

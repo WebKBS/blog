@@ -1,7 +1,8 @@
+'use client';
 import { formatDate } from '@/lib/utils';
 import Image, { StaticImageData } from 'next/image';
 import Link from 'next/link';
-import { Badge } from '../ui/badge';
+import TagBadge from '../TagsBadge';
 
 interface LinkCardProps {
   title: string;
@@ -32,8 +33,7 @@ const LinkCard = ({
               src={cover}
               alt={title}
               fill
-              objectFit="cover"
-              className="w-full h-auto rounded-sm max-w-xl hover:scale-105 transition-transform duration-300 ease-in-out"
+              className="w-full h-auto rounded-sm max-w-xl hover:scale-105 transition-transform duration-300 ease-in-out object-cover"
             />
           ) : null}
         </div>
@@ -48,11 +48,7 @@ const LinkCard = ({
           </div>
           <div className="flex flex-col gap-3">
             <ul className="flex flex-wrap gap-1">
-              {tags.map((tag) => (
-                <li key={tag}>
-                  <Badge>{tag}</Badge>
-                </li>
-              ))}
+              <TagBadge tags={tags} />
             </ul>
             <time className="self-end text-sm sm:self-start" dateTime={date}>
               {formatDate(date)}

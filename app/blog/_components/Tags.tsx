@@ -1,10 +1,14 @@
 'use client';
 import { posts } from '#site/content';
 import { badgeVariants } from '@/components/ui/badge';
+import { useTagStore } from '@/store/tagStore';
 import Link from 'next/link';
 import { notFound, usePathname, useSearchParams } from 'next/navigation';
+import { useEffect } from 'react';
 
 const Tags = () => {
+  const { setTags } = useTagStore();
+
   const tags = posts.map((post) => post.tags).flat();
   const tagCount = tags.reduce((acc, tag) => {
     acc[tag] = (acc[tag] || 0) + 1;
@@ -14,7 +18,11 @@ const Tags = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const currentTag = searchParams.get('tag');
-  console.log(currentTag);
+  // console.log(currentTag);
+
+  useEffect(() => {
+    setTags(currentTag || '');
+  }, [currentTag, setTags]);
 
   if (!searchParams) {
     return notFound();
