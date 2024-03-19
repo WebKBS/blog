@@ -34,6 +34,30 @@
   @apply border-b-2 p-1 shadow-none;
 }
 
+[data-rehype-pretty-code-title] {
+  @apply text-lg bg-slate-700 px-3 py-1;
+}
+
 .subheading-anchor {
   @apply no-underline hover:underline;
+}
+
+/* 스크롤바의 너비와 높이 설정 */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+/* 스크롤바의 스타일 설정 */
+::-webkit-scrollbar-thumb {
+  border-radius: 10px; /* 스크롤바 모서리의 둥근 정도 */
+  width: 2px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  background-color: magenta;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-slate-700;
+  border-radius: 10px;
 }
