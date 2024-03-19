@@ -5,15 +5,14 @@ export const defaultData = {
   author: 'devK',
   email: 'dev21c2020@gmail.com',
   links: {
-    github: '',
-    gitbook: '',
+    github: 'https://github.com/WebKBS',
   },
 };
 
 export const navigationData = [
   { name: 'home', href: '/' },
   { name: 'blog', href: '/blog' },
-  { name: 'life', href: '/life' },
+  // { name: 'life', href: '/life' },
 ];
 
 export type DefaultData = typeof defaultData;

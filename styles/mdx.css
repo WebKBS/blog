@@ -54,7 +54,7 @@
   width: 2px;
   border: 2px solid transparent;
   background-clip: padding-box;
-  background-color: magenta;
+  background-color: gray;
 }
 
 ::-webkit-scrollbar-track {
