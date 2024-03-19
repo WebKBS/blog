@@ -1,5 +1,7 @@
 import { posts } from '#site/content';
+import ScrollProgress from '@/components/ScrollProgress';
 import { MDXContent } from '@/components/mdx-content';
+import { formatDate } from '@/lib/utils';
 import '@/styles/mdx.css';
 import { notFound } from 'next/navigation';
 
@@ -32,7 +34,11 @@ const BlogDetail = ({ params: { slug } }: BlogDetailProps) => {
 
   return (
     <section className="py-12 max-w-screen-lg px-6 mx-auto prose dark:prose-invert">
-      <h2>{post.title}</h2>
+      <ScrollProgress />
+      <h2 className="text-3xl">{post.title}</h2>
+      <p>{post.description}</p>
+      <time dateTime={post.date}>{formatDate(post.date)}</time>
+      <hr className="my-8" />
       <MDXContent code={post.body} />
     </section>
   );
