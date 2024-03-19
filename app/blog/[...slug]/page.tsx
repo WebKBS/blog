@@ -1,4 +1,6 @@
 import { posts } from '#site/content';
+import { MDXContent } from '@/components/mdx-content';
+import '@/styles/mdx.css';
 import { notFound } from 'next/navigation';
 
 interface BlogDetailProps {
@@ -29,9 +31,9 @@ const BlogDetail = ({ params: { slug } }: BlogDetailProps) => {
   }
 
   return (
-    <section className="py-12 max-w-screen-lg px-6 mx-auto">
+    <section className="py-12 max-w-screen-lg px-6 mx-auto prose dark:prose-invert">
       <h2>{post.title}</h2>
-      <div>{post.body}</div>
+      <MDXContent code={post.body} />
     </section>
   );
 };
