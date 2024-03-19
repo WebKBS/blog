@@ -32,7 +32,9 @@ const LinkCard = ({
               src={cover}
               alt={title}
               fill
+              sizes="100%"
               className="w-full h-auto rounded-sm max-w-xl hover:scale-105 transition-transform duration-300 ease-in-out object-cover"
+              priority
             />
           ) : null}
         </div>

@@ -35,10 +35,10 @@ const BlogDetail = ({ params: { slug } }: BlogDetailProps) => {
   return (
     <section className="pb-24 pt-12 max-w-screen-lg px-6 mx-auto prose dark:prose-invert">
       <ScrollProgress />
-      <h2 className="text-3xl">{post.title}</h2>
+      <h2 className="text-3xl mb-2">{post.title}</h2>
       <p>{post.description}</p>
       <time dateTime={post.date}>{formatDate(post.date)}</time>
-      <hr className="my-8" />
+      <hr className="my-6" />
       <MDXContent code={post.body} />
     </section>
   );
