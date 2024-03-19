@@ -33,7 +33,7 @@ const BlogDetail = ({ params: { slug } }: BlogDetailProps) => {
   }
 
   return (
-    <section className="py-12 max-w-screen-lg px-6 mx-auto prose dark:prose-invert">
+    <section className="pb-24 pt-12 max-w-screen-lg px-6 mx-auto prose dark:prose-invert">
       <ScrollProgress />
       <h2 className="text-3xl">{post.title}</h2>
       <p>{post.description}</p>

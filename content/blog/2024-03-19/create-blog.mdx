@@ -8,9 +8,150 @@ tags:
   - react
   - velite.js
   - blog
+  - mdx
 cover: './cover.svg'
 ---
 
 next js와 velite js를 사용해서 블로그 만든 후기를 적어본다.
 
-## 들어가기
+원래 개인용 블로그를 만들고 싶었던 적이 있었는데, 드디어 블로그 개발을 시작했다.<br/>
+[`contentlayer`](https://contentlayer.dev) 라는 MDX 마크다운 파일을 손쉽게 만들수 있는 라이브러리도 있었으나,
+해당 사이트에 들어가서 Documentation 페이지로 이동하면 404페이지가 뜨는 것을 확인할 수 있었다. 아마도 지원이 중단된 것 같다.
+
+지원 중단?에 대한 예측 이슈는 [`여기`](https://github.com/contentlayerdev/contentlayer/issues) <br />
+꽤 많은 사람들이 Documentation 페이지가 404페이지가 나타난다는 이슈사항을 올려놓았다. 기간만 봐도 꽤 오래된듯하다.
+
+그래서 다른 방법을 찾아보다가 [`Velite.js`](https://velite.js.org) 를 사용해서 블로그를 만들어보기로 했다.
+
+[`Velite.js`](https://velite.js.org) 는 Next.js와 MDX를 사용해서 블로그를 만들 수 있게 도와주는 라이브러리이다.<br/>
+`Velite.js`는 `contentlayer`의 영감을 받아서 개발되었다고 한다.
+출시된지 얼마 안되었으며, 공식홈페이지에서도 아직 안정화는 부족하다고 얘기한다. 추후 지속적인 개발을 통해 나아질것이라고 한다.
+
+## Velite의 장점
+
+- Next js 지원
+- 사용하기 쉬움.
+- Zod 스키마를 사용해서 타입을 정의할 수 있음. (velite에서는 s로 사용)
+- 내장 Markdown/MDX, YAML, JSON 지원, 파일 및 이미지 처리 등.
+
+설치하나로 velite.config에서 세팅 후 매우 손쉽게 사용할 수 있다.
+
+## Velite의 단점
+
+- 출시된지 얼마 안되어서 아직 안정화가 부족하다.
+- 공식문서 또한 자료가 미흡한 점이 있다.
+
+앞으로 더 개선하고 추가될 내용이라 앞으로 기대가 된다.
+
+## 사용 방법
+
+1. Velite 설치
+
+```bash title="bash"
+npm install velite -D
+```
+
+2. velite.config.js 파일 생성
+
+- 아래는 예시일 뿐이다. 자신의 프로젝트에 맞게 설정하면 된다.
+  [Velite.js 공식문서](https://velite.js.org/guide/quick-start) 참고
+
+```ts title="velite.config.ts" showLineNumbers
+import { defineConfig, s } from 'velite';
+
+export default defineConfig({
+  collections: {
+    posts: {
+      name: 'Post', // 컬렉션 이름
+      pattern: 'posts/**/*.md', // posts 폴더 안에 있는 모든 md 파일을 가져온다.
+      schema: s
+        .object({
+          title: s.string().max(99), // velite에서는 스키마를 s로 사용한다.
+          slug: s.path(),
+          date: s.isodate(),
+          cover: s.image(),
+          video: s.file().optional(),
+          metadata: s.metadata(),
+          excerpt: s.excerpt(),
+          content: s.markdown(),
+        })
+        .transform((data) => ({ ...data, permalink: `/blog/${data.slug}` })),
+    },
+    others: {},
+  },
+});
+```
+
+3. content 폴더 생성
+
+아래처럼 폴더 구조를 잡아주면 된다.<br/>
+root 폴더에 content라는 폴더를 만들고 그 안에 posts 폴더를 만들어서 md 파일을 넣어주면 된다.
+
+```txt
+ root
++├── content
++│   ├── posts
++│   │   └── hello-world.md
++│   └── others
++│       └── other.yml
+ ├── public
+ ├── package.json
+ └── velite.config.js
+```
+
+4. Next js 사용시 next.config.js 파일을 아래와 같이 수정해주자.
+
+공식홈페이지에서도 제공한다. 코드를 복사하면 된다. [`여기`](https://velite.js.org/guide/with-nextjs)
+
+```ts title="next.config.js" showLineNumbers
+import { build } from 'velite';
+
+/** @type {import('next').NextConfig} */
+export default {
+  // 또 다른 코드들... 생략
+  webpack: (config) => {
+    config.plugins.push(new VeliteWebpackPlugin());
+    return config;
+  },
+};
+
+class VeliteWebpackPlugin {
+  static started = false;
+  constructor(/** @type {import('velite').Options} */ options = {}) {
+    this.options = options;
+  }
+  apply(/** @type {import('webpack').Compiler} */ compiler) {
+    compiler.hooks.beforeCompile.tapPromise('VeliteWebpackPlugin', async () => {
+      if (VeliteWebpackPlugin.started) return;
+      VeliteWebpackPlugin.started = true;
+      const dev = compiler.options.mode === 'development';
+      this.options.watch = this.options.watch ?? dev;
+      this.options.clean = this.options.clean ?? !dev;
+      await build(this.options);
+    });
+  }
+}
+```
+
+위 처럼 사용하다보면 아래 이미지 처럼 eslint로 인해 경고가 나타날 수 있다.<br/>
+
+<BodyImage src="./issue.png" title="오류 경고" />
+
+이럴때 아래 주석을 사용해서 eslint 경고를 무시할 수 있다.
+
+```js {2} title="next.config.js" showLineNumbers
+/** @type {import('next').NextConfig} */
+/* eslint import/no-anonymous-default-export: [2, {"allowObject": true}] */
+export default {
+  // othor next config here...
+  webpack: (config) => {
+    config.plugins.push(new VeliteWebpackPlugin());
+    return config;
+  },
+};
+```
+
+이제 매우 기본적인 세팅은 끝났다.
+
+content 폴더에 posts 폴더를 생성 후 md 파일을 만들어주고 next.js를 실행하면 velite가 자동으로 md 파일을 읽어와서 블로그를 만들어준다.
+터미널 창을보면 velite와 next.js가 동시에 컴파일 되는것을 확인할 수 있다.
