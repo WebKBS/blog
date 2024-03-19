@@ -1,3 +1,4 @@
+import { Post } from '#site/content';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -13,3 +14,11 @@ export function formatDate(input: string | number): string {
     day: 'numeric',
   });
 }
+
+export const sortPosts = (posts: Array<Post>) => {
+  return posts.sort((a, b) => {
+    if (a.date > b.date) return -1;
+    if (a.date < b.date) return 1;
+    return 0;
+  });
+};

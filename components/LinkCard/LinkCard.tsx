@@ -1,4 +1,3 @@
-'use client';
 import { formatDate } from '@/lib/utils';
 import Image, { StaticImageData } from 'next/image';
 import Link from 'next/link';

@@ -1,5 +1,6 @@
 import { posts } from '#site/content';
 import LinkCard from '@/components/LinkCard';
+import { sortPosts } from '@/lib/utils';
 import Tags from './_components/Tags';
 
 export const metadata = {
@@ -12,6 +13,7 @@ const BlogPage = ({ searchParams }: { searchParams: { tag?: string } }) => {
   const tagPage = posts.filter((post) =>
     post.tags.includes(tagParam?.toLocaleLowerCase() || '')
   );
+  const sortedPosts = sortPosts(posts.filter((post) => post.published));
 
   // console.log(posts.length);
 
@@ -26,7 +28,7 @@ const BlogPage = ({ searchParams }: { searchParams: { tag?: string } }) => {
       <ul className="flex flex-col gap-4">
         {tagPage.length > 0
           ? tagPage.map((post) => <LinkCard key={post.slug} {...post} />)
-          : posts.map((post) => <LinkCard key={post.slug} {...post} />)}
+          : sortedPosts.map((post) => <LinkCard key={post.slug} {...post} />)}
       </ul>
     </section>
   );
