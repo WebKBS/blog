@@ -17,6 +17,26 @@ export const metadata: Metadata = {
   },
   description: '나만의 개발 블로그, 기록 또 기록',
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? defaultData.url),
+  robots: 'follow, index',
+  formatDetection: {
+    telephone: false,
+  },
+  openGraph: {
+    images: [
+      {
+        url: './icons/icon.png',
+        alt: 'RecodeLog',
+      },
+    ],
+  },
+  twitter: {
+    images: [
+      {
+        url: './icons/icon.png',
+        alt: 'RecodeLog',
+      },
+    ],
+  },
 };
 
 export const viewport: Viewport = {
