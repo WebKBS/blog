@@ -2,6 +2,7 @@ import { posts } from '#site/content';
 import LinkCard from '@/components/LinkCard';
 import { blogStackData } from '@/config/defaultData';
 import { sortPosts } from '@/lib/utils';
+import { ExternalLink } from 'lucide-react';
 import Link from 'next/link';
 
 export default function Home() {
@@ -12,7 +13,7 @@ export default function Home() {
 
   return (
     <div className="pb-24 pt-12 max-w-screen-lg px-6 mx-auto">
-      <h2 className="text-3xl mb-2 font-bold">기록하고 기록하다.</h2>
+      <h2 className="text-3xl mb-3 font-bold">기록하고 기록하다.</h2>
       <h3 className="mb-6 text-sm">
         RecodeLog는 Recode(기록)과 Log(로그)의 합성 및<br />
         Re + Code + Log의 합성어로 다시쓰는 코드 및 기록하는 블로그입니다.
@@ -35,7 +36,7 @@ export default function Home() {
       </div>
       <h3 className="font-bold text-2xl mb-2">BLOG STACK</h3>
       <div className="mb-12">
-        <ul className="uppercase flex items-center gap-4">
+        <ul className="uppercase flex items-center gap-x-4 gap-y-2 flex-wrap">
           {blogStackData.map((item, index) => (
             <li key={index}>
               <Link
@@ -50,7 +51,15 @@ export default function Home() {
         </ul>
       </div>
       <div>
-        <h2 className="text-2xl mb-4 font-bold">최신 블로그</h2>
+        <h2 className="text-2xl mb-4 font-bold">
+          <Link
+            href="/blog"
+            className="flex items-center gap-2 hover:underline"
+          >
+            최신 블로그
+            <ExternalLink />
+          </Link>
+        </h2>
         <ul>
           {sortedPosts.map((post) => (
             <LinkCard key={post.slug} {...post} />
