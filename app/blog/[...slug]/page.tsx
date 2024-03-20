@@ -1,5 +1,6 @@
 import { posts } from '#site/content';
 import ScrollProgress from '@/components/ScrollProgress';
+import ShareButton from '@/components/ShareButton';
 import { MDXContent } from '@/components/mdx-content';
 import { defaultData } from '@/config/defaultData';
 import { formatDate } from '@/lib/utils';
@@ -86,7 +87,10 @@ const BlogDetail = async ({ params: { slug } }: BlogDetailProps) => {
       <ScrollProgress />
       <h2 className="text-3xl mb-2">{post.title}</h2>
       <p>{post.description}</p>
-      <time dateTime={post.date}>{formatDate(post.date)}</time>
+      <div className="flex gap-4 justify-between items-center">
+        <time dateTime={post.date}>{formatDate(post.date)}</time>
+        <ShareButton />
+      </div>
       <hr className="my-6" />
       <MDXContent code={post.body} />
     </section>
