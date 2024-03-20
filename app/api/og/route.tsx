@@ -17,12 +17,23 @@ export async function GET(req: NextRequest) {
 
     const { searchParams } = req.nextUrl;
     const title = searchParams.get('title');
+    let description = searchParams.get('description');
 
     if (!title) {
-      return new Response('title을 입력해주세요', { status: 400 });
+      return new Response('title', {
+        status: 400,
+      });
+    }
+
+    if (!description) {
+      description = '';
     }
 
     const heading = title.length > 40 ? `${title.substring(0, 140)}...` : title;
+    const desc =
+      description.length > 140
+        ? `${description.substring(0, 140)}...`
+        : description;
 
     return new ImageResponse(
       (
@@ -62,7 +73,10 @@ export async function GET(req: NextRequest) {
             <div tw="flex text-xl uppercase font-bold tracking-tight font-normal">
               BLOG POST
             </div>
-            <div tw="flex text-[80px] font-bold text-[50px]">{heading}</div>
+            <div tw="flex text-[80px] font-bold text-[50px] mb-4">
+              {heading}
+            </div>
+            <div tw="text-lg">{desc}</div>
           </div>
           <div tw="flex items-center w-full justify-between">
             <div tw="flex text-2xl">{defaultData.url}</div>

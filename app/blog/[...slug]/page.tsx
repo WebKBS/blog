@@ -28,14 +28,13 @@ export async function generateMetadata({
 }: BlogDetailProps): Promise<Metadata> {
   const post = await getPost(params);
 
-  console.log(post?.slug);
-
   if (!post || !post.published) {
     return {};
   }
 
   const ogSearchParams = new URLSearchParams();
   ogSearchParams.set('title', post.title);
+  ogSearchParams.set('description', post.description);
 
   return {
     title: post.title,
