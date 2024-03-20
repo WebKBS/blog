@@ -15,7 +15,8 @@ interface BlogDetailProps {
 
 const getPost = async (params: BlogDetailProps['params']) => {
   const slug = params?.slug?.join('/');
-  const post = posts.find((post) => post.permalink === '/blog/' + slug);
+  console.log('slug: ', slug);
+  const post = posts.find((post) => post.permalink === slug);
 
   // console.log('내부: ', post);
 
@@ -27,7 +28,7 @@ export async function generateMetadata({
 }: BlogDetailProps): Promise<Metadata> {
   const post = await getPost(params);
 
-  console.log(`${process.env.NEXT_PUBLIC_SITE_URL}${post?.slug}`);
+  console.log(post?.slug);
 
   if (!post || !post.published) {
     return {};
@@ -44,9 +45,9 @@ export async function generateMetadata({
       title: post.title,
       description: post.description,
       type: 'article',
-      url: `/${post.slug}`,
+      url: post.slug,
       images: {
-        url: `${defaultData.url}/api/og?${ogSearchParams.toString()}`,
+        url: `/api/og?${ogSearchParams.toString()}`,
         width: 1200,
         height: 630,
         alt: post.title,

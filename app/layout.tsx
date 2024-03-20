@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     template: '%s - RecodeLog',
   },
   description: '나만의 개발 블로그, 기록 또 기록',
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? defaultData.url),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? defaultData.url),
 };
 
 export const viewport: Viewport = {
