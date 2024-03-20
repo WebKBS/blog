@@ -4,8 +4,8 @@ import { sortPosts } from '@/lib/utils';
 import Tags from './_components/Tags';
 
 export const metadata = {
-  title: 'blog',
-  description: '기술 블로그 홈',
+  title: 'BLOG',
+  description: '기술 블로그',
 };
 
 const BlogPage = ({ searchParams }: { searchParams: { tag?: string } }) => {
