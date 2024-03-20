@@ -31,8 +31,8 @@ export async function GET(req: NextRequest) {
 
     const heading = title.length > 40 ? `${title.substring(0, 140)}...` : title;
     const desc =
-      description.length > 140
-        ? `${description.substring(0, 140)}...`
+      description.length > 120
+        ? `${description.substring(0, 120)}...`
         : description;
 
     return new ImageResponse(
@@ -73,10 +73,10 @@ export async function GET(req: NextRequest) {
             <div tw="flex text-xl uppercase font-bold tracking-tight font-normal">
               BLOG POST
             </div>
-            <div tw="flex text-[80px] font-bold text-[50px] mb-4">
+            <div tw="flex text-[80px] font-bold text-[50px] mb-6">
               {heading}
             </div>
-            <div tw="text-lg">{desc}</div>
+            <div tw="text-3xl">{desc}</div>
           </div>
           <div tw="flex items-center w-full justify-between">
             <div tw="flex text-2xl">{defaultData.url}</div>
