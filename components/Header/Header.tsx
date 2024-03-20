@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import Navigation from '../Navigation';
 import SideMenuButton from '../SideMenu/SideMenuButton';
@@ -9,7 +10,8 @@ const Header = () => {
     <header className="sticky left-0 top-0 z-10 flex h-14 items-center border-b px-5 py-2 backdrop-blur-xl">
       <div className="flex w-full items-center justify-between max-w-screen-xl mx-auto">
         <SideMenuButton className="md:hidden" />
-        <h1 className="text-xl font-bold uppercase">
+        <h1 className="text-xl font-bold uppercase flex items-center gap-2">
+          <Image src="/logo.png" alt="RecodeLog" width={32} height={32} />
           <Link href="/">RecodeLog</Link>
         </h1>
         <nav className="hidden ml-auto md:block">

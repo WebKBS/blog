@@ -16,3 +16,11 @@ export const navigationData = [
 ];
 
 export type DefaultData = typeof defaultData;
+
+export const blogStackData = [
+  { name: 'Next.js', href: 'https://nextjs.org/' },
+  { name: 'React', href: 'https://reactjs.org/' },
+  { name: 'Tailwind CSS', href: 'https://tailwindcss.com/' },
+  { name: 'TypeScript', href: 'https://www.typescriptlang.org/' },
+  { name: 'Velite', href: 'https://velite.js.org/' },
+];
