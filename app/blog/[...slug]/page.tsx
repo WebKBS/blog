@@ -13,7 +13,7 @@ interface BlogDetailProps {
   };
 }
 
-const getPost = (params: BlogDetailProps['params']) => {
+const getPost = async (params: BlogDetailProps['params']) => {
   const slug = params?.slug?.join('/');
   const post = posts.find((post) => post.permalink === '/blog/' + slug);
 
@@ -26,6 +26,8 @@ export async function generateMetadata({
   params,
 }: BlogDetailProps): Promise<Metadata> {
   const post = await getPost(params);
+
+  console.log(post?.permalink);
 
   if (!post || !post.published) {
     return {};
@@ -42,7 +44,7 @@ export async function generateMetadata({
       title: post.title,
       description: post.description,
       type: 'article',
-      url: `${defaultData.url}/blog/${post.permalink}`,
+      url: `${defaultData.url}${post.permalink}`,
       images: {
         url: `${defaultData.url}/api/og?${ogSearchParams.toString()}`,
         width: 1200,
@@ -72,8 +74,8 @@ export const generateStaticParams = async (): Promise<
     }));
 };
 
-const BlogDetail = ({ params: { slug } }: BlogDetailProps) => {
-  const post = getPost({ slug });
+const BlogDetail = async ({ params: { slug } }: BlogDetailProps) => {
+  const post = await getPost({ slug });
 
   if (!post || !post.published) {
     return notFound();
