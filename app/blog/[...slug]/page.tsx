@@ -44,7 +44,7 @@ export async function generateMetadata({
       title: post.title,
       description: post.description,
       type: 'article',
-      url: `${process.env.NEXT_PUBLIC_SITE_URL}/${post.slug}`,
+      url: `/${post.slug}`,
       images: {
         url: `${defaultData.url}/api/og?${ogSearchParams.toString()}`,
         width: 1200,
