@@ -40,7 +40,7 @@ export default function Home() {
             <li key={index}>
               <Link
                 href={item.href}
-                className="hover:text-primary transition-colors font-semibold"
+                className="hover:text-primary hover:underline text-primary/90 transition-colors font-semibold"
                 target="_blank"
               >
                 {item.name}
