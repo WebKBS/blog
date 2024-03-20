@@ -27,7 +27,7 @@ export async function generateMetadata({
 }: BlogDetailProps): Promise<Metadata> {
   const post = await getPost(params);
 
-  console.log(`${defaultData.url}${post?.permalink}`);
+  console.log(`${post?.permalink}`);
 
   if (!post || !post.published) {
     return {};
@@ -44,7 +44,7 @@ export async function generateMetadata({
       title: post.title,
       description: post.description,
       type: 'article',
-      url: `${defaultData.url}${post.permalink}`,
+      url: `${process.env.NEXT_PUBLIC_SITE_URL}${post.slug}`,
       images: {
         url: `${defaultData.url}/api/og?${ogSearchParams.toString()}`,
         width: 1200,
