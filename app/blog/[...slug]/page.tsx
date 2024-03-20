@@ -27,7 +27,7 @@ export async function generateMetadata({
 }: BlogDetailProps): Promise<Metadata> {
   const post = await getPost(params);
 
-  console.log(post?.permalink);
+  console.log(`${defaultData.url}${post?.permalink}`);
 
   if (!post || !post.published) {
     return {};
