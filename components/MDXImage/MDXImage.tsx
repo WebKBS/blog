@@ -17,7 +17,9 @@ const MDXImage = ({ src, title, width }: IMDXImage) => {
         className="w-auto mb-2"
         style={width ? { width } : {}}
       />
-      <p className="text-center text-gray-500 m-0 text-sm">{title}</p>
+      <p className="text-center text-gray-500 dark:text-gray-400 m-0 text-sm">
+        {title}
+      </p>
     </div>
   );
 };
