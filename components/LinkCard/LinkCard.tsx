@@ -26,14 +26,14 @@ const LinkCard = ({
         href={`/${slug}`}
         className="border rounded-md flex flex-col overflow-hidden px-4 py-4 gap-4 sm:flex-row-reverse hover:border-primary transition-all duration-300 shadow-md"
       >
-        <div className="w-full relative pt-[50%] overflow-hidden sm:pt-0 sm:w-44 sm:h-44">
+        <div className="w-full relative pt-[50%] overflow-hidden sm:pt-0 sm:w-44 sm:h-44 dark:bg-white rounded-md border shadow-sm">
           {cover ? (
             <Image
               src={cover}
               alt={title}
               fill
               sizes="100%"
-              className="w-full h-auto rounded-sm max-w-xl hover:scale-105 transition-transform duration-300 ease-in-out object-cover"
+              className="w-[90%!important] mx-auto h-auto rounded-sm max-w-xl hover:scale-105 transition-transform duration-300 ease-in-out"
               priority
             />
           ) : null}

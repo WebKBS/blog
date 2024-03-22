@@ -1,23 +1,25 @@
 import Image, { StaticImageData } from 'next/image';
 
-interface IBodyImage {
+interface IMDXImage {
   src: StaticImageData;
   title: string;
+  width?: string;
 }
 
-const BodyImage = ({ src, title }: IBodyImage) => {
+const MDXImage = ({ src, title, width }: IMDXImage) => {
   return (
-    <div>
+    <div className="flex flex-col justify-center items-center">
       <Image
         src={src}
         width={1024}
         height={1024}
         alt={title}
-        className="w-full h-auto mb-2"
+        className="w-auto mb-2"
+        style={width ? { width } : {}}
       />
       <p className="text-center text-gray-500 m-0 text-sm">{title}</p>
     </div>
   );
 };
 
-export default BodyImage;
+export default MDXImage;

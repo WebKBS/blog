@@ -1,0 +1,197 @@
+---
+title: Next js dynamic opengraph 및 twitter card 이미지 생성하기
+date: 2024-03-22
+description: 'next js를 사용해서 SEO를 최적화하기 위해 동적인 opengraph 이미지 또는 twitter card 이미지를 생성하는 방법을 알아보자.'
+published: true
+tags:
+  - nextjs
+  - SEO
+  - blog
+cover: './nextjs-logo.svg'
+---
+
+## Summary
+
+SEO를 최적화 하기 위해 opengraph 및 twitter 설정하는 경우가 종종있다.<br/>
+글을 쓰는 블로그나 게시판 같은 경우 동적인 이미지를 생성해서 사용하는 경우가 많다.<br/>
+하지만 수많은 글, 게시물이 있는 경우 이미지를 수동으로 생성하는 것은 매우 귀찮고 힘들지 않는가?<br/>
+이를 위해서 next js에서 지원하는 opengraph 및 twitter 이미지 생성 방법을 이용해서 동적인 이미지를 생성해보자.
+
+동적 opengraph, twitter 이미지는 [`nextjs-opengraph`](https://nextjs.org/docs/app/api-reference/file-conventions/metadata/opengraph-image#generate-images-using-code-js-ts-tsx)를 참고하면 된다.
+
+## 동적인 이미지를 만들면 좋은점?
+
+- SEO 최적화
+- SNS 공유시 이미지가 없을 경우 기본 이미지를 사용하지 않고 동적 이미지를 사용할 수 있다.
+- 이미지 생성이 자동화
+- 블로그 또는 게시물의 내용을 이미지로 표현할 수 있다.
+
+예를들어 SNS 공유시 아래와같이 표현할 수 있다.
+
+<MDXImage
+  src="./og-image.png"
+  title="SNS 공유시 표현되는 이미지"
+  width="400px"
+/>
+
+이제 동적 이미지를 만들어보자.
+
+> 본 블로그에서는 `app router`를 사용하고 있다.
+
+## slug 페이지 설정
+
+```tsx title="blog/[...slug]/page.tsx"
+export async function generateMetadata({ params }): Promise<Metadata> {
+  const post = await getPost(params); // 이 부분은 본인이 설정한 post 데이터
+
+  const ogSearchParams = new URLSearchParams();
+  ogSearchParams.set('title', post.title); // title 키와 값이다.
+  ogSearchParams.set('description', post.description); // description 키와 값이다.
+}
+```
+
+new URLSearchParams를 사용해서 반드시 `title`과 `description`을 넣어줘야한다.
+만약 이미지 생성시 description이 필요 없다면 제거 해도 되며, 기타 필요한 정보를 넣어도 된다.
+
+generateMetadata에 대해서 잘 모른다면 [`generateMetadata`](https://nextjs.org/docs/app/api-reference/functions/generate-metadata) 여기에서 학습이 필요하다.
+
+## api 라우터 생성
+
+```txt title="프로젝트 구조"
+ app
++├── api/og
++│   ├── route.ts
+```
+
+대략적인 코드는 아래와 같다.
+
+```tsx title="api/og/route.ts" showLineNumbers
+import { ImageResponse } from 'next/og';
+export const runtime = 'edge'; // edge 런타임을 사용해야한다.
+
+export async function GET(req: NextRequest) {
+  try {
+    const { searchParams } = req.nextUrl;
+    const title = searchParams.get('title');
+    let description = searchParams.get('description');
+
+    if (!title) {
+      return new Response('title', {
+        status: 400,
+      });
+    }
+
+    if (!description) {
+      description = '';
+    }
+
+    return new ImageResponse(
+      (
+        // 여기 부분은 원하는 디자인을 하면 된다. svg를 추가해서 아이콘도 가능!
+        <div>
+          <svg>{...}</svg>
+          <h2>{title}</h2>
+          <p>{description}</p>
+        </div>
+      ),
+
+      // 여기는 ImageResponse의 옵션이다. 옵션에대해서는 공식문서 참고!
+      {
+        width: 1200,
+        height: 630,
+      }
+    );
+  } catch (error) {
+    return new Response('이미지 만들기 실패', { status: 500 });
+  }
+}
+```
+
+## 코드 설명
+
+```tsx title="api/og/route.ts"
+export const runtime = 'edge'; // edge 런타임을 사용해야한다.
+```
+
+공식문서에 있듯이 edge 런타임을 사용해야한다.
+
+```tsx title="api/og/route.ts" {3,4,5}
+export async function GET(req: NextRequest) {
+  try {
+    const { searchParams } = req.nextUrl;
+    const title = searchParams.get('title');
+    let description = searchParams.get('description');
+
+    // ... 생략
+  } catch (error) {
+    return new Response('이미지 만들기 실패', { status: 500 });
+  }
+}
+```
+
+slug에서 보낸 title과 description을 받아서 사용한다.
+
+```tsx title="api/og/route.ts"
+return new ImageResponse(
+  (
+    <div>
+      <svg>{...}</svg>
+      <h2>{title}</h2>
+      <p>{description}</p>
+    </div>
+  ),
+
+  {
+    width: 1200,
+    height: 630,
+  }
+);
+```
+
+Next Js에서 제공하는 `ImageResponse`를 사용해서 이미지를 생성한다.
+`width`와 `height`는 opengraph 이미지의 사이즈를 설정한다.
+
+div 엘리먼트는 HTML디자인 하듯이, 그리고 인라인 스타일 및 tailwindcss를 사용해서 디자인을 하면 된다.
+
+## api를 받아서 이미지 출력
+
+```tsx title="blog/[...slug]/page.tsx"
+export async function generateMetadata({ params }): Promise<Metadata> {
+  const ogSearchParams = new URLSearchParams();
+  // ... 이전과 같음
+
+  return {
+    // ... title 부터 설정한 값들 생략
+    openGraph: {
+      // ... title 부터 설정한 값들 생략
+      images: {
+        url: `/api/og?${ogSearchParams.toString()}`,
+        width: 1200,
+        height: 630,
+        alt: post.title,
+      },
+    },
+    twitter: {
+      // ... title 부터 설정한 값들 생략
+      card: 'summary_large_image',
+      images: [`/api/og?${ogSearchParams.toString()}`],
+    },
+  };
+}
+```
+
+위와 같이 slug 페이지에서 generateMetadata를 사용해서 이미지를 받아서 사용하면 된다. api를 사용하기때문에 api 경로를 설정해주면 된다.
+
+---
+
+딱히 크게 설명할것이 없다. 공식문서에 나와있는데로 new ImageResponse를 사용해서 opengraph 이미지를 생성하면 된다.<br/>
+api를 만들어서 각 페이지의 이미지를 생성하면 된다.<br/>
+여기서 중요한 점은 데이터를 받아서 이미지를 생성하는 것이다.!<br/>
+
+## 깨알 꿀팁.
+
+이제 다이나믹 opengraph 이미지를 생성하는 것을 구현했다면. opengraph 및 twitter 이미지 테스트 사이트에서 한번 확인해보자!
+
+단, 배포가 된 상황에서 테스트를 진행 해야한다.
+
+[`https://www.opengraph.xyz/`](https://www.opengraph.xyz/) 이 사이트에서 opengraph 이미지를 확인할 수 있다.
