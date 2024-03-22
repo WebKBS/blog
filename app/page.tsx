@@ -60,7 +60,7 @@ export default function Home() {
             <ExternalLink />
           </Link>
         </h2>
-        <ul>
+        <ul className="flex flex-col gap-4">
           {sortedPosts.map((post) => (
             <LinkCard key={post.slug} {...post} />
           ))}
