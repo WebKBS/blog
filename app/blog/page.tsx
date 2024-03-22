@@ -12,9 +12,7 @@ const BlogPage = ({ searchParams }: { searchParams: { tag?: string } }) => {
   const sortedPosts = sortPosts(posts.filter((post) => post.published));
 
   const tagParam = searchParams.tag;
-  const tagPage = posts.filter((post) =>
-    post.tags.includes(tagParam?.toLocaleLowerCase() || '')
-  );
+  const tagPage = posts.filter((post) => post.tags.includes(tagParam || ''));
 
   // console.log(posts.length);
 
