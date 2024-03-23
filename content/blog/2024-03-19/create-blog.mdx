@@ -157,3 +157,14 @@ export default {
 
 content 폴더에 posts 폴더를 생성 후 md 파일을 만들어주고 next.js를 실행하면 velite가 자동으로 md 파일을 읽어와서 블로그를 만들어준다.
 터미널 창을보면 velite와 next.js가 동시에 컴파일 되는것을 확인할 수 있다.
+
+## gitignore 설정 \* 반드시 필요!
+
+불필요한 velite 파일들을 git에 올리지 않기 위해 .gitignore 파일을 만들어주자.
+
+```txt title=".gitignore"
+.velite
+/public/static
+```
+
+위 두가지 파일은 build시 생성되기때문에 git에 올릴 필요가 없다.
