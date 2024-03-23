@@ -58,6 +58,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" className="scroll-pt-[3.5rem]" suppressHydrationWarning>
+      <head>
+        <meta
+          name="naver-site-verification"
+          content="e6a9b80e809cdb4abf3cd544886f44c7e4fc19da"
+        />
+      </head>
       <body className={cn('min-h-screen', inter.className)}>
         <ThemeProvider>
           <div className="min-h-dvh flex flex-col">
