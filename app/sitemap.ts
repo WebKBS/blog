@@ -7,8 +7,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: new Date(post.date).toISOString().split('T')[0],
   }));
 
-  // console.log(post);
-
   return [
     {
       url: 'https://recodelog.com', // 사용자가 접근할 수 있는 URL
