@@ -69,10 +69,10 @@ export async function GET(req: NextRequest) {
               </defs>
             </svg>
 
-            <p tw="ml-2 font-bold text-2xl">RecodeLog</p>
+            <p tw="ml-2 font-bold text-3xl">RecodeLog</p>
           </div>
-          <div tw="flex flex-col flex-1 py-10">
-            <p tw="flex text-xl uppercase font-bold tracking-tight font-normal">
+          <div tw="flex flex-col flex-1 py-8">
+            <p tw="flex text-2xl uppercase font-bold tracking-tight font-normal">
               BLOG POST
             </p>
             <h1 tw="flex text-[80px] font-bold text-[50px] mb-6">{heading}</h1>
