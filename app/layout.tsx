@@ -23,6 +23,20 @@ export const metadata: Metadata = {
   formatDetection: {
     telephone: false,
   },
+
+  icons: {
+    icon: './icons/icon.png',
+    apple: './icons/apple-icon.png',
+    shortcut: './icons/icon.png',
+  },
+
+  appleWebApp: {
+    capable: true,
+    title: 'RecodeLog',
+    statusBarStyle: 'default',
+    startupImage: './icons/apple-icon.png',
+  },
+
   openGraph: {
     images: [
       {
