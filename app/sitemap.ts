@@ -1,17 +1,13 @@
 import { posts } from '#site/content';
 import { MetadataRoute } from 'next';
 
-export const generateSitemaps = async () => {
-  return posts.map((post) => ({
+export default function sitemap(): MetadataRoute.Sitemap {
+  const post = posts.map((post) => ({
     url: `https://recodelog.com/${post.slug}`,
     lastModified: new Date(post.date).toISOString().split('T')[0],
   }));
-};
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const post = await generateSitemaps();
-
-  console.log(post);
+  // console.log(post);
 
   return [
     {

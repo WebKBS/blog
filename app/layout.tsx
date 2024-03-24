@@ -56,6 +56,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // sitemap();
   return (
     <html lang="ko" className="scroll-pt-[3.5rem]" suppressHydrationWarning>
       <head>
