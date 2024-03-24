@@ -80,7 +80,7 @@ export async function GET(req: NextRequest) {
           </div>
           <div tw="flex items-center w-full justify-between">
             <h3 tw="flex text-2xl">{defaultData.url}</h3>
-            <div tw="flex items-center text-2xl gap-2">
+            <div tw="flex items-center text-2xl">
               <svg width="40" height="40" xmlns="http://www.w3.org/2000/svg">
                 <path
                   fill-rule="evenodd"
