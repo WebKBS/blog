@@ -18,7 +18,7 @@ const BlogPage = ({ searchParams }: { searchParams: { tag?: string } }) => {
 
   return (
     <section className="pb-24 pt-12 max-w-screen-lg px-6 mx-auto">
-      <h2 className="text-2xl font-semibold">기술 블로그</h2>
+      <h1 className="text-2xl font-semibold">기술 블로그</h1>
       <div className="py-4 mb-4">
         <ul className="flex flex-wrap gap-2">
           <Tags />

@@ -13,11 +13,11 @@ export default function Home() {
 
   return (
     <div className="pb-24 pt-12 max-w-screen-lg px-6 mx-auto">
-      <h2 className="text-3xl mb-3 font-bold">기록하고 기록하다.</h2>
-      <h3 className="mb-6 text-sm">
+      <h1 className="text-3xl mb-3 font-bold uppercase">Recode Log</h1>
+      <h2 className="mb-6 text-sm">
         RecodeLog는 Recode(기록)과 Log(로그)의 합성 및<br />
         Re + Code + Log의 합성어로 다시쓰는 코드 및 기록하는 블로그입니다.
-      </h3>
+      </h2>
       <p className="mb-4 text-xl">
         안녕하세요! 🙌 프론트엔드 개발자 강범수입니다.
       </p>

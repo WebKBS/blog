@@ -85,7 +85,7 @@ const BlogDetail = async ({ params: { slug } }: BlogDetailProps) => {
   return (
     <section className="pb-24 pt-12 max-w-screen-lg px-6 mx-auto prose dark:prose-invert">
       <ScrollProgress />
-      <h2 className="text-3xl mb-2">{post.title}</h2>
+      <h1 className="text-3xl mb-2">{post.title}</h1>
       <p>{post.description}</p>
       <div className="flex gap-4 justify-between items-center">
         <time dateTime={post.date}>{formatDate(post.date)}</time>

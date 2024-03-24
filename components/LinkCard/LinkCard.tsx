@@ -42,9 +42,9 @@ const LinkCard = ({
             <h2 className="text-xl font-semibold line-clamp-2 mb-2 md:mb-4">
               {title}
             </h2>
-            <p className="line-clamp-2 md:line-clamp-3 text-sm text-zinc-400">
+            <h3 className="line-clamp-2 md:line-clamp-3 text-sm text-zinc-400">
               {description}
-            </p>
+            </h3>
           </div>
           <div className="flex flex-col gap-3">
             <ul className="flex flex-wrap gap-1">
