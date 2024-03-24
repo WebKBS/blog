@@ -1,0 +1,133 @@
+---
+title: React github page 배포하는 방법
+date: 2024-03-24
+description: React를 사용해서 github 저장소 page에 정적 사이트를 배포하는 방법을 알아봅니다.
+published: true
+tags:
+  - react
+  - github
+  - deploy
+cover: './react.png'
+---
+
+React를 사용한 프로젝트를 나의 github page에 배포해 정적 사이트를 만들어보겠습니다.
+
+본 페이지는 vite 프로젝트를 사용한 페이지를 배포하는 방법을 설명합니다.
+
+> 본 설명은 git이 설치되어있고, 본인의 컴퓨터가 github 저장소와 연동되어있는 것을 전제로 합니다.
+
+## 1. github 저장소 생성
+
+> Readme 파일을 생성하지 않습니다.
+> 왜냐하면 react 프로젝트 생성시 미리 생성된 Readme 파일이 있으면 vite 프로젝트 생성이 실패하기 때문입니다.
+
+## 2. React 프로젝트 생성
+
+먼저 폴더를 만들고 React 프로젝트를 생성합니다.
+
+- 프로젝트 생성과 github 저장소 연동을 할줄 안다면 건너뛰셔도 됩니다.
+
+```bash
+npm create vite@latest
+```
+
+만약 미리 폴더를 생성하지 않는다면 다음과 같은 명령어로 폴더를 생성하고 프로젝트를 생성합니다.
+
+```bash
+mkdir my-react-app
+cd my-react-app
+npm create vite@latest .
+
+# 또는
+npm create vite@latest [프로젝트 폴더명]
+```
+
+## 3. github 저장소와 연동
+
+생성된 프로젝트를 github 저장소와 연동합니다.
+
+- 프로젝트 생성과 github 저장소 연동을 할줄 안다면 건너뛰셔도 됩니다.
+
+```bash
+git init
+git add .
+git commit -m "first commit"
+git branch -M main
+git remote add origin [github 저장소 주소]
+git push -u origin main
+```
+
+github 저장소와 연동이 되어있을 경우 다음과 같이 진행합니다.
+
+## 4. 패키지 설치
+
+react 프로젝트에 다음과 같은 패키지를 설치합니다.
+
+github 정적 사이트 배포를 위한 필수 패키지 입니다.
+
+```bash
+npm install gh-pages --save-dev
+```
+
+## 5. package.json 설정
+
+다음과 같이 package.json 파일을 수정합니다.
+
+```json {2,6,7} title="package.json"
+{
+  "homepage": "https://[github 아이디].github.io/[저장소명]",
+  // ...
+  "scripts": {
+    // ...
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
+  }
+}
+```
+
+- `homepage` : github page 주소를 입력합니다.
+- `predeploy` : 배포 전 빌드를 실행합니다.
+- `deploy` : 배포를 실행합니다.
+
+## 6. vite.config.js 설정
+
+vite 사용시 반드시 필요한 설정입니다. 다음과 같이 vite.config.js 파일을 수정합니다.
+
+```js {4,5} title="vite.config.js"
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+
+// https://vitejs.dev/config/
+export default defineConfig({
+  base: '/[저장소명]/', // 예시: 저장소 이름이 my-react-app 이면 /my-react-app/
+  plugins: [react()],
+});
+```
+
+## 7. 배포
+
+이제 다음과 같은 명령어로 배포를 실행합니다.
+
+```bash
+npm run deploy
+```
+
+npm run deploy 명령어를 실행하면 터미널에 다음 이미지와같이 Published 라는 메시지가 나오면 성공입니다.
+
+<MDXImage src="./deploy.png" alt="deploy" width="400px" title="배포 성공!" />
+
+## 8. 확인
+
+다음 주소로 배포된 페이지를 확인할 수 있습니다.
+
+```txt
+https://[github 아이디].github.io/[저장소명]
+```
+
+gh-pages 패키지를 사용하면 github 브렌치에 gh-pages 브렌치가 생성되고, 해당 브렌치에 정적 파일이 업로드 됩니다.
+
+## 9. 참고
+
+github 저장소에서 배포된 page를 확인할 수 있습니다.
+
+- 해당 저장소 > Settings > Pages로 이동하면 배포된 사이트 주소와 배포된 branch를 확인할 수 있습니다. 반드시 배포 branch를 gh-pages로 설정되어 있는지 확인하세요.
