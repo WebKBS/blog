@@ -11,16 +11,18 @@ export const generateSitemaps = async () => {
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const post = await generateSitemaps();
 
+  console.log(post);
+
   return [
     {
       url: 'https://recodelog.com', // 사용자가 접근할 수 있는 URL
-      lastModified: new Date(), // 마지막으로 수정된 날짜
+      lastModified: new Date().toISOString().split('T')[0], // 마지막으로 수정된 날짜
       changeFrequency: 'weekly', // 변경 빈도
       priority: 1, // 우선순위
     },
     {
       url: 'https://recodelog.com/blog',
-      lastModified: new Date(),
+      lastModified: new Date().toISOString().split('T')[0],
       changeFrequency: 'weekly',
       priority: 0.8,
     },
