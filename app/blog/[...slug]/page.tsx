@@ -16,10 +16,10 @@ interface BlogDetailProps {
 
 const getPost = async (params: BlogDetailProps['params']) => {
   const slug = params?.slug?.join('/');
-  console.log('slug: ', slug);
+  // console.log('slug: ', slug);
   const post = posts.find((post) => post.permalink === slug);
 
-  console.log('내부: ', post);
+  // console.log('내부: ', post);
 
   return post;
 };
