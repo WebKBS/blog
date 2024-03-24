@@ -19,7 +19,7 @@ const getPost = async (params: BlogDetailProps['params']) => {
   console.log('slug: ', slug);
   const post = posts.find((post) => post.permalink === slug);
 
-  // console.log('내부: ', post);
+  console.log('내부: ', post);
 
   return post;
 };
