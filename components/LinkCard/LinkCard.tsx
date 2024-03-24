@@ -32,7 +32,7 @@ const LinkCard = ({
               src={cover}
               alt={title}
               fill
-              className="w-[90%!important] mx-auto h-auto rounded-sm max-w-xl hover:scale-105 transition-transform duration-300 ease-in-out object-contain"
+              className="w-[80%!important] mx-auto h-auto rounded-sm max-w-xl hover:scale-105 transition-transform duration-300 ease-in-out object-contain"
               priority
             />
           ) : null}
