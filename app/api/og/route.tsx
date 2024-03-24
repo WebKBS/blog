@@ -72,16 +72,14 @@ export async function GET(req: NextRequest) {
             <p tw="ml-2 font-bold text-2xl">RecodeLog</p>
           </div>
           <div tw="flex flex-col flex-1 py-10">
-            <div tw="flex text-xl uppercase font-bold tracking-tight font-normal">
+            <p tw="flex text-xl uppercase font-bold tracking-tight font-normal">
               BLOG POST
-            </div>
-            <div tw="flex text-[80px] font-bold text-[50px] mb-6">
-              {heading}
-            </div>
-            <div tw="text-3xl">{desc}</div>
+            </p>
+            <h1 tw="flex text-[80px] font-bold text-[50px] mb-6">{heading}</h1>
+            <h2 tw="text-3xl">{desc}</h2>
           </div>
           <div tw="flex items-center w-full justify-between">
-            <div tw="flex text-2xl">{defaultData.url}</div>
+            <h3 tw="flex text-2xl">{defaultData.url}</h3>
             <div tw="flex items-center text-2xl gap-2">
               <svg width="40" height="40" xmlns="http://www.w3.org/2000/svg">
                 <path
@@ -91,7 +89,7 @@ export async function GET(req: NextRequest) {
                   fill="#24292f"
                 />
               </svg>
-              <div tw="flex ml-2">{defaultData.links.github}</div>
+              <h3 tw="flex ml-2">{defaultData.links.github}</h3>
             </div>
           </div>
         </div>
