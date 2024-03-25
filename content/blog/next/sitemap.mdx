@@ -1,0 +1,157 @@
+---
+title: Next js를 사용한 다이나믹 sitemap 생성 feat. robots.txt 설정 방법
+date: 2024-03-25
+description: sitemap이 무엇인지 알아보고, Next.js에서 sitemap을 생성하는 방법을 알아보겠습니다.
+published: true
+tags:
+  - nextjs
+  - robots.txt
+  - sitemap
+  - SEO
+cover: './images/nextjs-logo.svg'
+---
+
+## Summary
+
+SSR (Server Side Rendering)을 지원하는 Next.js를 사용하여 SEO(Search Engine Optimization)를 위한 사이트맵(sitemap)과 robots.txt를 생성하는 방법을 알아보겠습니다.
+
+## sitemap과 robots.txt는 왜 해야할까?
+
+SEO(Search Engine Optimization)를 위해서는 사이트맵(sitemap)과 robots.txt 파일을 생성해야 합니다. 사이트맵은 검색엔진이 사이트의 페이지를 크롤링할 때 어떤 페이지가 있는지 알려주는 역할을 합니다. robots.txt 파일은 검색엔진이 어떤 페이지를 크롤링할 수 있는지 제한하는 역할을 합니다.
+
+## sitemap이 무엇인지 알아봅시다.
+
+sitemap은 웹사이트의 페이지 목록을 검색엔진에 제공하는 파일입니다. 검색엔진은 이 파일을 읽어 웹사이트의 페이지를 크롤링합니다. sitemap은 XML 형식으로 작성되며, 페이지의 URL, 마지막 수정일, 변경 빈도, 우선 순위 등의 정보를 포함합니다.
+
+아래는 sitemap의 예시입니다.
+
+```xml title="sitemap.xml"
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://acme.com</loc>
+    <lastmod>2023-04-06T15:02:24.021Z</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>1</priority>
+  </url>
+  <url>
+    <loc>https://acme.com/about</loc>
+    <lastmod>2023-04-06T15:02:24.021Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://acme.com/blog</loc>
+    <lastmod>2023-04-06T15:02:24.021Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+</urlset>
+```
+
+sitemap은 위처럼 구성되어 있습니다.
+
+sitemap에서 사용되는 태그는 다음과 같습니다.
+
+- &lt;urlset&gt;: 사이트맵 문서의 최상위 요소입니다. 이 태그는 사이트맵의 컨테이너 역할을 합니다.
+
+- &lt;url&gt;: 각각의 웹 페이지에 대한 정보를 포함하는 요소입니다. 사이트맵에 포함된 각 페이지마다 하나의 &lt;url> 요소가 있습니다.
+
+- &lt;loc&gt;: 페이지의 URL을 나타내는 요소입니다. 이것은 검색 엔진이 방문하여 색인화할 페이지의 주소를 제공합니다.
+
+- &lt;lastmod&gt;: 페이지의 마지막 수정 날짜를 나타내는 요소입니다. 이 정보는 검색 엔진이 페이지를 얼마나 자주 업데이트해야 하는지 결정하는 데 사용됩니다.
+
+- &lt;changefreq&gt;: 페이지의 변경 빈도를 나타내는 요소입니다. 이것은 검색 엔진에게 페이지가 얼마나 자주 변경되는지 알려줍니다. 여기서 사용된 값들은 "always" (항상), "hourly" (시간별), "daily" (매일), "weekly" (주간), "monthly" (월간), "yearly" (연간), "never" (절대로) 중 하나일 수 있습니다.
+
+- &lt;priority&gt;: 페이지의 우선 순위를 나타내는 요소입니다. 이 값은 페이지의 중요성을 나타냅니다. 값의 범위는 0.0에서 1.0까지이며, 높은 값은 더 높은 우선 순위를 나타냅니다. 하지만 이 값은 검색 엔진의 알고리즘에서 사용되는 것은 아니며, 일부 엔진은 무시할 수 있습니다.
+
+> 위 sitemap.xml 파일은 사이트의 메인 페이지, about 페이지, blog 페이지의 정보를 포함하고 있습니다.
+> 이처럼 xml 코드로 sitemap.xml 파일을 생성해도 되지만, 만약 post 페이지 처럼 여러 페이지가 있다면, 자동으로 생성하는 것이 편리합니다.
+>
+> 만약, 동적인 페이지가 사이트에 없다면, xml 코드로 직접 작성해도 됩니다.
+
+## Next.js에서 사이트맵(sitemap) 생성하기
+
+```txt title="폴더 구조" {2,3}
+app
++├── sitemap.ts
+```
+
+동적인 사이트맵을 생성하기 위해 ts 파일을 생성합니다.<br/>
+app 폴더 안에 `sitemap.ts` 파일을 생성합니다. 반드시 app 폴더 안에 있어야 합니다.
+
+상단의 xml 파일을 next js sitemap.ts 파일로 변경하려면 다음 코드와 같습니다.
+
+```ts title="app/sitemap.ts"
+import { MetadataRoute } from 'next';
+
+export default function sitemap(): MetadataRoute.Sitemap {
+  return [
+    {
+      url: 'https://acme.com',
+      lastModified: new Date(),
+      changeFrequency: 'yearly',
+      priority: 1,
+    },
+    {
+      url: 'https://acme.com/about',
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: 'https://acme.com/blog',
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.5,
+    },
+  ];
+}
+```
+
+하지만 동적인 사이트맵을 생성하기 위해, 아래와 같이 코드를 변경해야 합니다.
+
+> 아래 코드는 동적인 post데이터가 있다는 가정하에 작성되었습니다.
+
+```ts title="app/sitemap.ts"
+import { MetadataRoute } from 'next';
+import { getAllPosts } from '../lib/posts';
+
+export default function sitemap(): MetadataRoute.Sitemap {
+  const posts: MetadataRoute.Sitemap = getAllPosts.map((post) => ({
+    url: `https://acme.com/blog/${post.slug}`,
+    lastModified: new Date(post.date).toISOString().split('T')[0],
+    changeFrequency: 'weekly',
+  }));
+
+  return [
+    {
+      url: 'https://acme.com', // 사용자가 접근할 수 있는 URL
+      lastModified: new Date().toISOString().split('T')[0], // 마지막으로 수정된 날짜
+      changeFrequency: 'yearly', // 변경 빈도
+      priority: 1, // 우선순위
+    },
+    {
+      url: 'https://acme.com/about',
+      lastModified: new Date().toISOString().split('T')[0],
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: 'https://acme.com/blog',
+      lastModified: new Date().toISOString().split('T')[0],
+      changeFrequency: 'weekly',
+      priority: 0.5,
+    },
+    ...posts,
+  ];
+}
+```
+
+위 코드를 살펴보면, 동적인 변경이 필요없는 페이지는 직접 작성하고, 동적인 페이지는 `getAllPosts` 함수를 통해 가져와서 map 반복문을 통해 데이터를 가져옵니다.
+
+그리고 마지막 return 값에 `...posts`를 추가하여 posts 데이터를 추가합니다.
+
+sitemap이 잘 적용이 된다면, `https://acme.com/sitemap.xml`로 접근이 가능합니다.<br/>
+localhost에서 확인하려면, `http://localhost:3000/sitemap.xml`로 접근이 가능합니다.
+
+자세한 내용은 [Next.js 공식문서](https://nextjs.org/docs/app/api-reference/file-conventions/metadata/sitemap)를 참고하세요.
