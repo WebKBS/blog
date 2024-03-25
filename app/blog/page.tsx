@@ -12,7 +12,9 @@ const BlogPage = ({ searchParams }: { searchParams: { tag?: string } }) => {
   const sortedPosts = sortPosts(posts.filter((post) => post.published));
 
   const tagParam = searchParams.tag;
-  const tagPage = posts.filter((post) => post.tags.includes(tagParam || ''));
+  const tagPage = sortedPosts.filter((post) =>
+    post.tags.includes(tagParam || '')
+  );
 
   // console.log(posts.length);
 
