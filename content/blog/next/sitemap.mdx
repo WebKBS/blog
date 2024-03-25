@@ -71,7 +71,7 @@ sitemap에서 사용되는 태그는 다음과 같습니다.
 
 ## Next.js에서 사이트맵(sitemap) 생성하기
 
-```txt title="폴더 구조" {2,3}
+```txt title="폴더 구조" {2}
 app
 +├── sitemap.ts
 ```
@@ -81,7 +81,7 @@ app 폴더 안에 `sitemap.ts` 파일을 생성합니다. 반드시 app 폴더 �
 
 상단의 xml 파일을 next js sitemap.ts 파일로 변경하려면 다음 코드와 같습니다.
 
-```ts title="app/sitemap.ts"
+```ts title="app/sitemap.ts" showLineNumbers
 import { MetadataRoute } from 'next';
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -112,7 +112,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
 > 아래 코드는 동적인 post데이터가 있다는 가정하에 작성되었습니다.
 
-```ts title="app/sitemap.ts"
+```ts title="app/sitemap.ts" showLineNumbers {5, 6, 7, 8, 9, 30}
 import { MetadataRoute } from 'next';
 import { getAllPosts } from '../lib/posts';
 
@@ -154,4 +154,57 @@ export default function sitemap(): MetadataRoute.Sitemap {
 sitemap이 잘 적용이 된다면, `https://acme.com/sitemap.xml`로 접근이 가능합니다.<br/>
 localhost에서 확인하려면, `http://localhost:3000/sitemap.xml`로 접근이 가능합니다.
 
-자세한 내용은 [Next.js 공식문서](https://nextjs.org/docs/app/api-reference/file-conventions/metadata/sitemap)를 참고하세요.
+자세한 내용은 [Next.js 공식문서 - sitemap.ts](https://nextjs.org/docs/app/api-reference/file-conventions/metadata/sitemap)를 참고하세요.
+
+다음은 robots.txt 파일을 생성하는 방법을 알아보겠습니다.
+
+## robots.txt 파일이 무엇인지 알아봅시다.
+
+robots.txt 파일은 검색 엔진 크롤러에게 웹 사이트의 어떤 부분을 크롤링할 수 있는지, 어떤 부분을 크롤링하지 말아야 하는지 알려주는 파일입니다. robots.txt 파일은 웹 사이트의 루트 디렉토리에 위치해야 하며, 검색 엔진 크롤러가 사이트를 방문할 때 가장 먼저 읽는 파일입니다.
+
+robots.txt 파일은 다음과 같은 형식으로 작성됩니다.
+
+```txt title="robots.txt"
+User-Agent: *
+Allow: /
+Disallow: /private/
+Sitemap: https://acme.com/sitemap.xml
+```
+
+robots.txt 파일의 구성은 다음과 같습니다.
+
+- User-Agent: 크롤러의 이름을 나타내는 요소입니다. "\*"는 모든 크롤러를 의미합니다.
+- Allow: 크롤러가 접근할 수 있는 URL을 나타내는 요소입니다.
+- Disallow: 크롤러가 접근할 수 없는 URL을 나타내는 요소입니다.
+- Sitemap: 사이트맵 파일의 URL을 나타내는 요소입니다. 이 요소는 사이트맵 파일의 URL을 검색 엔진에게 알려줍니다.
+
+## Next.js에서 robots.txt 파일 생성하기
+
+```txt title="폴더 구조" {2}
+app
++├── robots.ts
+```
+
+robots.txt 파일을 생성하기 위해 ts 파일을 생성합니다.<br/>
+app 폴더 안에 `robots.ts` 파일을 생성합니다. 반드시 app 폴더 안에 있어야 합니다.
+
+robots.txt 파일은 다음과 같이 작성합니다.
+
+```ts title="app/robots.ts" showLineNumbers
+import { MetadataRoute } from 'next';
+
+export default function robots(): MetadataRoute.Robots {
+  return {
+    rules: {
+      userAgent: '*',
+      allow: '/',
+      disallow: '/private/',
+    },
+    sitemap: 'https://acme.com/sitemap.xml',
+  };
+}
+```
+
+robots.txt파일을 생성하는것은 비교적 간단합니다. 하지만 robots.txt 파일은 검색엔진이 크롤링할 수 있는 페이지와 크롤링할 수 없는 페이지를 설정하는 파일이기 때문에 신중하게 설정해야 합니다. 자신 사이트에 맞는 설정을 해야 합니다.
+
+자세한 내용은 [Next.js 공식문서 - robots.ts](https://nextjs.org/docs/app/api-reference/file-conventions/metadata/robots)를 참고하세요.
