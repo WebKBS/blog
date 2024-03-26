@@ -25,22 +25,22 @@ export const metadata: Metadata = {
   },
 
   icons: {
-    icon: './icons/icon.svg',
-    apple: './icons/apple-icon.png',
-    shortcut: './icons/icon.png',
+    icon: '/icon.svg',
+    apple: '/apple-icon.png',
+    shortcut: '/icon.png',
   },
 
   appleWebApp: {
     capable: true,
     title: 'RecodeLog',
     statusBarStyle: 'default',
-    startupImage: './icons/apple-icon.png',
+    startupImage: '/apple-icon.png',
   },
 
   openGraph: {
     images: [
       {
-        url: './icons/icon.png',
+        url: '/icon.png',
         alt: 'RecodeLog',
       },
     ],
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
   twitter: {
     images: [
       {
-        url: './icons/icon.png',
+        url: '/icon.png',
         alt: 'RecodeLog',
       },
     ],
