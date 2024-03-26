@@ -1,0 +1,140 @@
+---
+title: Next js 14+ SEO 설정하기 - Metadata
+date: 2024-03-26
+description: Next js 14버전 이상 Metadata 설정방법에 대해 알아봅니다.
+published: false
+tags:
+  - nextjs
+  - SEO
+  - metadata
+cover: './images/nextjs-logo.svg'
+---
+
+## Summary
+
+Next js 14버전 이상 Metadata 설정방법에 대해 알아보겠습니다. 본 설명은 Next js 14버전 이상, App router를 사용하는 경우에 해당합니다.
+
+## 기본 Metadata title, description 설정
+
+기본 메타데이터 설정에는 layout 파일과 page 파일에서 사용할 수 있습니다.
+
+```tsx title="layout.tsx 또는 page.tsx"
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: '...',
+  description: '...',
+};
+```
+
+위 코드에서는 정적인 페이지 생성시에 사용하는것이 좋습니다.
+
+동적인 페이지 생성시에는 다음과 같은 방법을 사용해야 합니다.
+
+```tsx title="app/products/[id]/page.tsx" showLineNumbers
+import { Metadata } from 'next';
+import { getAllPost } from 'lib/posts';
+
+type Props = {
+  params: { id: string };
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const post = await getAllPost(params.id); // post 정보를 가져옴
+
+  return {
+    title: post.title,
+    description: post.description,
+  };
+}
+
+export default function Page({ params }: Props) {
+  return <div>...</div>;
+}
+```
+
+동적인 페이지에서는 `generateMetadata` 함수를 사용하여 메타데이터를 생성합니다.<br/>
+보통 동적 경로 세그먼트를 사용하는 경우 루트 세그먼트 부터 동적 매개변수까지 모두 포함하여 메타데이터를 생성합니다.
+
+만약 검색 url의 쿼리스트링을 사용하는 경우에는 `searchParams`를 사용하여 메타데이터를 생성합니다.
+
+```tsx title="app/products/[id]/page.tsx" {6, 11, 21} showLineNumbers
+import { Metadata } from 'next';
+import { getAllPost } from 'lib/posts';
+
+type Props = {
+  params: { id: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+};
+
+export async function generateMetadata({
+  params,
+  searchParams,
+}: Props): Promise<Metadata> {
+  const post = await getAllPost(params.id); // post 정보를 가져옴
+
+  return {
+    title: post.title,
+    description: post.description,
+  };
+}
+
+export default function Page({ params, searchParams }: Props) {
+  return <div>...</div>;
+}
+```
+
+## 메타데이터 속성
+
+메타데이터의 title 속성을 알아보겠습니다.
+
+```tsx title="app/layout.tsx"
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: {
+    template: '...',
+    default: '...',
+    absolute: '...',
+  },
+};
+```
+
+title 의 속성은 title="..." 값으로 설정할 수도 있지만, template, default, absolute 속성을 사용하여 설정할 수 있습니다.
+
+### default
+
+- 만약 title 속성이 정의되지 않은 페이지가 있을 경우 default 속성을 사용합니다.
+
+이하 title="..." 값을 사용하는것과 같습니다.
+
+### template
+
+- title 속성을 동적으로 설정할 수 있습니다.
+
+```tsx title="app/layout.tsx"
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: {
+    template: '%s - Home',
+    default: 'Home', // 템플릿을 설정할때 default는 필수 요소입니다.
+  },
+};
+```
+
+template 속성은 `%s` 를 사용하여 동적으로 설정할 수 있습니다.
+
+만약 아래와 같이 다른 페이지에서 title을 설정하면 다음과 같이 동작합니다.
+
+```tsx title="app/about/page.tsx"
+// about 페이지
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'About',
+};
+// Output: <title>About - Home</title>
+```
+
+"%s"를 사용함으로 인해 title은 `About - Home` 로 설정됩니다. 홈의 제목은 그대로 두고, 다른 서브페이지의 타이틀을 조정할때 좋습니다.
