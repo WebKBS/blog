@@ -12,7 +12,7 @@ const Header = () => {
         <SideMenuButton className="md:hidden" />
         <p className="text-xl font-bold uppercase ">
           <Link href="/" className="flex items-center gap-2">
-            <Image src="/logo.png" alt="RecodeLog" width={32} height={32} />
+            <Image src="/logo.png" alt="" width={32} height={32} />
             RecodeLog
           </Link>
         </p>

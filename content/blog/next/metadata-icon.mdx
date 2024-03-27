@@ -2,7 +2,7 @@
 title: Next js 14+ SEO 설정하기 - favicon, icon, apple icon 설정하기
 date: 2024-03-27
 description: Next js 14버전 이상 app router를 favicon, icon, apple icon 설정하는 방법을 알아봅니다.
-published: false
+published: true
 tags:
   - nextjs
   - SEO
@@ -28,3 +28,107 @@ app
 
 next js 14버전 app router에서는 favicon.ico 파일의 위치는 정해져있습니다. app/ 폴더에 favicon.ico 파일을 넣어주면 됩니다.
 app/favicon.ico
+
+위와 같이 설정하면 html에 자동으로 favicon이 설정됩니다.
+
+```html title="output"
+<!-- head 내부 output -->
+<link rel="icon" href="/favicon.ico" sizes="any" />
+```
+
+> favicon의 지원되는 파일형식은 `.ico`만 지원됩니다.
+>
+> - .ico
+
+## icon 설정하기
+
+icon 설정은 favicon과 비슷하지만, icon은 웹사이트의 대표 이미지로 사용됩니다. icon은 웹사이트의 대표 이미지로 사용되기 때문에, 브랜드의 이미지를 대표하는 이미지로 설정하는 것이 좋습니다. icon 설정은 다음과 같이 설정할 수 있습니다.
+
+> icon의 지원되는 파일 형식은 `.ico .png .jpeg .svg .jpg` 입니다.
+
+```txt title="폴더 구조" {2}
+app
++├── icon.svg
+```
+
+만약 app/ 루트 폴더에 favicon이 없다면 icon을 svg로 사용시 favicon으로 대체됩니다.<br/>
+그리고 만약 app/ 폴더에 favicon.ico 파일과 svg파일이 함께 있다면 favicon.ico는 무시되고 icon.svg가 적용됩니다.
+
+> 브라우저에 적절한 사이즈, 예를들어 48x48 사이즈의 png를 사용한다면 svg 처럼 favicon.ico의 대체로 사용 가능합니다.
+> 단, 사이즈가 너무 큰(대체 속성에 맞지 않는 사이즈) 이미지는 적용되지 않습니다.
+> 고로 svg 사용하는것을 추천드립니다.
+
+<br />
+
+icon은 다음과 같이 각 페이지에 사용될 수 있습니다.
+
+```txt title="폴더 구조" {5}
+app
++├── icon.svg
++├── about
+    +├── page.tsx
+    +├── icon.svg
+```
+
+기존 app/ 루트 폴더에 icon을 대체한 새로운 icon을 추가할 수 있습니다.
+
+> 사실, icon은 브랜드의 이미지를 대표하는 이미지로 각 페이지에 개별로 설정하여 icon을 변경하는 일은 드뭅니다. <br/>
+> 특별한 상황이 아니라면 app/ 루트 폴더에 icon을 설정하는 것이 좋습니다.
+
+## apple-icon 설정하기
+
+apple-icon은 apple 기기에서 웹사이트를 추가할 때 사용되는 이미지입니다. apple-icon은 다음과 같이 설정할 수 있습니다.
+
+> icon의 지원되는 파일 형식은 `.png .jpeg .jpg` 입니다.
+
+```txt title="폴더 구조" {2}
+app
++├── apple-icon.png
+```
+
+apple-icon은 다음과 같이 각 페이지에 사용될 수 있습니다.
+
+```txt title="폴더 구조" {5}
+app
++├── apple-icon.png
++├── about
+    +├── page.tsx
+    +├── apple-icon.png
+```
+
+다른 하위 폴더에서 사용하는 apple-icon은 앞서 설명드린 icon과 같습니다.
+
+apple-icon을 추가하면 다음과 같이 html에 자동으로 설정됩니다.
+
+```html title="output"
+<!-- head 내부 output -->
+<link rel="apple-touch-icon" href="/apple-icon.png?[랜덤문자열]" />
+```
+
+apple-touch-icon이란 Apple의 iOS 및 macOS 기기에서 웹 페이지를 추가할 때 홈 화면에 나타나는 아이콘을 말합니다. 이 아이콘은 웹 사이트를 홈 화면에 "추가"하거나 "북마크"할 때 해당 웹 사이트를 대표하는 아이콘으로 사용됩니다.
+
+자세한 내용은 apple 공식문서 [`apple-touch-icon`](https://developer.apple.com/library/archive/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html)를 참고해주세요.
+
+<br />
+
+## 공식홈페이지의 오해와 착각
+
+<MDXImage src="./images/meta-icon.png" title="공식홈페이지 자료" />
+
+공식 홈페이지에서는 유효 위치가 위와 같이 설명되어있습니다.
+favicon.ico는 정확하게 설명되어있으나, icon과 apple-icon은 유효한 위치가 app/\*\*/\*/으로 되어있기 때문에 어느 하위 위치에 있어도 적용되는지 알았으나, 공식 홈페이지에서 설명하는 유효한 위치는 하위 폴더에 위치하되 만약 다른 아이콘이 있다면 그 아이콘을 대체한다는 의미입니다.
+
+고로, 앞서 설명드렸던데로 특별한 상황이 아니라면, 다른 페이지에 icon이 필요한 것이 아니라면 app/ 루트 폴더에 icon을 설정하는 것이 좋습니다.
+
+<br />
+
+각 icon과 apple-icon은 ImageResponse를 사용해서 생성형 아이콘을 만들수 있습니다.
+
+자세한 내용은 [Next.js 공식문서 - icon ImageResponse](https://nextjs.org/docs/app/api-reference/file-conventions/metadata/app-icons#generate-icons-using-code-js-ts-tsx)를 참고해주세요.
+
+## 전체 요약
+
+- favicon - app/ 폴더에 favicon.ico 파일을 추가하여 설정 - app/ 루트폴더만 유효
+- icon - app/ 폴더에 icon.svg 파일을 추가하여 설정
+- apple-icon - app/ 폴더에 apple-icon.png 파일을 추가하여 설정
+- icon과 apple-icon은 특별한 상황이 아니라면 app/ 루트 폴더에 설정하는 것이 좋습니다.
