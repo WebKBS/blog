@@ -2,9 +2,11 @@
 node_modules/
 .cache/
 .next/
+.velite/
 out/
 .DS_Store
 *.log
+/public/static/
 
 # 개발 환경 파일
 .env
