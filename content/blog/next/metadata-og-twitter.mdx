@@ -1,0 +1,83 @@
+---
+title: Next js 14+ SEO 설정하기 - open graph image, twitter image 설정하기
+date: 2024-03-28
+description: Next js 14버전 이상 app router를 사용해서 open graph image 및 twitter image를 설정하는 방법을 알아봅니다.
+published: false
+tags:
+  - nextjs
+  - SEO
+  - metadata
+  - open graph
+  - twitter
+cover: './images/nextjs-logo.svg'
+---
+
+## Summary
+
+사용자가 웹사이트를 공유할 때, SNS 소셜 미디어 네트워크에서 웹사이트의 미리보기 이미지를 보여주는 방법을 알아보겠습니다.
+
+Open Graph Image와 Twitter Image를 설정하는 방법은 같습니다.
+
+## Open Graph Image 및 twitter image 설정하기
+
+opengraph-image.png와 twitter-image.png 파일의 허용되는 확장자는 다음과 같습니다.
+
+- .jpg
+- .jpeg
+- .png
+- .gif
+
+```txt title="폴더 구조" {2,3}
+app
++├── opengraph-image.png
++├── twitter-image.png
+```
+
+위 처럼 app/ 최상위 루트폴더에 `opengraph-image.png`와 `twitter-image.png` 파일을 생성합니다.
+
+app/ 최상위 폴더에 파일을 추가하면 전체 경로에 opengraph, twitter 이미지를 사용할 수 있습니다.
+
+next js는 다음과 같은 output을 생성합니다.
+
+```html
+<meta property="og:image" content="<generated>" />
+<meta property="og:image:type" content="<generated>" />
+<meta property="og:image:width" content="<generated>" />
+<meta property="og:image:height" content="<generated>" />
+
+<meta name="twitter:image" content="<generated>" />
+<meta name="twitter:image:type" content="<generated>" />
+<meta name="twitter:image:width" content="<generated>" />
+<meta name="twitter:image:height" content="<generated>" />
+
+<!-- <generated> 부분은 각 이미지 사이즈와 이미지 타입이 자동으로 생성 됩니다.-->
+```
+
+만약 다른 경로에 이미지를 사용하고 싶다면, 다음과 같이 설정합니다.
+
+```txt title="폴더 구조" {4,5,6}
+app
+ ├── opengraph-image.png
+ ├── twitter-image.png
++├── about
+    +├── opengraph-image.png
+    +├── twitter-image.png
+```
+
+위 처럼 개별 페이지(예: /about)에 이미지를 사용하고 싶다면, 해당 페이지 폴더에 이미지를 추가합니다.
+
+> 모든 이미지에는 alt 속성이 필요할 수 있습니다.
+
+이미지의 alt 속성은
+opengraph-image.alt.txt
+twitter-image.alt.txt를 사용해서 생성할 수 있습니다.
+
+저는 개인적으로 이러한 방법을 사용하지 않습니다. - 다른 방법이 있기 때문입니다.
+
+.alt.txt 파일을 생성하고 싶다면 다음과 같이 공식문서에서 참고할 수 있습니다. [`공식문서 - opengraph-image.alt.txt`](https://nextjs.org/docs/app/api-reference/file-conventions/metadata/opengraph-image#opengraph-imagealttxt)
+
+next js전용 .js .ts .tsx 파일을 사용하여 이미지를 생성하고 싶다면 다음과 같이 공식문서를 참고하세요. [`공식문서 - 코드(.js, .ts, .tsx)를 사용하여 이미지 생성`](https://nextjs.org/docs/app/api-reference/file-conventions/metadata/opengraph-image#generate-images-using-code-js-ts-tsx)
+
+<br />
+
+## image 파일 생성이 아닌 metadata 설정으로 이미지 사용하기

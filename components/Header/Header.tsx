@@ -11,7 +11,11 @@ const Header = () => {
       <div className="flex w-full items-center justify-between max-w-screen-xl mx-auto">
         <SideMenuButton className="md:hidden" />
         <p className="text-xl font-bold uppercase ">
-          <Link href="/" className="flex items-center gap-2">
+          <Link
+            href="/"
+            className="flex items-center gap-2"
+            style={{ textShadow: '1px 1px 3px rgba(0, 0, 0, 0.5)' }}
+          >
             <Image src="/logo.png" alt="" width={32} height={32} />
             RecodeLog
           </Link>
