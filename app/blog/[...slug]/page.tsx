@@ -82,8 +82,20 @@ const BlogDetail = async ({ params: { slug } }: BlogDetailProps) => {
     return notFound();
   }
 
+  const jsonLd = {
+    '@context': 'https://recodelog.com',
+    '@type': 'BlogPosting',
+    name: post.title,
+    description: post.description,
+    datePublished: post.date,
+  };
+
   return (
     <section className="pb-24 pt-12 max-w-screen-lg px-6 mx-auto prose dark:prose-invert">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <ScrollProgress />
       <h1 className="text-3xl mb-2">{post.title}</h1>
       <p>{post.description}</p>
