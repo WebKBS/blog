@@ -18,9 +18,9 @@ export default function Home() {
         RecodeLog는 Recode(기록)과 Log(로그)의 합성 및<br />
         Re + Code + Log의 합성어로 다시쓰는 코드 및 기록하는 블로그입니다.
       </h2>
-      <p className="mb-4 text-xl">
+      {/* <p className="mb-4 text-xl">
         안녕하세요! 🙌 프론트엔드 개발자 강범수입니다.
-      </p>
+      </p> */}
       <div className="leading-7 mb-6">
         <p>
           현재 이 블로그는 제가 공부한 내용을 정리하고 기록하고 또 공유하기 위해

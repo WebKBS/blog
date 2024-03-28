@@ -49,6 +49,11 @@ const Tags = () => {
             })}
             href={{ pathname, search: `?tag=${tag}` }}
             scroll={false}
+            onClick={(event) => {
+              if (currentTag === tag) {
+                event.preventDefault();
+              }
+            }}
           >
             {tag}{' '}
             <span className="rounded-md w-4 h-4 flex items-center justify-center border border-white ml-2">
