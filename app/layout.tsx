@@ -24,12 +24,6 @@ export const metadata: Metadata = {
     telephone: false,
   },
 
-  icons: {
-    icon: '/icon.svg',
-    apple: '/apple-icon.png',
-    shortcut: '/icon.png',
-  },
-
   appleWebApp: {
     capable: true,
     title: 'RecodeLog',
