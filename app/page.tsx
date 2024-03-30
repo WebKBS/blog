@@ -1,8 +1,9 @@
 import { posts } from '#site/content';
 import LinkCard from '@/components/LinkCard';
+import { buttonVariants } from '@/components/ui/button';
 import { blogStackData } from '@/config/defaultData';
 import { sortPosts } from '@/lib/utils';
-import { ExternalLink } from 'lucide-react';
+import { ArrowUpRight, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
 
 export default function Home() {
@@ -65,6 +66,11 @@ export default function Home() {
             <LinkCard key={post.slug} {...post} />
           ))}
         </ul>
+      </div>
+      <div className="py-20">
+        <Link href="/blog" className={buttonVariants({ variant: 'secondary' })}>
+          더 많은 내용 보러가기 <ArrowUpRight className="ml-1" size={20} />
+        </Link>
       </div>
     </div>
   );
