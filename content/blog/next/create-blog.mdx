@@ -9,7 +9,7 @@ tags:
   - velite.js
   - blog
   - mdx
-cover: './images/cover.svg'
+thumbnail: './images/thumbnail.svg'
 ---
 
 ## Summary
@@ -71,7 +71,7 @@ export default defineConfig({
           title: s.string().max(99), // velite에서는 스키마를 s로 사용한다.
           slug: s.path(),
           date: s.isodate(),
-          cover: s.image(),
+          thumbnail: s.image(),
           video: s.file().optional(),
           metadata: s.metadata(),
           excerpt: s.excerpt(),
