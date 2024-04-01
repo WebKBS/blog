@@ -10,7 +10,7 @@ interface LinkCardProps {
   date: string;
   tags: string[];
   slug: string;
-  thumbnail?: StaticImageData;
+  thumbnail?: StaticImageData | null;
 }
 
 const LinkCard = ({
