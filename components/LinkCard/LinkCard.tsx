@@ -1,4 +1,5 @@
 import { formatDate } from '@/lib/utils';
+import Logo from '@/public/icon.svg';
 import Image, { StaticImageData } from 'next/image';
 import Link from 'next/link';
 import TagBadge from '../TagsBadge';
@@ -36,7 +37,16 @@ const LinkCard = ({
               className="w-[80%!important] mx-auto h-auto rounded-sm max-w-xl hover:scale-105 transition-transform duration-300 ease-in-out object-contain"
               priority
             />
-          ) : null}
+          ) : (
+            <Image
+              src={Logo}
+              alt="recodelog"
+              fill
+              sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
+              className="w-[46%!important] mx-auto h-auto rounded-sm max-w-xl hover:scale-105 transition-transform duration-300 ease-in-out object-contain"
+              priority
+            />
+          )}
         </div>
         <div className="flex flex-col justify-between gap-4 sm:flex-1">
           <div>
