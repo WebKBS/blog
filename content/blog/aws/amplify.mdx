@@ -1,0 +1,91 @@
+---
+title: Next js AWS Amplify 배포하기 (feat. github)
+date: 2024-04-05
+description: Next js 프로젝트를 AWS Amplify로 배포하는 방법을 알아보겠습니다. feat. github
+published: true
+tags:
+  - AWS
+  - Amplify
+  - Next.js
+  - Deploy
+thumbnail: './images/aws.svg'
+---
+
+## Summary
+
+완성된 Next js 프로젝트를 Vercel 대신, AWS Amplify로 배포하는 방법을 알아보겠습니다.
+
+### 공식문서
+
+[https://docs.aws.amazon.com/ko_kr/amplify/latest/userguide/deploy-nextjs-app.html](https://docs.aws.amazon.com/ko_kr/amplify/latest/userguide/deploy-nextjs-app.html)
+
+> AWS 회원가입은 생략하겠습니다.
+>
+> > AWS 회원가입은 신용카드 등록이 필요합니다.
+
+## AWS Amplify 콘솔로 이동
+
+[https://aws.amazon.com/ko/amplify/](https://aws.amazon.com/ko/amplify/)
+
+AWS Amplify 콘솔로 이동해서 시작하기 버튼을 클릭합니다.
+
+버튼을 클릭하면 화면 가장 아래로 이동하는데 다음과 같은 이미지가 나타납니다.
+
+<MDXImage src="./images/amplify-main.png" title="amplify 시작하기" />
+
+위 이미지와 같이 Amplify Studio와 Amplify Hosting이 있는데, Next.js 배포를 하기위해서 Amplify Hosting의 시작하기를 클릭합니다.
+
+## Amplify Hosting 시작하기 - 저장소 선택
+
+<MDXImage src="./images/amplify-start.png" title="amplify 저장소 선택" />
+
+원하는 저장소를 선택하고 계속 버튼을 클릭합니다.
+
+저는 GitHub를 사용하기 때문에 GitHub을 선택하겠습니다.
+
+GitHub를 선택하면 Github 연동을 위한 권한을 요청하는 화면이 나타납니다.
+
+만약 로그인을 하지않았다면 로그인을 하고 권한을 허용합니다.
+
+### 저장소 선택
+
+Github에 권한부여가 완료되면 저장소를 선택하는 화면이 나타납니다.
+
+<MDXImage src="./images/amplify-repo.png" title="amplify 저장소 선택" />
+
+> 만약 저장소가 보이지 않는다면 새로고침을 하거나 `refresh` 버튼을 클릭합니다.
+> 그래도 되지 않는다면 Github 권한 보기 버튼을 클릭하면 Github에 권한 부여 및 저장소 선택을 다시 할 수 있습니다.
+
+저장소를 선택하고 다음 버튼을 클릭합니다.
+
+## 빌드 설정
+
+빌드 설정 화면으로 이동하면 Yaml 파일에 자동으로 빌드 설정이 되어있습니다.
+
+빌드 설정 내용을 변경하려면 편집을 클릭해 변경할 수 있습니다.
+
+고급 설정을 클릭하면 환경 변수를 추가할 수 있습니다.
+
+모든 세팅을 마친 후 다음 버튼을 클릭합니다.
+
+## 검토 페이지
+
+검토 페이지에서 설정한 세부 내용을 확인하고 배포를 시작합니다.
+
+저장 및 배포 버튼을 클릭하면 배포가 시작됩니다.
+
+## 배포 완료
+
+AWS Amplify 콘솔에서 빌드 및 배포 진행상황을 실시간으로 확인할 수 있습니다.
+
+만약 배포가 실패하면 터미널에서 에러 원인을 확인할 수 있으며, 에러사항을 수정한 후 깃허브 저장소에 푸시하면 자동으로 재배포가 진행됩니다.
+
+만약 자동으로 재배포가 되지 않는다면 수동으로 Amplify에서 다시 빌드 및 배포를 진행할 수 있습니다.
+
+## 마무리
+
+Amplify는 Vercel과 비슷한 기능을 제공하고, 배포 또한 Vercel 못지 않게 쉽게 진행할 수 있습니다.
+
+또한 AWS Amplify는 AWS의 다양한 서비스와 연동이 가능하기 때문에, AWS 서비스를 사용하는 경우에는 AWS Amplify를 사용하는 것이 좋습니다.
+
+이상으로 Next js 프로젝트를 AWS Amplify로 배포하는 방법을 알아보았습니다.
