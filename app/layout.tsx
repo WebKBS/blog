@@ -4,6 +4,7 @@ import SideMenu from '@/components/SideMenu';
 import { defaultData } from '@/config/defaultData';
 import { cn } from '@/lib/utils';
 import { ThemeProvider } from '@/providers/ThemeProvider';
+import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import type { Metadata, Viewport } from 'next';
@@ -67,6 +68,7 @@ export default function RootLayout({
   return (
     <html lang="ko" className="scroll-pt-[6rem]" suppressHydrationWarning>
       <head>
+        <GoogleTagManager gtmId="0DT0FKKXTM" />
         <meta
           name="naver-site-verification"
           content="e6a9b80e809cdb4abf3cd544886f44c7e4fc19da"
@@ -83,6 +85,7 @@ export default function RootLayout({
         </ThemeProvider>
         <SpeedInsights />
         <Analytics />
+        <GoogleAnalytics gaId="G-0DT0FKKXTM" />
       </body>
     </html>
   );
