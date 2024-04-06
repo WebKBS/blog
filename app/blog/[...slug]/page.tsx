@@ -76,6 +76,9 @@ export const generateStaticParams = async () => {
     }));
 };
 
+// https://nextjs.org/docs/app/api-reference/functions/generate-static-params#catch-all-dynamic-segment
+// 포괄적 동적 세그먼트를 사용하는 페이지를 생성할 때 사용 generateStaticParams와 함께 사용
+
 // console.log(
 //   posts
 //     .filter((post) => post.published)
