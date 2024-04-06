@@ -12,7 +12,7 @@ import { notFound } from 'next/navigation';
 
 interface BlogDetailProps {
   params: {
-    slug: string[];
+    slug: string[] | undefined;
   };
 }
 

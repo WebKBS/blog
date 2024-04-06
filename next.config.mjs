@@ -10,6 +10,14 @@ export default {
     config.plugins.push(new VeliteWebpackPlugin());
     return config;
   },
+
+  exportPathMap: function () {
+    return {
+      '/': { page: '/' },
+      '/blog': { page: '/about' },
+      '/blog/aws': { page: '/blog/[...slug]' },
+    };
+  },
 };
 
 class VeliteWebpackPlugin {
