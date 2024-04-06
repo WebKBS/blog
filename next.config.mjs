@@ -4,19 +4,11 @@ import { build } from 'velite';
 /* eslint import/no-anonymous-default-export: [2, {"allowObject": true}] */
 export default {
   // othor next config here...
-  // output: 'standalone', // node_modules/ 파일 줄이기
+  output: 'standalone', // node_modules/ 파일 줄이기
 
   webpack: (config) => {
     config.plugins.push(new VeliteWebpackPlugin());
     return config;
-  },
-
-  exportPathMap: function () {
-    return {
-      '/': { page: '/' },
-      '/blog': { page: '/about' },
-      '/blog/aws': { page: '/blog/[...slug]' },
-    };
   },
 };
 
