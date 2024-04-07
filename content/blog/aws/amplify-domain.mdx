@@ -1,0 +1,66 @@
+---
+title: Next js AWS Amplify 도메인 설정하기
+date: 2024-04-05
+description: AWS Amplify를 사용하여 Next.js 앱을 배포하고 도메인을 설정하는 방법을 알아봅니다.
+published: true
+tags:
+  - AWS
+  - Amplify
+  - Next.js
+  - Deploy
+  - Domain
+  - hosting.kr
+thumbnail: './images/aws.svg'
+---
+
+## Summary
+
+AWS Amplify를 사용하여 새로 구입한 커스텀 도메인 `example.com`을 설정하는 방법을 알아봅니다.
+
+저는 `hosting.kr`에서 도메인을 구입하였습니다. 본 블로그는 `hosting.kr`에서 구입한 도메인을 기준으로 작성되었습니다.
+
+별도의 도메인 구매 방법에 대한 설명은 생략하겠습니다.
+
+만약 AWS Amplify를 사용하여 Next.js 앱을 배포하는 방법이 처음이거나 아직 진행하지 않으셨다면 아래의 링크를 참고해주세요.
+
+[`Next js AWS Amplify 배포하기 (feat. github) - recodelog.com`](https://recodelog.com/blog/aws/amplify)
+
+> 본 블로그는 Next.js 앱을 AWS Amplify를 사용하여 배포한 상태에서 진행됩니다.
+
+## 1. AWS Amplify Console
+
+AWS Amplify Console에 접속하여 배포한 Next.js 앱을 선택합니다.
+
+도메인 관리로 이동합니다.
+
+우측 상단 도메인 추가 버튼을 클릭합니다.
+
+<MDXImage src="./images/domain1.png" title="도메인 관리 - 도메인 추가화면" />
+
+## 2. 도메인 추가
+
+`hosting.kr`에서 구입한 도메인을 입력합니다.
+
+도메인을 입력하고 도메인 구성을 클릭합니다.
+
+도메인 구성을 클릭하면 추가 옵션을 설정할 수 있습니다만, 특별히 설정할것이 없다면 기본 설정으로 진행합니다.
+
+다음 저장 버튼을 클릭합니다.
+
+저장 버튼을 클릭하면 SSL 구성 설정이 진행됩니다. 이 과정은 약간의 시간이 소요됩니다.
+
+잠시 후 다음과 같이 SSL 구성이 완료되고 다음 이미지와 같이 값이 표시됩니다.
+
+<MDXImage src="./images/domain-ssl.png" title="도메인 관리 - SSL 구성" />
+
+이제 오른쪽 상단 작업 버튼을 클릭한후 DNS 레코드 보기를 클릭합니다.
+
+`2. DNS 공급자 구성`에 있는 CNAME 레코드를 확인 후 `hosting.kr`에서 DNS 레코드 관리에서 CNAME 레코드를 추가합니다.
+
+새 레코드 추가 버튼 클릭 -> 유형: CNAME, 이름: www, 값: "AWS Amplify Console에서 제공하는 CNAME 값 입력" 입력 후 저장합니다.
+
+이제 도메인 설정이 완료되었습니다.
+
+시간이 다소 걸릴수 있으니 기다려주세요. 최대 30분 이상 소요될 수 있습니다.
+
+도메인 연결 완료되면 사용 가능이라는 표시와 함께 해당 도메인으로 접속이 가능합니다.
