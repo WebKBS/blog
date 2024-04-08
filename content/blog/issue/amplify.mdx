@@ -1,0 +1,61 @@
+---
+title: AWS Amplify ipv4 주소 확인방법 - [삽질 일기]
+date: 2024-04-08
+description: AWS Amplify ipv4 주소 확인방법과 https 도메인 연결 방법을 알아보겠습니다.
+published: true
+tags:
+  - Next.js
+  - AWS
+  - Amplify
+  - domain
+  - hosting.kr
+  - issue
+thumbnail: '../aws/images/aws.svg'
+---
+
+## 문제점 발견 - 구글 애드센스 도메인 추가시 문제점 발견
+
+개인 프로젝트에 애드센스를 추가하려고 하였습니다. 하지만 구글 애드센스에서는 도메인을 https://example.com (마지막 확장자는 상관없음)방식으로 해야하는 것이었습니다.
+
+> ex) https://www.example.com -> www (서브도메인) 사용 불가.
+
+안되는 이유를 몰라서 한참을 헤맷습니다.
+
+찾아낸 원인은, 구글 애드센스 초기 등록시 사이트 추가에서 웹사이트를 등록하는데 애초에 https://example.com 이런식으로 등록을 해야하는 것이었습니다.
+
+> 프로토콜 다음 도메인 네임(루트 도메인)만 허용됩니다. -> 서브 도메인은 허용되지 않음.
+
+이를 발견하고 혹시나? 해서 서브 도메인을 제외하고 도메인을 등록하였더니 바로 등록이 되었습니다.
+
+여기서 제 프로젝트가 www.example.com으로 되어있었기 때문에 이 문제가 발생한 것이었습니다.
+
+## AWS Amplify ipv4 주소 확인방법
+
+Vercel을 사용하다 AWS Amplify로 이전하면서 생긴 문제점이 있었습니다.
+
+도메인 서버로 hosting.kr을 사용하고 있었는데, AWS Amplify로 이전하면서 ipv4 주소를 확인하는 방법을 몰라서 애를 먹었습니다.
+
+> Amplify는 ipv4를 지원하지 않습니다.
+
+Amplify에서 외부 도메인 연결을 위해서는 aname 레코드를 사용해야합니다.
+
+hosting.kr에서는 aname을 지원하는 방식이 ipv4로 연결을 해야하는데, Amplify에서는 ipv4를 지원하지 않습니다.
+
+이를 해결하기위해 aname을 아이피 주소를 알아내는 방법을 찾아보았습니다.
+
+[`https://www.whatsmydns.net/`](https://www.whatsmydns.net/)
+
+위 사이트에서 Amplify의 aname을 조회하면 아이피 주소를 알 수 있습니다.
+
+검색시 여러개의 리전이 나오는데, 내가 원하는 사이트의 해당 국가를 클릭하면 ipv4 아이피 주소를 확인할 수 있습니다.
+
+이 아이피 주소를 사용하여 hosting.kr 및 aname ipv4 레코드를 지원하지 않는 도메인 사이트에서 사용하면 됩니다.
+
+## 추가로..
+
+사전에 프로젝트 metadataBase 또는 baseUrl 등, www. 으로 설정하였다면 반드시 서브 도메인을 제외하고 루트 도메인을 등록해야합니다! 확인 꼭 확인!
+
+```tsx title="app/layout.tsx" {2}
+export const metadata: Metadata = {
+  metadataBase: new URL('https://example.com/'),
+```
