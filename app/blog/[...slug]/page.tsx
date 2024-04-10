@@ -94,12 +94,15 @@ const BlogDetail = async ({ params: { slug } }: BlogDetailProps) => {
     return notFound();
   }
 
+  console.log('post: ', `https://recodelog.com/${post.slug}`);
+
   const jsonLd = {
     '@context': 'https://recodelog.com',
     '@type': 'BlogPosting',
     name: post.title,
     description: post.description,
-    datePublished: post.date,
+    datePublished: new Date(post.date).toISOString().split('T')[0],
+    url: `https://recodelog.com/${post.slug}`,
   };
 
   return (
