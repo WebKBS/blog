@@ -94,7 +94,7 @@ const BlogDetail = async ({ params: { slug } }: BlogDetailProps) => {
     return notFound();
   }
 
-  console.log('post: ', `https://recodelog.com/${post.slug}`);
+  // console.log('post: ', `https://recodelog.com/${post.slug}`);
 
   const jsonLd = {
     '@context': 'https://recodelog.com',
