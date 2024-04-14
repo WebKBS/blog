@@ -1,0 +1,79 @@
+---
+title: React, Next js Storybook 배포 방법
+date: 2024-04-14
+description: Storybook을 배포하여 다른 사람들과 공유하는 방법을 알아봅니다.
+published: true
+tags:
+  - Next.js
+  - storybook
+  - deploy
+  - react
+  - chromatic
+thumbnail: './images/storybook.svg'
+---
+
+## Summary
+
+Storybook은 컴포넌트를 개발하고 테스트하는 도구로, 개발자들이 컴포넌트를 쉽게 공유하고 문서화할 수 있도록 도와줍니다. 이번 글에서는 Storybook을 배포하여 다른 사람들(디자이너, 기획자 등)과 공유하는 방법을 알아보겠습니다.
+
+스토리북을 배포하기 위해 스토리북 관리자가 만든 무료 배포 서비스인 Chromatic을 사용할 것입니다. Chromatic은 스토리북을 자동으로 배포하고, 변경 사항을 추적하며, 팀원들과 손쉽게 공유할 수 있는 기능을 제공합니다.
+
+## Chromatic 계정 만들기
+
+Chromatic을 사용하려면 Chromatic 계정이 필요합니다. [`Chromatic 홈페이지`](https://www.chromatic.com/)에 접속하여 계정을 만들어주세요.
+
+회원가입후 로그인하면 다음과 같은 깃허브 저장소 연동 화면이 나타납니다.
+
+<MDXImage
+  src="./images/storybook-github.png"
+  title="로그인후 깃허브 연동 화면"
+/>
+
+> 깃허브 저장소를 생성하여 해당하는 깃허브를 연동해주세요!
+
+이제 프로젝트 터미널에서 다음 코드를 입력합니다. 이 명령어는 Chromatic을 설치하고, 프로젝트를 Chromatic에 연결합니다.
+
+```bash
+npm install --save-dev chromatic
+```
+
+다음 명령어를 입력하여 토큰을 등록합니다.
+
+```bash
+npm chromatic --project-token=<project-token>
+```
+
+토큰은 Chromatic 깃허브 연동 후 절차를 진행하면 토큰이 제공 됩니다.
+
+<MDXImage src="./images/token.png" title="토큰 화면" />
+
+터미널에 위 코드를 복사하여 실행하면 Chromatic과 프로젝트가 연결됩니다.
+
+터미널을 확인하면 `https://<랜덤아이디>.chromatic.com` 으로 배포된 스토리북 url을 확인할 수 있습니다.
+
+개발시 스토리북의 변경사항이 있다면
+
+```bash
+npm chromatic --project-token=<project-token>
+```
+
+해당 코드를 다시 실행하여 배포를 진행합니다.
+
+매번 토큰을 입력하는 것이 번거롭다면 `.env` 파일에 토큰을 저장하고, `package.json`에 스크립트를 추가하여 사용할 수 있습니다.
+
+```package.json
+"scripts": {
+  "chromatic": "chromatic --project-token=$CHROMATIC_PROJECT_TOKEN"
+}
+```
+
+```bash
+
+만약 토큰을 잊어버렸다면 Chromatic 홈페이지 Dashboard에서 확인할 수 있습니다.
+
+이제 스토리북을 배포하고, 변경 사항을 추적하며, 팀원들과 손쉽게 공유할 수 있습니다.
+
+ci(지속적 배포)를 원한다면 아래 공식문서에서 확인할 수 있습니다.
+
+[`스토리북 배포`](https://storybook.js.org/tutorials/intro-to-storybook/react/ko/deploy/)
+```

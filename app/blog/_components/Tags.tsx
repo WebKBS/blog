@@ -56,7 +56,7 @@ const Tags = () => {
             }}
           >
             {tag}{' '}
-            <span className="rounded-md w-4 h-4 flex items-center justify-center border border-white ml-2">
+            <span className="rounded-md px-1 min-w-5 flex items-center justify-center border border-white ml-2">
               {count}
             </span>
           </Link>
