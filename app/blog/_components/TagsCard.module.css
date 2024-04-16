@@ -1,0 +1,25 @@
+.gradient {
+  transition: all 0.5s linear;
+}
+
+.gradient::after {
+  content: '';
+  display: block;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(to top, #030712, #030712 4px, transparent);
+  pointer-events: none;
+  transition: all 0.5s linear;
+}
+
+.gradient.active::after {
+  opacity: 0;
+  height: 0;
+}
+
+.gradient.inactive::after {
+  opacity: 1;
+  height: 82px;
+}

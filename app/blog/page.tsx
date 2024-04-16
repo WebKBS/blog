@@ -1,7 +1,7 @@
 import { posts } from '#site/content';
 import LinkCard from '@/components/LinkCard';
 import { sortPosts } from '@/lib/utils';
-import Tags from './_components/Tags';
+import TagsCard from './_components/TagsCard';
 
 export const metadata = {
   title: 'BLOG',
@@ -21,11 +21,7 @@ const BlogPage = ({ searchParams }: { searchParams: { tag?: string } }) => {
   return (
     <section className="pb-24 pt-12 max-w-screen-lg px-6 mx-auto">
       <h1 className="text-2xl font-semibold">기술 블로그</h1>
-      <div className="py-4 mb-4">
-        <ul className="flex flex-wrap gap-2">
-          <Tags />
-        </ul>
-      </div>
+      <TagsCard />
       <ul className="flex flex-col gap-4">
         {tagPage.length > 0
           ? tagPage.map((post) => <LinkCard key={post.slug} {...post} />)
