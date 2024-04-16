@@ -18,7 +18,7 @@ const TagsCard = () => {
       <Button
         variant={'outline'}
         size="icon"
-        className="absolute top-[-28px] right-0"
+        className="absolute top-[-32px] right-0"
         onClick={handleOpen}
       >
         <ChevronsUpDown size={20} />
