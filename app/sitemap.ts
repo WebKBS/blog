@@ -2,10 +2,11 @@ import { posts } from '#site/content';
 import { MetadataRoute } from 'next';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const post: MetadataRoute.Sitemap = posts.map((post) => ({
+  const post: MetadataRoute.Sitemap = posts.map((post, index) => ({
     url: `https://recodelog.com/${post.slug}`,
     lastModified: new Date(post.date).toISOString().split('T')[0],
     changeFrequency: 'weekly',
+    priority: index === posts.length - 1 ? 1 : 0.8,
   }));
 
   return [
