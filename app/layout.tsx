@@ -24,6 +24,12 @@ export const metadata: Metadata = {
   formatDetection: {
     telephone: false,
   },
+  alternates: {
+    canonical: defaultData.url,
+    languages: {
+      ko: defaultData.url,
+    },
+  },
 
   appleWebApp: {
     capable: true,
