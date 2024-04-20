@@ -125,7 +125,7 @@ const BlogDetail = async ({ params: { slug } }: BlogDetailProps) => {
         <h4>관련 태그</h4>
         <ul className="list-none flex p-0 flex-wrap gap-2">
           {post.tags.map((tag) => (
-            <li key={tag} className="p-0">
+            <li key={tag} className="p-0 m-0">
               <Link href={`/blog?tag=${tag}`}>
                 <Badge variant="secondary" className="text-sm">
                   {tag}

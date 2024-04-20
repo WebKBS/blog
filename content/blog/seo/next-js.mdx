@@ -1,11 +1,15 @@
 ---
-title: Next js SEO 모든것, 완벽가이드
+title: Next js SEO 가이드
 date: 2024-04-17
 description: 'next js를 사용해서 SEO 체크리스트 및 SEO를 최적화하기 위한 모든것을 알아보겠습니다.'
 published: false
 tags:
   - Next.js
   - SEO
+  - open graph
+  - twitter
+  - sitemap
+  - robots.txt
 thumbnail: './images/nextjs-logo.svg'
 ---
 
@@ -13,14 +17,145 @@ thumbnail: './images/nextjs-logo.svg'
 
 > 본 블로그에서는 `app router`를 사용하고 있습니다.
 
-Next.js를 사용해서 SEO를 최적화하기 위한 관련된 모든 `meta tag`, `title`, `description`, `opengraph`, `twitter card`, `sitemap`, `robots.txt`, `canonical link`, `structured data`, `dynamic opengraph image`, `dynamic twitter card image`, `dynamic sitemap`, `dynamic robots.txt` 등을 알아보겠습니다.
+Next.js를 사용해서 SEO를 최적화하기 위한 관련된 모든 `meta tag`, `title`, `description`, `opengraph`, `twitter card`, `sitemap`, `robots.txt`, `dynamic sitemap`, `dynamic robots.txt` 등을 알아보겠습니다.
+
+## 목차
+
+1. [SEO란? SEO를 해야하는 이유](#0-seo란-seo를-해야하는-이유)
+2. [meta tag](#1-meta-tag)
+   - [title](#11-title)
 
 ## 0. SEO란? SEO를 해야하는 이유
 
 SEO란? 검색엔진 최적화(Search Engine Optimization)의 약자로, 검색엔진에서 웹사이트를 노출시키기 위한 방법을 말합니다. 검색엔진은 사용자가 검색을 할 때, 사용자에게 가장 적합한 정보를 제공하기 위해 웹사이트를 분석하고, 랭킹을 매기는데, 이때 SEO가 중요한 역할을 합니다.
 
-## 1. meta tag
+## 1. meta tag 설정
 
 meta tag란?
 
 meta tag는 웹페이지의 정보를 제공하는 태그입니다. meta tag는 웹페이지의 제목, 설명, 키워드, 저자, 최신 버전 등을 제공합니다.
+
+이 중에서 SEO를 위한 메타 태그 `title`, `description`, `robots`, `opengraph`, `twitter card` 를 사용하는 방법을 알아보겠습니다.
+
+### 1.1 title
+
+title은 웹페이지의 제목을 나타내는 태그입니다. title은 검색엔진에서 웹페이지의 제목으로 표시되며, 사용자에게 웹페이지의 내용을 알려주는 역할을 합니다. title은 `<head>` 태그 안에 위치해야 하고 한 페이지에 하나만 존재해야 합니다.
+
+next js에서 title 태그를 사용하는 방법은 다음과 같습니다.
+
+next js title은 최상위 파일인 `layout.tsx`에서 설정하며, 각 개별 페이지는 각 폴더별 `page.tsx`에서 설정합니다.
+
+우선 먼저 layout 파일에서 설정하는 방법을 알아보겠습니다.
+
+```tsx title="app/layout.tsx"
+export const metadata: Metadata = {
+  title: 'NEXT JS SEO',
+};
+```
+
+```html title="output - html"
+<head>
+  <title>NEXT JS SEO</title>
+</head>
+```
+
+기본적으로 next js 최신버전(app router기준)을 설치하면 layout 파일에 metadata가 기본 설정 되어있습니다.
+
+타입스크립트를 사용하고 있으므로 next js에서 제공하는 `Metadata` 타입이 설정되어 있습니다. <br /> \* 타입스크립트 사용하지 않을 시 타입이 없을 수 있습니다.
+
+meatadata의 title은 객체로 정의할 수 있습니다.
+
+```tsx title="app/layout.tsx"
+export const metadata: Metadata = {
+  title: {
+    template: '...',
+    default: '...',
+    absolute: '...',
+  },
+};
+```
+
+---
+
+`default`
+
+- title이 설정되지 않았을 때(예, 하위 페이지 /about 등)를 대신해서 기본으로 설정할 수 있습니다.
+
+```tsx title="app/about/page.tsx"
+export const metadata: Metadata = {}; // 이 코드가 없을 수 있음.
+// 만약 about 페이지에 metatag가 설정되어 있지 않다면 layout.tsx에 설정된 title이 대신 설정됩니다.
+```
+
+<br />
+
+`template`
+
+- 하위 페이지의 title에 접두사 또는 접미사를 추가할 수 있습니다.
+
+접두사 및 접미사를 추가하기 위해 `%s`를 사용합니다. 위치는 문자열의 어느곳이든 상관 없습니다.
+
+```tsx title="app/layout.tsx"
+export const metadata: Metadata = {
+  title: {
+    template: '%s - NEXT JS SEO',
+    default: 'NEXT JS SEO', // template을 사용시 default는 필수입니다.
+  },
+};
+```
+
+```tsx title="app/about/page.tsx"
+// about 페이지에서 title 설정 예시
+export const metadata: Metadata = {
+  title: 'About',
+};
+```
+
+```html title="output - html"
+<head>
+  <title>About | NEXT JS SEO</title>
+</head>
+```
+
+<br />
+
+`absolute`
+
+- 하위 페이지에서 절대적인 title을 설정할 수 있습니다.
+
+```tsx title="app/about/page.tsx"
+export const metadata: Metadata = {
+  title: {
+    absolute: 'About',
+  },
+};
+```
+
+```html title="output - html"
+<head>
+  <title>About</title>
+</head>
+```
+
+`absolute`를 사용하면 layout의 타이틀 `template`과 `default`는 무시됩니다.
+
+### 1.2 description
+
+description은 웹페이지의 설명을 나타내는 태그입니다. description은 검색엔진에서 웹페이지의 설명으로 표시되며, 사용자에게 웹페이지의 내용을 알려주는 역할을 합니다. description은 `<head>` 태그 안에 위치해야 하고 한 페이지에 하나만 존재해야 합니다.
+
+next js에서 description 태그를 사용하는 방법은 다음과 같습니다.
+
+```tsx title="app/layout.tsx"
+export const metadata: Metadata = {
+  description:
+    'NEXT JS SEO를 사용해서 SEO를 최적화하기 위한 모든것을 알아보겠습니다.',
+};
+```
+
+```html title="output - html"
+<head>
+  <meta
+    name="description"
+    content="NEXT JS SEO를 사용해서 SEO를 최적화하기 위한 모든것을 알아보겠습니다."
+  />
+</head>
+```
