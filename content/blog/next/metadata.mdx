@@ -142,3 +142,17 @@ export const metadata: Metadata = {
 ```
 
 "%s"를 사용함으로 인해 title은 `About - Home` 로 설정됩니다. 홈의 제목은 그대로 두고, 다른 서브페이지의 타이틀을 조정할때 좋습니다.
+
+```tsx title="app/about/page.tsx"
+// about 페이지
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: {
+    absolute: 'About',
+  },
+};
+// Output: <title>About</title>
+```
+
+absolute를 사용하면 상위 페이지의 title을 무시하고, 하위 페이지의(about page) title을 설정할 수 있습니다.
