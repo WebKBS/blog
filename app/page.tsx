@@ -9,7 +9,7 @@ import Link from 'next/link';
 export default function Home() {
   const sortedPosts = sortPosts(posts.filter((post) => post.published)).splice(
     0,
-    3
+    4
   );
 
   return (
