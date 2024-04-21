@@ -57,6 +57,12 @@ export const metadata: Metadata = {
     ],
   },
   twitter: {
+    card: 'summary_large_image',
+    site: '@recodelog',
+    creator: '@recodelog',
+    title: 'RecodeLog',
+    description: '나만의 개발 블로그, 기록 또 기록',
+
     images: [
       {
         url: '/icon.png',

@@ -48,6 +48,8 @@ next js(app router)에서는 meta tag를 다음과 같이 객체로 설정합니
 정해진 객체의 키와 값으로 설정하면 자동으로 meta tag가 생성됩니다.
 
 ```tsx title="app/layout.tsx"
+import type { Metadata } from 'next';
+
 export const metadata: Metadata = {
   title: "..."
   description: "..."
@@ -68,6 +70,8 @@ next js title은 최상위 파일인 `layout.tsx`에서 설정하며, 각 개별
 우선 먼저 layout 파일에서 설정하는 방법을 알아보겠습니다.
 
 ```tsx title="app/layout.tsx"
+import type { Metadata } from 'next';
+
 export const metadata: Metadata = {
   title: 'NEXT JS SEO',
 };
@@ -86,6 +90,8 @@ export const metadata: Metadata = {
 meatadata의 title은 객체로 정의할 수 있습니다.
 
 ```tsx title="app/layout.tsx"
+import type { Metadata } from 'next';
+
 export const metadata: Metadata = {
   title: {
     template: '...',
@@ -113,6 +119,8 @@ export const metadata: Metadata = {}; // 이 코드가 없을 수 있음.
 접두사 및 접미사를 추가하기 위해 `%s`를 사용합니다. 위치는 문자열의 어느곳이든 상관 없습니다.
 
 ```tsx title="app/layout.tsx"
+import type { Metadata } from 'next';
+
 export const metadata: Metadata = {
   title: {
     template: '%s - NEXT JS SEO',
@@ -122,6 +130,8 @@ export const metadata: Metadata = {
 ```
 
 ```tsx title="app/about/page.tsx"
+import type { Metadata } from 'next';
+
 // about 페이지에서 title 설정 예시
 export const metadata: Metadata = {
   title: 'About',
@@ -141,6 +151,8 @@ export const metadata: Metadata = {
 - 하위 페이지에서 절대적인 title을 설정할 수 있습니다.
 
 ```tsx title="app/about/page.tsx"
+import type { Metadata } from 'next';
+
 export const metadata: Metadata = {
   title: {
     absolute: 'About',
@@ -165,6 +177,8 @@ description은 웹페이지의 설명을 나타내는 태그입니다. descripti
 next js에서 description 태그를 사용하는 방법은 다음과 같습니다.
 
 ```tsx title="app/layout.tsx"
+import type { Metadata } from 'next';
+
 export const metadata: Metadata = {
   description:
     'NEXT JS SEO를 사용해서 SEO를 최적화하기 위한 모든것을 알아보겠습니다.',
@@ -195,6 +209,8 @@ robots는 웹페이지의 크롤링을 제어하는 태그입니다. robots는 �
 next js에서 robots 태그를 사용하는 방법은 다음과 같습니다.
 
 ```tsx title="app/layout.tsx"
+import type { Metadata } from 'next';
+
 export const metadata: Metadata = {
   robots: 'index, follow',
 };
@@ -253,7 +269,9 @@ opengraph는 웹페이지의 정보를 제공하는 태그입니다. opengraph�
 opengraph는 객체로 설정할 수 있습니다.
 
 ```tsx title="app/layout.tsx"
-export const metadata = {
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
   openGraph: {
     title: 'recodelog',
     description: '블로그 만들기',
@@ -304,16 +322,65 @@ opengraph의 속성은 다음과 같습니다.
 | image:height | 웹페이지의 이미지의 높이를 나타냅니다.        |
 | alt          | 웹페이지의 이미지의 대체 텍스트를 나타냅니다. |
 
+하위 페이지의 opengraph를 설정하는 방법은 다음과 같습니다.
+
+```tsx title="app/about/page.tsx"
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  openGraph: {
+    // .. 하위 페이지에 필요한 정보들
+  },
+};
+```
+
 <br />
 
 ### 1.5 twitter card
 
+twitter card는 트위터에서 웹페이지의 정보를 제공하는 태그입니다. twitter card는 웹페이지의 제목, 설명, 이미지, URL 등을 제공합니다. twitter card는 `<head>` 태그 안에 위치해야 하고 한 페이지에 여러개 존재할 수 있습니다.
+
+twitter card는 객체로 설정할 수 있습니다.
+
+```tsx title="app/layout.tsx"
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  twitter: {
+    card: 'summary_large_image',
+    site: '@recodelog',
+    creator: '@recodelog',
+    title: 'recodelog',
+    description: '블로그 만들기',
+    image: 'https://recodelog.com/og/og.png',
+  },
+};
+```
+
+```html title="output - html"
+<head>
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@recodelog" />
+  <meta name="twitter:creator" content="@recodelog" />
+  <meta name="twitter:title" content="recodelog" />
+  <meta name="twitter:description" content="블로그 만들기" />
+  <meta name="twitter:image" content="https://recodelog.com/og/og.png" />
+</head>
+```
+
+opengraph와 twitter card는 같은 비슷한 속성을 가지고 있습니다.
+하위 페이지 생성법도 opengraph와 같습니다.
+
+이하 생략,
+
 <br />
 
-### 1.6 기타
+### 1.6 기타 메타 데이터
 
 ```tsx title="app/layout.tsx"
 export const metadata = {
+  // ... 이전 설명한 메타 데이터들
+
   generator: 'Next.js', // 웹사이트를 생성한 소프트웨어의 이름을 나타냅니다.
   applicationName: 'Next.js', // 웹사이트를 실행하는 소프트웨어의 이름을 나타냅니다.
   referrer: 'origin-when-cross-origin', // 웹사이트를 참조한 페이지의 URL을 나타냅니다.
