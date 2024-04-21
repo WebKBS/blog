@@ -31,6 +31,7 @@ Next.js를 사용해서 SEO를 최적화하기 위한 관련된 모든 `meta tag
    - [opengraph](#14-opengraph)
    - [twitter card](#15-twitter-card)
    - [기타](#16-기타)
+3. [sitemap 및 robots.txt](#3-sitemap-및-robotstxt)
 
 ---
 
@@ -334,6 +335,9 @@ export const metadata: Metadata = {
 };
 ```
 
+> opengraph의 image는 파일로 대체 하여 설정이 가능합니다.<br/>
+> 다음 블로그를 확인해보세요.<br/> > [Next js 14+ SEO 설정하기 - open graph image, twitter image 설정하기](https://recodelog.com/blog/next/metadata-og-twitter)
+
 <br />
 
 ### 1.5 twitter card
@@ -373,6 +377,8 @@ opengraph와 twitter card는 같은 비슷한 속성을 가지고 있습니다.
 
 이하 생략,
 
+> twitter card의 image는 파일로 대체 하여 설정이 가능합니다. <br/> > [Next js 14+ SEO 설정하기 - open graph image, twitter image 설정하기](https://recodelog.com/blog/next/metadata-og-twitter)
+
 <br />
 
 ### 1.6 기타 메타 데이터
@@ -399,6 +405,22 @@ export const metadata = {
 };
 ```
 
+## 3. sitemap 및 robots.txt
+
+sitemap은 웹사이트의 구조를 나타내는 파일입니다. sitemap은 검색엔진이 웹사이트를 크롤링할 때, 웹페이지의 구조를 파악하는데 사용됩니다. sitemap은 웹사이트의 URL, 마지막 수정일, 변경 빈도, 우선 순위 등을 제공합니다.
+
+robots.txt는 웹사이트의 크롤링을 제어하는 파일입니다. robots.txt는 검색엔진이 웹페이지를 크롤링할 때, 어떻게 크롤링할지를 제어하는 역할을 합니다. robots.txt는 웹사이트의 URL, 크롤링을 허용할 경로, 크롤링을 제한할 경로 등을 제공합니다.
+
+sitemap과 robots.txt에 대한 블로그를 미리 작성해두었습니다.
+
+내용이 길어진 관계로 아래의 링크를 통해 확인해보세요.
+
+- [Next.js 14+ SEO 설정하기 - sitemap, robots.txt 설정하기](http://recodelog.com/blog/next/sitemap)
+
+<br />
+
+<br />
+
 ## 참고하기 유용한 사이트
 
 [meta 태그의 유용한 문서 - https://html.spec.whatwg.org/multipage/semantics.html#the-head-element](https://html.spec.whatwg.org/multipage/semantics.html#the-head-element)
@@ -406,3 +428,8 @@ export const metadata = {
 [MDN meta 태그 - https://developer.mozilla.org/ko/docs/Web/HTML/Element/meta/name](https://developer.mozilla.org/ko/docs/Web/HTML/Element/meta/name)
 
 [mdn head 태그에는 무엇이 있을까? HTML의 메타데이터 - https://developer.mozilla.org/ko/docs/Learn/HTML/Introduction_to_HTML/The_head_metadata_in_HTML](https://developer.mozilla.org/ko/docs/Learn/HTML/Introduction_to_HTML/The_head_metadata_in_HTML)
+
+[opengraph - https://ogp.me/](https://ogp.me/)
+[twitter card - https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/abouts-cards](https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/abouts-cards)
+
+[opengraph test - https://www.opengraph.xyz/]

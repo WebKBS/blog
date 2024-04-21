@@ -97,8 +97,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  console.log(process.env.PORT);
-
   return (
     <html lang="ko" className="scroll-pt-[6rem]" suppressHydrationWarning>
       <head>
