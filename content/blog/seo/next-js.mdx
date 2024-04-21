@@ -19,6 +19,8 @@ thumbnail: './images/nextjs-logo.svg'
 
 Next.js를 사용해서 SEO를 최적화하기 위한 관련된 모든 `meta tag`, `title`, `description`, `opengraph`, `twitter card`, `sitemap`, `robots.txt`, `dynamic sitemap`, `dynamic robots.txt` 등을 알아보겠습니다.
 
+---
+
 ## 목차
 
 1. [SEO란? SEO를 해야하는 이유](#0-seo란-seo를-해야하는-이유)
@@ -30,6 +32,8 @@ Next.js를 사용해서 SEO를 최적화하기 위한 관련된 모든 `meta tag
    - [twitter card](#15-twitter-card)
    - [기타](#16-기타)
 
+---
+
 ## SEO란? SEO를 해야하는 이유
 
 SEO란? 검색엔진 최적화(Search Engine Optimization)의 약자로, 검색엔진에서 웹사이트를 노출시키기 위한 방법을 말합니다. 검색엔진은 사용자가 검색을 할 때, 사용자에게 가장 적합한 정보를 제공하기 위해 웹사이트를 분석하고, 랭킹을 매기는데, 이때 SEO가 중요한 역할을 합니다.
@@ -39,6 +43,17 @@ SEO란? 검색엔진 최적화(Search Engine Optimization)의 약자로, 검색�
 meta tag란?
 
 meta tag는 웹페이지의 정보를 제공하는 태그입니다. meta tag는 웹페이지의 제목, 설명, 키워드, 저자, 최신 버전 등을 제공합니다.
+
+next js(app router)에서는 meta tag를 다음과 같이 객체로 설정합니다.
+정해진 객체의 키와 값으로 설정하면 자동으로 meta tag가 생성됩니다.
+
+```tsx title="app/layout.tsx"
+export const metadata: Metadata = {
+  title: "..."
+  description: "..."
+  // ... 등..
+};
+```
 
 이 중에서 SEO를 위한 메타 태그 `title`, `description`, `robots`, `opengraph`, `twitter card` 를 사용하는 방법을 알아보겠습니다.
 
@@ -79,8 +94,6 @@ export const metadata: Metadata = {
   },
 };
 ```
-
----
 
 `default`
 
@@ -143,6 +156,8 @@ export const metadata: Metadata = {
 
 `absolute`를 사용하면 layout의 타이틀 `template`과 `default`는 무시됩니다.
 
+<br />
+
 ### 1.2 description
 
 description은 웹페이지의 설명을 나타내는 태그입니다. description은 검색엔진에서 웹페이지의 설명으로 표시되며, 사용자에게 웹페이지의 내용을 알려주는 역할을 합니다. description은 `<head>` 태그 안에 위치해야 하고 한 페이지에 하나만 존재해야 합니다.
@@ -167,6 +182,8 @@ export const metadata: Metadata = {
 
 description은 문자열 하나만 설정할 수 있습니다.
 
+<br />
+
 ### 1.3 robots
 
 robots는 웹페이지의 크롤링을 제어하는 태그입니다. robots는 검색엔진이 웹페이지를 크롤링할 때, 어떻게 크롤링할지를 제어하는 역할을 합니다. robots는 `<head>` 태그 안에 위치해야 하고 한 페이지에 하나만 존재해야 합니다.
@@ -175,9 +192,67 @@ robots는 웹페이지의 크롤링을 제어하는 태그입니다. robots는 �
 >
 > > 고로 검색엔진이 웹페이지를 수집하는 것을 말합니다.
 
+next js에서 robots 태그를 사용하는 방법은 다음과 같습니다.
+
+```tsx title="app/layout.tsx"
+export const metadata: Metadata = {
+  robots: 'index, follow',
+};
+```
+
+```html title="output - html"
+<head>
+  <meta name="robots" content="index, follow" />
+</head>
+```
+
+robots는 객체로 설정할 수 있습니다.
+
+```tsx title="app/layout.tsx"
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  robots: {
+    index: true,
+    follow: true,
+    nocache: true,
+    googleBot: {
+      index: true,
+      follow: false,
+      noimageindex: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+
+    // ... 등
+  },
+};
+```
+
+robots의 속성은 다음과 같습니다.
+
+| 속성명   | 설명                                                                 | 사용처        |
+| -------- | -------------------------------------------------------------------- | ------------- |
+| index    | 검색엔진이 웹페이지를 색인화할지 여부를 나타냅니다.                  | 모든 검색엔진 |
+| noindex  | 검색엔진이 웹페이지를 색인화하지 않도록 할지 여부를 나타냅니다.      | 모든 검색엔진 |
+| follow   | 검색엔진이 웹페이지의 링크를 따라가도록 할지 여부를 나타냅니다.      | 모든 검색엔진 |
+| nofollow | 검색엔진이 웹페이지의 링크를 따라가지 않도록 할지 여부를 나타냅니다. | 모든 검색엔진 |
+
+MDN 문서에서 제공하는 robots의 속성을 참고하여 설정할 수 있습니다.
+
+- [MDN robots](https://developer.mozilla.org/ko/docs/Web/HTML/Element/meta/name)
+- [Next.js robots](https://nextjs.org/docs/app/api-reference/functions/generate-metadata#robots)
+
+<br />
+
 ### 1.4 opengraph
 
+<br />
+
 ### 1.5 twitter card
+
+<br />
 
 ### 1.6 기타
 
