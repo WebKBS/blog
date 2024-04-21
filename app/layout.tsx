@@ -43,6 +43,12 @@ export const metadata: Metadata = {
   },
 
   openGraph: {
+    title: 'RecodeLog',
+    description: '나만의 개발 블로그, 기록 또 기록',
+    type: 'website',
+    url: defaultData.url,
+    siteName: 'RecodeLog',
+
     images: [
       {
         url: '/icon.png',

@@ -248,6 +248,62 @@ MDN 문서에서 제공하는 robots의 속성을 참고하여 설정할 수 있
 
 ### 1.4 opengraph
 
+opengraph는 웹페이지의 정보를 제공하는 태그입니다. opengraph는 웹페이지의 제목, 설명, 이미지, URL 등을 제공합니다. opengraph는 `<head>` 태그 안에 위치해야 하고 한 페이지에 여러개 존재할 수 있습니다.
+
+opengraph는 객체로 설정할 수 있습니다.
+
+```tsx title="app/layout.tsx"
+export const metadata = {
+  openGraph: {
+    title: 'recodelog',
+    description: '블로그 만들기',
+    type: 'website',
+    url: 'https://recodelog.com',
+    siteName: 'recodelog',
+    locale: 'ko_KR',
+    images: [
+      {
+        url: 'https://recodelog.com/og/og.png',, // open graph image url
+        width: 800,
+        height: 600,
+        alt: '', // open graph image alt
+      },
+      // ... {} 여러개 추가 가능
+    ],
+  },
+};
+```
+
+```html title="output - html"
+<head>
+  <meta property="og:title" content="recodelog" />
+  <meta property="og:description" content="블로그 만들기" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://recodelog.com" />
+  <meta property="og:site_name" content="recodelog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:image" content="https://recodelog.com/og/og.png" />
+  <meta property="og:image:width" content="800" />
+  <meta property="og:image:height" content="600" />
+  <meta property="og:image:alt" content="recodelog" />
+</head>
+```
+
+opengraph의 속성은 다음과 같습니다.
+
+| 속성명       | 설명                                          |
+| ------------ | --------------------------------------------- |
+| title        | 웹페이지의 제목을 나타냅니다.                 |
+| description  | 웹페이지의 설명을 나타냅니다.                 |
+| type         | 웹페이지의 타입을 나타냅니다.                 |
+| url          | 웹페이지의 URL을 나타냅니다.                  |
+| site_name    | 웹페이지의 사이트 이름을 나타냅니다.          |
+| locale       | 웹페이지의 언어를 나타냅니다.                 |
+| image        | 웹페이지의 이미지 URL을 나타냅니다.           |
+| image:width  | 웹페이지의 이미지의 너비를 나타냅니다.        |
+| image:height | 웹페이지의 이미지의 높이를 나타냅니다.        |
+| alt          | 웹페이지의 이미지의 대체 텍스트를 나타냅니다. |
+
 <br />
 
 ### 1.5 twitter card
@@ -281,3 +337,5 @@ export const metadata = {
 [meta 태그의 유용한 문서 - https://html.spec.whatwg.org/multipage/semantics.html#the-head-element](https://html.spec.whatwg.org/multipage/semantics.html#the-head-element)
 
 [MDN meta 태그 - https://developer.mozilla.org/ko/docs/Web/HTML/Element/meta/name](https://developer.mozilla.org/ko/docs/Web/HTML/Element/meta/name)
+
+[mdn head 태그에는 무엇이 있을까? HTML의 메타데이터 - https://developer.mozilla.org/ko/docs/Learn/HTML/Introduction_to_HTML/The_head_metadata_in_HTML](https://developer.mozilla.org/ko/docs/Learn/HTML/Introduction_to_HTML/The_head_metadata_in_HTML)
