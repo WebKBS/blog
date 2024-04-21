@@ -2,7 +2,7 @@
 title: Next js SEO 가이드
 date: 2024-04-17
 description: 'next js를 사용해서 SEO 체크리스트 및 SEO를 최적화하기 위한 모든것을 알아보겠습니다.'
-published: false
+published: true
 tags:
   - Next.js
   - SEO
@@ -19,13 +19,23 @@ thumbnail: './images/nextjs-logo.svg'
 
 Next.js를 사용해서 SEO를 최적화하기 위한 관련된 모든 `meta tag`, `title`, `description`, `opengraph`, `twitter card`, `sitemap`, `robots.txt`, `dynamic sitemap`, `dynamic robots.txt` 등을 알아보겠습니다.
 
+---
+
 ## 목차
 
 1. [SEO란? SEO를 해야하는 이유](#0-seo란-seo를-해야하는-이유)
 2. [meta tag](#1-meta-tag)
    - [title](#11-title)
+   - [description](#12-description)
+   - [robots](#13-robots)
+   - [opengraph](#14-opengraph)
+   - [twitter card](#15-twitter-card)
+   - [기타](#16-기타)
+3. [sitemap 및 robots.txt](#3-sitemap-및-robotstxt)
 
-## 0. SEO란? SEO를 해야하는 이유
+---
+
+## SEO란? SEO를 해야하는 이유
 
 SEO란? 검색엔진 최적화(Search Engine Optimization)의 약자로, 검색엔진에서 웹사이트를 노출시키기 위한 방법을 말합니다. 검색엔진은 사용자가 검색을 할 때, 사용자에게 가장 적합한 정보를 제공하기 위해 웹사이트를 분석하고, 랭킹을 매기는데, 이때 SEO가 중요한 역할을 합니다.
 
@@ -34,6 +44,19 @@ SEO란? 검색엔진 최적화(Search Engine Optimization)의 약자로, 검색�
 meta tag란?
 
 meta tag는 웹페이지의 정보를 제공하는 태그입니다. meta tag는 웹페이지의 제목, 설명, 키워드, 저자, 최신 버전 등을 제공합니다.
+
+next js(app router)에서는 meta tag를 다음과 같이 객체로 설정합니다.
+정해진 객체의 키와 값으로 설정하면 자동으로 meta tag가 생성됩니다.
+
+```tsx title="app/layout.tsx"
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: "..."
+  description: "..."
+  // ... 등..
+};
+```
 
 이 중에서 SEO를 위한 메타 태그 `title`, `description`, `robots`, `opengraph`, `twitter card` 를 사용하는 방법을 알아보겠습니다.
 
@@ -48,6 +71,8 @@ next js title은 최상위 파일인 `layout.tsx`에서 설정하며, 각 개별
 우선 먼저 layout 파일에서 설정하는 방법을 알아보겠습니다.
 
 ```tsx title="app/layout.tsx"
+import type { Metadata } from 'next';
+
 export const metadata: Metadata = {
   title: 'NEXT JS SEO',
 };
@@ -66,6 +91,8 @@ export const metadata: Metadata = {
 meatadata의 title은 객체로 정의할 수 있습니다.
 
 ```tsx title="app/layout.tsx"
+import type { Metadata } from 'next';
+
 export const metadata: Metadata = {
   title: {
     template: '...',
@@ -74,8 +101,6 @@ export const metadata: Metadata = {
   },
 };
 ```
-
----
 
 `default`
 
@@ -95,6 +120,8 @@ export const metadata: Metadata = {}; // 이 코드가 없을 수 있음.
 접두사 및 접미사를 추가하기 위해 `%s`를 사용합니다. 위치는 문자열의 어느곳이든 상관 없습니다.
 
 ```tsx title="app/layout.tsx"
+import type { Metadata } from 'next';
+
 export const metadata: Metadata = {
   title: {
     template: '%s - NEXT JS SEO',
@@ -104,6 +131,8 @@ export const metadata: Metadata = {
 ```
 
 ```tsx title="app/about/page.tsx"
+import type { Metadata } from 'next';
+
 // about 페이지에서 title 설정 예시
 export const metadata: Metadata = {
   title: 'About',
@@ -123,6 +152,8 @@ export const metadata: Metadata = {
 - 하위 페이지에서 절대적인 title을 설정할 수 있습니다.
 
 ```tsx title="app/about/page.tsx"
+import type { Metadata } from 'next';
+
 export const metadata: Metadata = {
   title: {
     absolute: 'About',
@@ -138,6 +169,8 @@ export const metadata: Metadata = {
 
 `absolute`를 사용하면 layout의 타이틀 `template`과 `default`는 무시됩니다.
 
+<br />
+
 ### 1.2 description
 
 description은 웹페이지의 설명을 나타내는 태그입니다. description은 검색엔진에서 웹페이지의 설명으로 표시되며, 사용자에게 웹페이지의 내용을 알려주는 역할을 합니다. description은 `<head>` 태그 안에 위치해야 하고 한 페이지에 하나만 존재해야 합니다.
@@ -145,6 +178,8 @@ description은 웹페이지의 설명을 나타내는 태그입니다. descripti
 next js에서 description 태그를 사용하는 방법은 다음과 같습니다.
 
 ```tsx title="app/layout.tsx"
+import type { Metadata } from 'next';
+
 export const metadata: Metadata = {
   description:
     'NEXT JS SEO를 사용해서 SEO를 최적화하기 위한 모든것을 알아보겠습니다.',
@@ -159,3 +194,242 @@ export const metadata: Metadata = {
   />
 </head>
 ```
+
+description은 문자열 하나만 설정할 수 있습니다.
+
+<br />
+
+### 1.3 robots
+
+robots는 웹페이지의 크롤링을 제어하는 태그입니다. robots는 검색엔진이 웹페이지를 크롤링할 때, 어떻게 크롤링할지를 제어하는 역할을 합니다. robots는 `<head>` 태그 안에 위치해야 하고 한 페이지에 하나만 존재해야 합니다.
+
+> 크롤링이란? 크롤 봇 또는 웹 크롤러는 웹사이트를 방문하여 웹페이지의 정보를 수집하는 프로그램을 말합니다.
+>
+> > 고로 검색엔진이 웹페이지를 수집하는 것을 말합니다.
+
+next js에서 robots 태그를 사용하는 방법은 다음과 같습니다.
+
+```tsx title="app/layout.tsx"
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  robots: 'index, follow',
+};
+```
+
+```html title="output - html"
+<head>
+  <meta name="robots" content="index, follow" />
+</head>
+```
+
+robots는 객체로 설정할 수 있습니다.
+
+```tsx title="app/layout.tsx"
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  robots: {
+    index: true,
+    follow: true,
+    nocache: true,
+    googleBot: {
+      index: true,
+      follow: false,
+      noimageindex: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+
+    // ... 등
+  },
+};
+```
+
+robots의 속성은 다음과 같습니다.
+
+| 속성명   | 설명                                                                 | 사용처        |
+| -------- | -------------------------------------------------------------------- | ------------- |
+| index    | 검색엔진이 웹페이지를 색인화할지 여부를 나타냅니다.                  | 모든 검색엔진 |
+| noindex  | 검색엔진이 웹페이지를 색인화하지 않도록 할지 여부를 나타냅니다.      | 모든 검색엔진 |
+| follow   | 검색엔진이 웹페이지의 링크를 따라가도록 할지 여부를 나타냅니다.      | 모든 검색엔진 |
+| nofollow | 검색엔진이 웹페이지의 링크를 따라가지 않도록 할지 여부를 나타냅니다. | 모든 검색엔진 |
+
+MDN 문서에서 제공하는 robots의 속성을 참고하여 설정할 수 있습니다.
+
+- [MDN robots](https://developer.mozilla.org/ko/docs/Web/HTML/Element/meta/name)
+- [Next.js robots](https://nextjs.org/docs/app/api-reference/functions/generate-metadata#robots)
+
+<br />
+
+### 1.4 opengraph
+
+opengraph는 웹페이지의 정보를 제공하는 태그입니다. opengraph는 웹페이지의 제목, 설명, 이미지, URL 등을 제공합니다. opengraph는 `<head>` 태그 안에 위치해야 하고 한 페이지에 여러개 존재할 수 있습니다.
+
+opengraph는 객체로 설정할 수 있습니다.
+
+```tsx title="app/layout.tsx"
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  openGraph: {
+    title: 'recodelog',
+    description: '블로그 만들기',
+    type: 'website',
+    url: 'https://recodelog.com',
+    siteName: 'recodelog',
+    locale: 'ko_KR',
+    images: [
+      {
+        url: 'https://recodelog.com/og/og.png',, // open graph image url
+        width: 800,
+        height: 600,
+        alt: '', // open graph image alt
+      },
+      // ... {} 여러개 추가 가능
+    ],
+  },
+};
+```
+
+```html title="output - html"
+<head>
+  <meta property="og:title" content="recodelog" />
+  <meta property="og:description" content="블로그 만들기" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://recodelog.com" />
+  <meta property="og:site_name" content="recodelog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:image" content="https://recodelog.com/og/og.png" />
+  <meta property="og:image:width" content="800" />
+  <meta property="og:image:height" content="600" />
+  <meta property="og:image:alt" content="recodelog" />
+</head>
+```
+
+opengraph의 속성은 다음과 같습니다.
+
+| 속성명       | 설명                                          |
+| ------------ | --------------------------------------------- |
+| title        | 웹페이지의 제목을 나타냅니다.                 |
+| description  | 웹페이지의 설명을 나타냅니다.                 |
+| type         | 웹페이지의 타입을 나타냅니다.                 |
+| url          | 웹페이지의 URL을 나타냅니다.                  |
+| site_name    | 웹페이지의 사이트 이름을 나타냅니다.          |
+| locale       | 웹페이지의 언어를 나타냅니다.                 |
+| image        | 웹페이지의 이미지 URL을 나타냅니다.           |
+| image:width  | 웹페이지의 이미지의 너비를 나타냅니다.        |
+| image:height | 웹페이지의 이미지의 높이를 나타냅니다.        |
+| alt          | 웹페이지의 이미지의 대체 텍스트를 나타냅니다. |
+
+하위 페이지의 opengraph를 설정하는 방법은 다음과 같습니다.
+
+```tsx title="app/about/page.tsx"
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  openGraph: {
+    // .. 하위 페이지에 필요한 정보들
+  },
+};
+```
+
+> opengraph의 image는 파일로 대체 하여 설정이 가능합니다.<br/>
+> 다음 블로그를 확인해보세요.<br/> > [Next js 14+ SEO 설정하기 - open graph image, twitter image 설정하기](https://recodelog.com/blog/next/metadata-og-twitter)
+
+<br />
+
+### 1.5 twitter card
+
+twitter card는 트위터에서 웹페이지의 정보를 제공하는 태그입니다. twitter card는 웹페이지의 제목, 설명, 이미지, URL 등을 제공합니다. twitter card는 `<head>` 태그 안에 위치해야 하고 한 페이지에 여러개 존재할 수 있습니다.
+
+twitter card는 객체로 설정할 수 있습니다.
+
+```tsx title="app/layout.tsx"
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  twitter: {
+    card: 'summary_large_image',
+    site: '@recodelog',
+    creator: '@recodelog',
+    title: 'recodelog',
+    description: '블로그 만들기',
+    image: 'https://recodelog.com/og/og.png',
+  },
+};
+```
+
+```html title="output - html"
+<head>
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@recodelog" />
+  <meta name="twitter:creator" content="@recodelog" />
+  <meta name="twitter:title" content="recodelog" />
+  <meta name="twitter:description" content="블로그 만들기" />
+  <meta name="twitter:image" content="https://recodelog.com/og/og.png" />
+</head>
+```
+
+opengraph와 twitter card는 같은 비슷한 속성을 가지고 있습니다.
+하위 페이지 생성법도 opengraph와 같습니다.
+
+이하 생략,
+
+> twitter card의 image는 파일로 대체 하여 설정이 가능합니다. <br/> > [Next js 14+ SEO 설정하기 - open graph image, twitter image 설정하기](https://recodelog.com/blog/next/metadata-og-twitter)
+
+<br />
+
+### 1.6 기타 메타 데이터
+
+```tsx title="app/layout.tsx"
+export const metadata = {
+  // ... 이전 설명한 메타 데이터들
+
+  generator: 'Next.js', // 웹사이트를 생성한 소프트웨어의 이름을 나타냅니다.
+  applicationName: 'Next.js', // 웹사이트를 실행하는 소프트웨어의 이름을 나타냅니다.
+  referrer: 'origin-when-cross-origin', // 웹사이트를 참조한 페이지의 URL을 나타냅니다.
+  keywords: ['Next.js', 'React', 'JavaScript'], // 웹사이트와 관련된 키워드를 나타냅니다.
+  authors: [
+    { name: 'recodelog' },
+    { name: 'recodelog', url: 'https://recodelog.com' },
+  ], // 웹사이트의 저자를 나타냅니다.
+  creator: 'dev Kang', // 웹사이트의 제작자를 나타냅니다.
+  publisher: 'dev Kang', // 웹사이트의 발행자를 나타냅니다.
+  formatDetection: {
+    email: false, // 웹사이트에서 이메일 주소를 감지하는지 여부를 나타냅니다.
+    address: false, // 웹사이트에서 주소를 감지하는지 여부를 나타냅니다.
+    telephone: false, // 웹사이트에서 전화번호를 감지하는지 여부를 나타냅니다.
+  },
+};
+```
+
+## 3. sitemap 및 robots.txt
+
+sitemap은 웹사이트의 구조를 나타내는 파일입니다. sitemap은 검색엔진이 웹사이트를 크롤링할 때, 웹페이지의 구조를 파악하는데 사용됩니다. sitemap은 웹사이트의 URL, 마지막 수정일, 변경 빈도, 우선 순위 등을 제공합니다.
+
+robots.txt는 웹사이트의 크롤링을 제어하는 파일입니다. robots.txt는 검색엔진이 웹페이지를 크롤링할 때, 어떻게 크롤링할지를 제어하는 역할을 합니다. robots.txt는 웹사이트의 URL, 크롤링을 허용할 경로, 크롤링을 제한할 경로 등을 제공합니다.
+
+sitemap과 robots.txt에 대한 블로그를 미리 작성해두었습니다.
+
+내용이 길어진 관계로 아래의 링크를 통해 확인해보세요.
+
+- [Next.js 14+ SEO 설정하기 - sitemap, robots.txt 설정하기](http://recodelog.com/blog/next/sitemap)
+
+<br />
+
+<br />
+
+## 참고하기 유용한 사이트
+
+[meta 태그의 유용한 문서 - https://html.spec.whatwg.org/multipage/semantics.html#the-head-element](https://html.spec.whatwg.org/multipage/semantics.html#the-head-element)
+
+[MDN meta 태그 - https://developer.mozilla.org/ko/docs/Web/HTML/Element/meta/name](https://developer.mozilla.org/ko/docs/Web/HTML/Element/meta/name)
+
+[mdn head 태그에는 무엇이 있을까? HTML의 메타데이터 - https://developer.mozilla.org/ko/docs/Learn/HTML/Introduction_to_HTML/The_head_metadata_in_HTML](https://developer.mozilla.org/ko/docs/Learn/HTML/Introduction_to_HTML/The_head_metadata_in_HTML)
+
+[opengraph - https://ogp.me/](https://ogp.me/)
+[twitter card - https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/abouts-cards](https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/abouts-cards)
+
+[opengraph test - https://www.opengraph.xyz/]

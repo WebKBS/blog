@@ -19,7 +19,11 @@ export const metadata: Metadata = {
     template: '%s - RecodeLog',
   },
   description: '나만의 개발 블로그, 기록 또 기록',
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? defaultData.url),
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_APP_URL ??
+      defaultData.url ??
+      `http:localhost:${process.env.PORT || 3000}`
+  ),
   robots: 'index, follow',
   formatDetection: {
     telephone: false,
@@ -39,6 +43,12 @@ export const metadata: Metadata = {
   },
 
   openGraph: {
+    title: 'RecodeLog',
+    description: '나만의 개발 블로그, 기록 또 기록',
+    type: 'website',
+    url: defaultData.url,
+    siteName: 'RecodeLog',
+
     images: [
       {
         url: '/icon.png',
@@ -47,6 +57,12 @@ export const metadata: Metadata = {
     ],
   },
   twitter: {
+    card: 'summary_large_image',
+    site: '@recodelog',
+    creator: '@recodelog',
+    title: 'RecodeLog',
+    description: '나만의 개발 블로그, 기록 또 기록',
+
     images: [
       {
         url: '/icon.png',
@@ -54,6 +70,16 @@ export const metadata: Metadata = {
       },
     ],
   },
+
+  generator: 'Next.js', // 웹사이트를 생성한 소프트웨어의 이름을 나타냅니다.
+  applicationName: 'Next.js', // 웹사이트를 실행하는 소프트웨어의 이름을 나타냅니다.
+
+  authors: [
+    { name: 'recodelog' },
+    { name: 'recodelog', url: 'https://recodelog.com' },
+  ], // 웹사이트의 저자를 나타냅니다.
+  creator: 'dev Kang', // 웹사이트의 제작자를 나타냅니다.
+  publisher: 'dev Kang', // 웹사이트의 발행자를 나타냅니다.
 };
 
 export const viewport: Viewport = {
