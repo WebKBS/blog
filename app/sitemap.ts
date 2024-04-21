@@ -5,7 +5,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const post: MetadataRoute.Sitemap = posts.map((post, index) => ({
     url: `https://recodelog.com/${post.slug}`,
     lastModified: new Date(post.date).toISOString().split('T')[0],
-    changeFrequency: 'weekly',
+    changeFrequency: index === posts.length - 1 ? 'daily' : 'weekly',
     priority: index === posts.length - 1 ? 0.9 : 0.7,
   }));
 
