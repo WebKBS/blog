@@ -25,7 +25,7 @@ const TagsCard = () => {
       </Button>
       <div
         className={cn(
-          'overflow-hidden relative',
+          'overflow-hidden relative pb-2',
           styles.gradient,
           open
             ? cn('max-h-screen', styles.active)
