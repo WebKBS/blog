@@ -37,6 +37,11 @@ const Tags = () => {
           })}
           href={{ pathname, search: '' }}
           scroll={false}
+          onClick={(event) => {
+            if (currentTag === null) {
+              event.preventDefault();
+            }
+          }}
         >
           All
         </Link>
