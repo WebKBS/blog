@@ -106,7 +106,7 @@ export default function RootLayout({
           content="e6a9b80e809cdb4abf3cd544886f44c7e4fc19da"
         />
       </head>
-      <body className={cn('min-h-screen', inter.className)}>
+      <body className={cn('min-h-screen select-none', inter.className)}>
         <ThemeProvider>
           <div className="min-h-dvh flex flex-col">
             <Header />

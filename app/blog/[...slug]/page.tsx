@@ -109,7 +109,7 @@ const BlogDetail = async ({ params: { slug } }: BlogDetailProps) => {
   return (
     <>
       <Crumb title={post.title} />
-      <section className="pb-24 pt-4 max-w-screen-lg px-6 mx-auto prose dark:prose-invert">
+      <section className="pb-24 pt-4 max-w-screen-lg px-6 mx-auto prose dark:prose-invert select-none">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
