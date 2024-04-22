@@ -3,12 +3,14 @@ import ScrollProgress from '@/components/ScrollProgress';
 import ShareButton from '@/components/ShareButton';
 import { MDXContent } from '@/components/mdx-content';
 import { Badge } from '@/components/ui/badge';
+
 import { defaultData } from '@/config/defaultData';
 import { formatDate } from '@/lib/utils';
 import '@/styles/mdx.css';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import Crumb from '../_components/Crumb';
 
 interface BlogDetailProps {
   params: {
@@ -105,36 +107,39 @@ const BlogDetail = async ({ params: { slug } }: BlogDetailProps) => {
   };
 
   return (
-    <section className="pb-24 pt-12 max-w-screen-lg px-6 mx-auto prose dark:prose-invert">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <ScrollProgress />
-      <h1 className="text-3xl mb-2">{post.title}</h1>
-      <p>{post.description}</p>
-      <div className="flex gap-4 justify-between items-center">
-        <time dateTime={post.date}>{formatDate(post.date)}</time>
-        <ShareButton />
-      </div>
-      <hr className="my-6" />
-      <MDXContent code={post.body} />
-      <hr />
-      <div>
-        <h4>관련 태그</h4>
-        <ul className="list-none flex p-0 flex-wrap gap-2">
-          {post.tags.map((tag) => (
-            <li key={tag} className="p-0 m-0">
-              <Link href={`/blog?tag=${tag}`}>
-                <Badge variant="secondary" className="text-sm">
-                  {tag}
-                </Badge>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </section>
+    <>
+      <Crumb title={post.title} />
+      <section className="pb-24 pt-4 max-w-screen-lg px-6 mx-auto prose dark:prose-invert">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+        <ScrollProgress />
+        <h1 className="text-3xl mb-2">{post.title}</h1>
+        <p>{post.description}</p>
+        <div className="flex gap-4 justify-between items-center">
+          <time dateTime={post.date}>{formatDate(post.date)}</time>
+          <ShareButton />
+        </div>
+        <hr className="my-6" />
+        <MDXContent code={post.body} />
+        <hr />
+        <div>
+          <h4>관련 태그</h4>
+          <ul className="list-none flex p-0 flex-wrap gap-2">
+            {post.tags.map((tag) => (
+              <li key={tag} className="p-0 m-0">
+                <Link href={`/blog?tag=${tag}`}>
+                  <Badge variant="secondary" className="text-sm">
+                    {tag}
+                  </Badge>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    </>
   );
 };
 

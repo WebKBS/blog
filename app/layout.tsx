@@ -98,7 +98,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className="scroll-pt-[6rem]" suppressHydrationWarning>
+    <html lang="ko" className="scroll-pt-[8rem]" suppressHydrationWarning>
       <head>
         <GoogleTagManager gtmId="0DT0FKKXTM" />
         <meta
