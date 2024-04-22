@@ -2,12 +2,23 @@
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { ChevronsUpDown } from 'lucide-react';
-import { useState } from 'react';
+import { useTheme } from 'next-themes';
+import { useEffect, useState } from 'react';
 import Tags from './Tags';
 import styles from './TagsCard.module.css';
 
 const TagsCard = () => {
   const [open, setOpen] = useState(false);
+  const { resolvedTheme } = useTheme();
+  const [theme, setTheme] = useState(false);
+  console.log(resolvedTheme);
+  useEffect(() => {
+    if (resolvedTheme === 'dark') {
+      setTheme(false);
+    } else {
+      setTheme(true);
+    }
+  }, [resolvedTheme]);
 
   const handleOpen = () => {
     setOpen(!open);
@@ -26,7 +37,7 @@ const TagsCard = () => {
       <div
         className={cn(
           'overflow-hidden relative pb-2',
-          styles.gradient,
+          theme ? styles.gradientWhite : styles.gradient,
           open
             ? cn('max-h-screen', styles.active)
             : cn('max-h-[106px]', styles.inactive)
