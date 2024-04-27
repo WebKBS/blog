@@ -62,6 +62,9 @@ export async function generateMetadata({
       description: post.description,
       images: [`/api/og?${ogSearchParams.toString()}`],
     },
+    alternates: {
+      canonical: post.slug,
+    },
   };
 }
 
