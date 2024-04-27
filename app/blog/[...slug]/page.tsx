@@ -98,12 +98,12 @@ const BlogDetail = async ({ params: { slug } }: BlogDetailProps) => {
   // console.log('post: ', `https://recodelog.com/${post.slug}`);
 
   const jsonLd = {
-    '@context': 'https://recodelog.com',
+    '@context': 'https://schema.org',
     '@type': 'BlogPosting',
     name: post.title,
     description: post.description,
     datePublished: new Date(post.date).toISOString().split('T')[0],
-    url: `https://recodelog.com/${post.slug}`,
+    url: `https://recodelog.com/blog/${slug}`,
   };
 
   return (
@@ -125,7 +125,7 @@ const BlogDetail = async ({ params: { slug } }: BlogDetailProps) => {
         <MDXContent code={post.body} />
         <hr />
         <div>
-          <h4>관련 태그</h4>
+          <p>관련 태그</p>
           <ul className="list-none flex p-0 flex-wrap gap-2">
             {post.tags.map((tag) => (
               <li key={tag} className="p-0 m-0">

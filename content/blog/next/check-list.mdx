@@ -15,8 +15,10 @@ thumbnail: './images/nextjs-logo.svg'
 - [1. 로컬 환경에서 Build후 테스트](#1-로컬-환경에서-build후-테스트)
 - [2. 전체 UI/UX 테스트](#2-전체-uiux-테스트)
 - [3. SEO 최적화](#3-seo-최적화)
+  - [3.1 메타 태그 설정](#31-메타-태그-설정)
+  - [3.2 robots.txt 및 sitemap.xml 파일 설정](#32-robots.txt-및-sitemap.xml-파일-설정)
 
-  <br />
+<br />
 
 ## 1. 로컬 환경에서 Build후 테스트
 
@@ -71,7 +73,38 @@ if (process.env.NODE_ENV === 'development') {
 3. **sitemap.xml 파일 생성**
 4. **구글 서치 콘솔에 사이트 등록**
 5. **구글 애널리틱스 연동**
-6. **구글 태그 매니저 연동**
-7. **페이지 속도 최적화 (Lighthouse 점수 확인)**
-8. **구조화된 데이터 마크업 (Schema.org)**
-9. **캐노니컬 태그 설정**
+6. **페이지 속도 최적화 (Lighthouse 점수 확인)**
+7. **구조화된 데이터 마크업 (Schema.org)**
+8. **캐노니컬 태그 설정**
+
+SEO 부분은 검색 엔진 최적화를 위한 작업으로, 검색 엔진에서 웹사이트를 검색할 때 노출되는 정보를 최적화하는 작업입니다.
+
+이미 제가 작성한 글이 있어서 다음과같이 소개합니다.
+
+### 3.1 메타 태그 설정
+
+다음 페이지에서 제가 작성한 Next.js SEO 가이드를 참고하시면 됩니다.
+
+`title`, `description`, `og`, `twitter card` 등의 메타 태그 설정 방법을 자세히 설명하고 있습니다.
+
+[Next js SEO 가이드 - https://recodelog.com/blog/seo/next-js](https://recodelog.com/blog/seo/next-js)
+
+### 3.2 robots.txt 및 sitemap.xml 파일 설정
+
+next js에서 robots.txt 설정 및 sitemap.xml 방법을 자세히 설명한 글이 있습니다. 아래 링크를 참고해주세요.
+
+[Next js를 사용한 다이나믹 sitemap 생성 feat. robots.txt 설정 방법 - https://recodelog.com/blog/next/sitemap](https://recodelog.com/blog/next/sitemap)
+
+### 3.3 Lighthouse 점수 확인
+
+Lighthouse는 웹 앱의 성능, SEO, 접근성 등을 평가하는 도구입니다. Lighthouse를 통해 웹사이트의 성능을 확인하고 개선할 수 있습니다.
+
+크롬 개발자도구 -> Lighthouse에서 해당 하는 웹사이트 페이지를 페이지 로드 분석을 통해 점수를 확인할 수 있습니다.
+
+<MDXImage src="./images/lighthouse.png" title="LightHouse" />
+
+<MDXImage src="./images/lighthouse-result.png" title="LightHouse 성능 지표" />
+
+최대한 높은 점수를 확보해야하고 만약 점수가 낮다면 개선할 부분을 찾아서 수정해야 합니다.
+
+권장사항과 검색엔진 최적화는 필히 100%를 확보해야합니다.
