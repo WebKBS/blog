@@ -1,16 +1,265 @@
 ---
-title: Notion API를 사용한 Next.js 페이지 만드는 방법
+title: Notion API를 사용한 Next.js 페이지 만드는 방법 feat. react-notion-x
 date: 2024-04-28
-description: Notion API 사용법을 알아보고 Notion 데이터베이스 및 Next.js 페이지에 적용하는 방법을 알아봅니다.
+description: Notion API 사용법을 알아보고 Notion 데이터베이스 연동, react-notion-x를 사용해 Next.js 페이지에 적용하는 방법을 알아봅니다.
 published: true
 tags:
   - notion
   - api
   - Next.js
   - notion-client
+  - react-notion-x
 thumbnail: './images/notion-logo.svg'
 ---
 
 ## Summary
 
-Notion API를 사용하여 Notion 데이터베이스와 연동, Notion 페이지를 Next.js 페이지에 렌더링하는 방법을 알아봅니다.
+Notion API를 사용하여 Notion 페이지를 Next.js 페이지에 렌더링하는 방법을 알아봅니다. react-notion-x를 사용하여 Notion 페이지를 실제 나의 웹사이트에 notion의 스타일 처럼 렌더링하는 방법을 알아봅니다.
+
+> 본 포스트는 Next.js 14 버전 `App router` 기반으로 작성되었습니다.
+
+## 목차
+
+- 1. [Notion 설정](#1-notion-설정)
+  - 1.1 [데이터베이스 설정](#11-데이터베이스-설정)
+  - 1.2 [API 설정](#12-api-설정)
+- 2. [Next.js 설정 및 notion SDK 설치](#2-nextjs-설정-및-notion-sdk-설치)
+  - 2.1 [notion 데이터 가져오기](#21-notion-데이터-가져오기)
+  - 2.2 [notion 페이지 설정 및 페이지 아이디 가져오기](#22-notion-페이지-설정-및-페이지-아이디-가져오기)
+  - 2.3 [Next.js 페이지에 notion 페이지 렌더링](#23-nextjs-페이지에-notion-페이지-렌더링)
+
+## 1. Notion 설정
+
+### 1.1 데이터베이스 설정
+
+> 이미 설정된 데이터베이스가 있다면 이 단계를 건너뛰어도 됩니다.
+
+Notion 페이지를 추가하고 데이터베이스를 생성합니다.
+
+<MDXImage src="./images/notion-database.png" title="notion database" />
+
+> notion api를 사용한다면 notion을 사용할 줄 아는것으로 가정하여 자세한 설명은 생략합니다.
+
+데이터베이스의 각 페이지에 대한 정보가 있다고 가정합니다.
+
+### 1.2 API 설정
+
+생성한 데이터베이스 페이지에서 상단 우측 더보기 (&centerdot;&centerdot;&centerdot;) 버튼을 클릭합니다.
+
+<MDXImage src="./images/connect.png" title="더보기 - 연결관리" />
+
+더보기 -> 연결 항목 -> 연결 관리를 클릭합니다.
+
+<MDXImage src="./images/connect-detail.png" title="새 연결찾기 화면" />
+
+새 연결 찾기 화면에서 `API 연결 개발 또는 관리`를 클릭합니다.
+
+`API 연결 개발 또는 관리`로 이동하면 내 API 통합 페이지가 나타납니다.
+
+새 API 통합 만들기 버튼을 클릭합니다.
+
+<MDXImage src="./images/create-api.png" title="새 API 통합 만들기" />
+
+기본 정보에서 연결할 워크스페이스를 선택한 뒤, 이름을 입력하고 `제출` 버튼을 클릭합니다.
+
+<MDXImage src="./images/secret.png" title="secret" />
+
+API 키 페이지에서 생성된 키를 잘 복사해두세요.
+
+이후 데이터베이스 연결시에 사용됩니다.
+
+> 외부에 노출되지 않게 잘 관리해야 합니다.
+
+이제 다시 데이터베이스 페이지로 돌아가서 상단 우측 더보기 (&centerdot;&centerdot;&centerdot;) 버튼에서 연결 항목 중 생성한 API를 연결합니다.
+
+<MDXImage src="./images/menu.png" title="API 연결" />
+
+이름은 본인이 설정한 이름으로 되어있습니다. 저는 API TEST로 설정했습니다.
+
+클릭후 나타나는 모달창에서 확인을 클릭합니다.
+
+이제 데이터베이스 페이지에 API 연결이 완료되었습니다.
+
+## 2. Next.js 설정 및 notion SDK 설치
+
+next js 프로젝트에서 notion SDK를 설치합니다.
+
+notion의 데이터베이스를 연동하기위해 @notionhq/client를 설치합니다.
+
+그리고 notion 페이지를 가져오기 위해 notion-client를 설치합니다.
+
+두가지 모두 설치해야 합니다. 사용하는 용도가 다릅니다.
+
+```bash
+npm install @notionhq/client
+```
+
+```bash
+npm install notion-client
+```
+
+### 2.1 notion 데이터 가져오기
+
+notion.ts 파일을 생성하고 아래와 같이 설정합니다.
+
+```tsx title="notion.ts"
+import { NotionAPI } from 'notion-client';
+
+export const notion = new NotionAPI();
+
+export async function getData(rootPageId: string) {
+  return await notion.getPage(rootPageId);
+}
+```
+
+> 개별 페이지에 NotionAPI를 불러와도 됩니다.
+> notion api를 구분짓기 위해 notion.ts 파일을 생성하여 사용하였습니다.
+
+### 2.2 notion 페이지 설정 및 페이지 아이디 가져오기
+
+페이지 아이디는 해당 페이지의 주소표시줄에서 확인할 수 있습니다.
+
+우선 페이지를 웹에 게시해야 합니다.
+
+> 게시하지 않으면 API로 데이터를 가져올 수 없습니다. 반드시 공유된 페이지만 가져올 수 있습니다.
+
+<MDXImage src="./images/publish.png" title="게시" />
+
+페이지에서 우측 상단의 공유 버튼을 클릭후 `게시` 버튼을 클릭합니다.
+
+그러면 주소가 나타납니다. 주소에서 페이지 아이디를 확인할 수 있습니다.
+
+예시)
+
+```text
+https://lilac-hare-5d2.notion.site/1-b9d4dfd97c8d41cba06bde5fa54cdc32?pvs=4
+
+이 부분에서 https://lilac-hare-5d2.notion.site/1- 와 pvs=4 뒤에 있는 문자열이 페이지 아이디입니다.
+
+b9d4dfd97c8d41cba06bde5fa54cdc32 이게 페이지 아이디입니다.
+```
+
+찾기 어렵다면 해당 페이지에서 브라우저 주소 표시줄을 봅니다.
+
+데이터베이스에서 페이지를 열었다면 주소 표시줄에서 p= 이후 문자열이 페이지 아이디입니다.
+
+또는 해당 페이지를 연상태라면 주소표시줄에서 1- (숫자는 다를수 있음) 다음 문자열이 페이지 아이디입니다.
+
+### 2.3 Next.js 페이지에 notion 페이지 렌더링
+
+Next.js 페이지에서 notion 데이터를 가져와 렌더링하는 방법을 알아봅니다.
+
+```tsx title="app/about/page.tsx"
+import { getData } from '../../lib/notion';
+
+const pageId = '페이지 아이디';
+
+const About = async () => {
+  const data = await getData(pageId);
+  console.log(data);
+
+  return <main></main>;
+};
+
+export default About;
+```
+
+console.log로 데이터를 가져오면 성공입니다!
+
+이제 데이터를 화면에 렌더링하면 됩니다.
+
+### 2.4 react-notion-x 사용하기
+
+react-notion-x를 사용하면 notion 페이지를 더 쉽게 렌더링할 수 있습니다.
+
+설치
+
+```bash
+npm install react-notion-x
+```
+
+notion용 컴포넌트를 만들어 사용합니다.
+
+> next js app router에서 사용하기 위해 client를 사용합니다.
+> 반드시 클라이언트 컴포넌트를 사용해야합니다.
+> page에서 'use client'를 사용하기엔 서버 컴포넌트를 포기해야하니
+> client 컴포넌트를 만들어서 사용하는게 좋습니다.
+
+```tsx title="components/notion/Renderer.tsx"
+'use client';
+
+import Link from 'next/link';
+import { NotionRenderer } from 'react-notion-x';
+
+interface RendererProps {
+  recordMap: any; // 임의로 any
+  rootPageId: string;
+}
+
+export const Renderer = ({ recordMap, rootPageId }: RendererProps) => {
+  return (
+    <div className="notion__container">
+      <Link href="/">뒤로가기</Link>
+      <NotionRenderer
+        recordMap={recordMap}
+        fullPage={true}
+        darkMode={false}
+        rootPageId={rootPageId}
+        previewImages
+      />
+    </div>
+  );
+};
+
+export default Renderer;
+```
+
+이제 about 페이지에서 다음과 같이 notion 페이지를 렌더링합니다.
+
+```tsx title="app/about/page.tsx"
+import Renderer from '@/components/notion/renderer';
+import { getData } from '@/lib/notion';
+
+const pageId = '페이지 아이디';
+
+const About = async () => {
+  const data = await getData(pageId);
+
+  return (
+    <main>
+      <Renderer recordMap={data} rootPageId={pageId} />
+    </main>
+  );
+};
+
+export default About;
+```
+
+about 페이지에서 notion 페이지를 렌더링 한것을 확인할 수 있습니다.
+
+이제 스타일링을 위해 about 페이지에 css를 추가해줍니다.
+
+```tsx title="app/about/page.tsx" {4,5,6}
+import Renderer from '@/components/notion/renderer';
+import { getData } from '@/lib/notion';
+
+import 'react-notion-x/src/styles.css';
+import 'prismjs/themes/prism-tomorrow.css';
+import 'katex/dist/katex.min.css';
+
+const pageId = '페이지 아이디';
+
+// ... 생략
+```
+
+스타일을 추가하면 notion 스타일과 비슷한 스타일로 렌더링됩니다.
+
+> css를 잘 다룰 수 있다면 커스텀도 가능합니다.
+
+여기까지 Notion API를 사용한 Next.js 페이지 만드는 방법을 알아봤습니다.
+
+이제 Notion 데이터베이스를 가져오는 방법을 설명해보겠습니다.
+
+<br />
+
+[`API 설정`](#12-api-설정) 에서 소개한 API 키를 사용하여 데이터베이스를 가져오는 방법을 알아봅니다.
