@@ -3,13 +3,16 @@
 import { navigationData } from '@/config/defaultData';
 import { cn } from '@/lib/utils';
 import { useMenuToggle } from '@/store/common';
+import { useTagStore } from '@/store/tagStore';
 import Link from 'next/link';
 
 const Navigation = ({ className }: { className: string }) => {
-  const { setToggleMenu } = useMenuToggle();
+  const setToggleMenu = useMenuToggle((state) => state.setToggleMenu);
+  const setTags = useTagStore((state) => state.setTags);
 
   const clickHandler = () => {
     setToggleMenu(false);
+    setTags('');
   };
 
   return (
