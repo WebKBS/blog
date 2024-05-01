@@ -1,7 +1,7 @@
 ---
-title: Next.js와 nodemailer를 사용해서 이메일 보내는 방법 feat. 문의하기 form 폼
+title: Next.js와 nodemailer를 사용해서 이메일 보내는 방법 feat. 문의하기 form 폼, Gmail 설정하기
 date: 2024-05-01
-description: next js에서 nodemailer를 사용해서 이메일을 보내는 방법과 문의하기 폼을 만드는 방법을 알아봅니다.
+description: next js에서 nodemailer를 사용해서 이메일을 보내는 방법과 문의하기 폼을 만드는 방법을 알아보고 Gmail 설정하는 방법을 알아보겠습니다.
 published: true
 tags:
   - Next.js
@@ -16,14 +16,16 @@ thumbnail: './images/nodemailer-logo.png'
 
 비록 문의하기(contact us) 폼을 예시로 들었지만, nodemailer를 사용하면 회원가입 인증 이메일, 비밀번호 찾기 이메일 등 다양한 용도로 사용할 수 있습니다.
 
-본 블로그에서는 Next.js와 nodemailer를 사용해서 이메일을 보내는 방법과 문의하기 폼을 만드는 방법을 알아보겠습니다.
+본 블로그에서는 Next.js와 nodemailer를 사용해서 gamil 이메일을 보내는 방법과 문의하기 폼을 만드는 방법을 알아보겠습니다.
 
 > 이 글은 Next.js `app router`를 사용하고 `server action`과 `useFormState` `useFormStatus`를 사용합니다.
 
 ## 목차
 
 1. [폼 UI 만들기](#1-폼-ui-만들기)
-2. [nodemailer 설정하기](#2-nodemailer-설정하기)
+2. [form action 서버 함수 만들기](#2-form-action-서버-함수-만들기)
+3. [nodemailer 설정하기](#3-nodemailer-설정하기)
+   - 3.1. [Gmail 설정하기](#31-gmail-설정하기)
 
 <br />
 ## 1. 폼 UI 만들기
@@ -60,15 +62,9 @@ const Form = () => {
 
 <br />
 
-## 2. nodemailer 설정하기
+## 2. form action 서버 함수 만들기
 
-nodemailer를 사용하기 위해서는 먼저 nodemailer를 설치해야합니다.
-
-```bash
-npm install nodemailer
-```
-
-nodemailer를 설치했다면, 이제 nodemailer를 사용하기 위해 서버 액션 sendEmail 함수를 만들어보겠습니다.
+Form에서 입력한 데이터를 서버로 전송하기 위해서는 서버 액션 함수를 만들어야합니다.
 
 ```tsx title="lib/action.ts"
 'use server';
@@ -138,3 +134,231 @@ form action에 formAction을 추가해주면, form이 submit 될 때 sendEmail �
 터미널 콘솔에서 위와 같이 입력한 내용 Form 데이터가 출력되면 성공입니다.
 
 이제 입력값을 받았으니 이제 nodemailer를 사용해서 이메일을 보내는 방법을 알아보겠습니다.
+
+<br />
+
+## 3. nodemailer 설정하기
+
+nodemailer를 사용하기 위해서는 먼저 nodemailer를 설치해야합니다.
+
+```bash
+npm install nodemailer
+```
+
+typescript를 사용하고 있다면, `@types/nodemailer`도 설치해줍니다.
+
+```bash
+npm i --save-dev @types/nodemailer
+```
+
+nodemailer를 설치하였다면, nodemailer를 사용하기 위한 설정을 추가해줍니다.
+
+```tsx title="lib/action.ts"
+import nodemailer from 'nodemailer';
+
+const transporter = nodemailer.createTransport({
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true,
+  auth: {
+    user: '',
+    pass: '',
+  },
+});
+
+export const sendEmail = async (prevState: any, formData: FormData) => {
+  // ... 이전 내용 생략
+};
+```
+
+nodemailer를 사용하기 위해서는 transporter를 생성해야합니다. transporter는 이메일을 보내는 역할을 합니다.
+
+보내는 이메일을 사용하기 위해 gmail을 사용하도록 하겠습니다. gmail대신 다른 이메일도 사용 가능하나, nodemailer 사용법을 설명하기 위한 방법이기에 gmail을 사용하도록 하겠습니다.
+
+### 3.1. Gmail 설정하기
+
+gmail을 이미 가입했다고 가정하고, gmail을 사용하기 위해서는 gmail 설정을 해주어야합니다.
+
+Gmail의 계정 관리로 이동합니다.
+
+<MDXImage src="./images/gamil-home.png" title="gmail 계정관리 이동" />
+
+계정 관리에서 `보안`으로 이동합니다.
+
+Gamil을 연동하기 위해서는 `앱 비밀번호`가 필요합니다.
+
+앱 비밀번호를 발급 받으려면 반드시 `2단계 인증`을 설정해야합니다.
+
+> 2단계 인증을 하지않은 경우는 앱 비밀번호를 받을 수 없음.
+
+<MDXImage src="./images/gmail-auth.png" title="gmail 2단계 인증" />
+
+2단계 인증을 클릭후 2단계 인증을 활성화를 한 다음 2단계 인증할 핸드폰 번호 및 패스키 설정을 합니다.
+
+저는 간편하게 사용하기위해 패스키 인증을 사용하였습니다.
+
+이제 2단계 인증 및 2단계 인증 비밀번호를 설정하였다면, 앱 비밀번호를 발급 받을 수 있습니다.
+
+검색창에서 `앱 비밀번호`를 검색합니다.
+
+<MDXImage src="./images/search.png" title="gmail 앱 비밀번호 검색" />
+
+앱 비밀번호를 클릭합니다.
+
+페이지 이동하면 앱 이름을 설정한 후 `만들기` 버튼을 클릭하면 앱 비밀번호가 생성됩니다.
+
+앱 비밀번호는 생성하면 한 번만 보여지며, 다시 보려면 새로 생성해야합니다.
+
+생성된 키를 잘 보관하고, 환경변수에 저장해 둡니다.
+
+```tsx title=".env.local"
+GMAIL_APP_KEY = '생성된 앱 비밀번호';
+GMAIL_USER = '이메일 주소';
+```
+
+.env를 따로 설정해도 됩니다. 단, .env는 git에 올리지 않도록 주의해야합니다.
+
+기본적으로 .env.local은 gitignore에 추가되어 있습니다.
+
+gitignore에 .env를 추가해주세요.
+
+```text title=".gitignore"
+.env
+```
+
+이제 transporter를 설정해줍니다. action.ts 파일을 수정해줍니다.
+
+```tsx title="lib/action.ts"
+import nodemailer from 'nodemailer';
+
+const transporter = nodemailer.createTransport({
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true,
+  auth: {
+    user: process.env.GMAIL_USER,
+    pass: process.env.GMAIL_APP_KEY,
+  },
+});
+```
+
+이제 transporter를 설정하였습니다. 이제 transporter를 사용해서 이메일을 보내는 코드를 작성해보겠습니다.
+
+```tsx title="lib/action.ts"
+export const sendEmail = async (prevState: any, formData: FormData) => {
+  try {
+    const { name, email, subject } = Object.fromEntries(formData);
+
+    await transporter.sendMail({
+      from: process.env.GMAIL_USER, // 보내는 이메일
+      to: '받는 이메일 주소', // 받는 이메일
+      subject: `문의하기: ${name}(${email})`,
+      html: `<p>${subject}</p>`,
+    });
+
+    console.log('이메일 전송 성공');
+    return { message: '이메일 전송 성공' };
+  } catch (error) {
+    console.error(error);
+  }
+};
+```
+
+이제 transporter를 사용해서 이메일을 보내는 코드를 작성하였습니다.
+
+- from - 보내는 이메일 주소
+- to - 받는 이메일 주소
+- subject - 이메일 제목
+- html - 이메일 내용
+
+from은 보내는 이메일 주소를 입력합니다. 보내는 이메일 주소는 gmail 계정으로 설정한 이메일 주소를 입력합니다.
+
+to는 받는 이메일 주소를 입력합니다. 받는 이메일 주소는 본인의 이메일 주소를 입력합니다.
+
+만약 받는 주소를 여러곳에 보내고 싶다면 배열로 받는 이메일 주소를 입력하면 됩니다.
+
+```tsx title="lib/action.ts"
+// - 여러 이메일 주소로 보내기
+to: ['이메일 주소1', '이메일 주소2'],
+```
+
+subject는 이메일 제목을 입력합니다. 이메일 제목은 `문의하기: 이름(이메일)`로 설정하였습니다.
+
+html은 이메일 내용입니다. html 형식으로, 받는 이메일에서 html 형식으로 보여집니다. 각 HTML 태그를 사용하여 이메일 내용을 작성합니다.
+
+```tsx title="lib/action.ts"
+html: `<h1>문의 내용</h1>
+      <p>${subject}</p>
+    `,
+```
+
+이제 Form 데이터를 입력하고 전송 버튼을 누르면, sendEmail 함수가 호출되어 Form 데이터를 이메일로 보내는 코드를 작성하였습니다.
+
+이제 Form 데이터를 입력하고 전송 버튼을 누르면, 이메일이 보내질 것입니다.
+
+받는 이를 나의 이메일을 추가하여 이메일을 받아 봅시다. 이메일이 잘 도착하면 성공입니다.
+
+<MDXImage src="./images/gmail-send.png" title="받은 이메일" />
+
+이메일이 잘 도착하였습니다.
+
+이제 위 코드에서 유효성을 추가해 줘야합니다. 만약, Form 데이터를 입력하지 않았을 경우, 에러 및 빈 값이 전송되지 않도록 유효성을 추가해주어야합니다.
+
+```tsx title="lib/action.ts"
+export const sendEmail = async (prevState: any, formData: FormData) => {
+  try {
+    const { name, email, subject } = Object.fromEntries(formData);
+
+    if (!name || !email || !subject) {
+      return { message: '모든 필드를 입력해주세요' };
+    }
+
+    await transporter.sendMail({
+      from: process.env.GMAIL_USER, // 보내는 이메일
+      to: '받는 이메일 주소', // 받는 이메일
+      subject: `문의하기: ${name}(${email})`,
+      html: `<p>${subject}</p>`,
+    });
+
+    console.log('이메일 전송 성공');
+    return { message: '이메일 전송 성공' };
+  } catch (error) {
+    console.error(error);
+  }
+};
+```
+
+이제 Form 데이터를 입력하지 않고 전송 버튼을 누르면, `모든 필드를 입력해주세요` 메시지가 출력됩니다.
+
+server action에서 return을 하면, 해당 메시지가 클라이언트로 전달됩니다.
+
+클라이언트는 메세지를 이전에 작성하였던 useFormState를 사용해서 출력할 수 있습니다.
+
+useFormState에서 formAction은 전송하는 함수로 사용되고 첫번째 actionState는 서버에서 반환하는 메시지를 받습니다.
+
+```tsx title="components/Form.tsx"
+const Form = () => {
+  const [actionState, formAction] = useFormState(sendEmail, null);
+
+  console.log(actionState);
+
+  return (
+    // ... 생략
+  );
+};
+```
+
+console.log(actionState)를 추가하면, 서버에서 반환하는 메시지를 확인할 수 있습니다.
+
+`{message: '모든 필드를 입력해주세요'}`
+
+반환되는 message를 사용하여 Form 하단에 메시지를 출력할 수 있습니다.
+
+이제 Next.js와 nodemailer를 사용해서 이메일을 보내는 방법과 문의하기 폼을 만드는 방법을 알아보았습니다.
+
+이제 여러분의 웹사이트에 문의하기 폼을 추가하여 이메일을 받아보세요.
+
+이상으로 Next.js와 nodemailer, 그리고 Gmail을 사용한 이메일보내기,
+Next js에서 useFormState를 사용한 서버액션에서 Form 데이터를 받는 방법을 알아보았습니다.
+
+다음에는 Form에서 받은 이메일을 더욱 상세한 유효성을 검사하는 방법을 알아보겠습니다.
