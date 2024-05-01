@@ -1,10 +1,12 @@
 import Image from 'next/image';
 import * as runtime from 'react/jsx-runtime';
 import MDXImage from './MDXImage';
+import MDXLink from './MDXLink';
 
 const mdxComponents = {
   Image,
   MDXImage,
+  MDXLink,
 };
 
 const useMDXComponent = (code: string) => {

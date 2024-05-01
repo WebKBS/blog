@@ -17,7 +17,7 @@ SEO를 최적화 하기 위해 opengraph 및 twitter 설정하는 경우가 종�
 하지만 수많은 글, 게시물이 있는 경우 이미지를 수동으로 생성하는 것은 매우 귀찮고 힘듭니다.<br/>
 이를 위해서 next js에서 지원하는 opengraph 및 twitter 이미지 생성 방법을 이용해서 동적인 이미지를 생성해보겠습니다.
 
-동적 opengraph, twitter 이미지는 [`nextjs-opengraph`](https://nextjs.org/docs/app/api-reference/file-conventions/metadata/opengraph-image#generate-images-using-code-js-ts-tsx)를 참고하면 됩니다.
+동적 opengraph, twitter 이미지는 <MDXLink title="`nextjs-opengraph`" href="https://nextjs.org/docs/app/api-reference/file-conventions/metadata/opengraph-image#generate-images-using-code-js-ts-tsx" />를 참고하면 됩니다.
 
 ## 동적인 이미지를 만들면 좋은점?
 
@@ -53,7 +53,7 @@ export async function generateMetadata({ params }): Promise<Metadata> {
 new URLSearchParams를 사용해서 반드시 `title`과 `description`을 넣어줘야합니다.
 만약 이미지 생성시 description이 필요 없다면 제거 해도 되며, 기타 필요한 정보를 넣어도 됩니다.
 
-generateMetadata에 대해서 잘 모른다면 [`generateMetadata`](https://nextjs.org/docs/app/api-reference/functions/generate-metadata) 여기에서 학습이 필요합니다.
+generateMetadata에 대해서 잘 모른다면 <MDXLink title="generateMetadata" href="https://nextjs.org/docs/app/api-reference/functions/generate-metadata" /> 여기에서 학습이 필요합니다.
 
 ## api 라우터 생성
 
@@ -194,4 +194,7 @@ api를 만들어서 각 페이지의 이미지를 생성하면 됩니다.<br/>
 
 단, 배포가 된 상황에서 테스트를 진행 해야합니다.
 
-[`https://www.opengraph.xyz/`](https://www.opengraph.xyz/) 이 사이트에서 opengraph 이미지를 확인할 수 있습니다.
+<MDXLink
+  title="https://www.opengraph.xyz/"
+  href="https://www.opengraph.xyz/"
+/> 이 사이트에서 opengraph 이미지를 확인할 수 있습니다.
