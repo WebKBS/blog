@@ -300,16 +300,25 @@ export const sendEmail = async (prevState: any, formData: FormData) => {
       return { message: '모든 필드를 입력해주세요' };
     }
 
-    // 파일 크기 제한
-    if (file.size > MAX_FILE_SIZE) {
-      return { message: '파일 크기는 4MB 이하로 제한됩니다.' };
-    }
-
-    if (!file.type.includes('image')) {
-      return { message: '이미지 파일만 전송 가능합니다.' };
-    }
-
     let dataUrl;
+
+    if (file instanceof File) {
+      // 파일 크기 제한
+      if (file.size > MAX_FILE_SIZE) {
+        return { message: '파일 크기는 4MB 이하로 제한됩니다.' };
+      }
+
+      if (!file.type.includes('image')) {
+        return { message: '이미지 파일만 전송 가능합니다.' };
+      }
+
+      const buffer = Buffer.from(await file.arrayBuffer());
+      const base64String = buffer.toString('base64');
+
+      dataUrl = `data:${file.type};base64,${base64String}`;
+    } else {
+      console.error('파일이 파일의 인스턴스가 아닙니다.');
+    }
 
     // ... 동일한 코드 (생략)
   } catch (error) {
