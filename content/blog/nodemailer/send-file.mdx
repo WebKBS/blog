@@ -1,0 +1,136 @@
+---
+title: Next.js와 nodemailer 이메일 파일전송 구현하는 방법 feat. server Action
+date: 2024-05-05
+description: nodemailer를 사용하고 Next.js에서 useFormState를 사용하여 이메일 파일전송 구현하는 방법을 알아보겠습니다.
+published: true
+tags:
+  - Next.js
+  - nodemailer
+thumbnail: './images/nodemailer-logo.png'
+---
+
+## Summary
+
+이번 포스팅에서는 Next.js와 nodemailer를 사용하여 이메일 파일전송을 구현하는 방법을 알아보겠습니다.
+
+이전에 nodemailer를 사용하는 방법을 포스팅한 적이 있습니다. nodemailer를 사용하여 이메일을 보내는 방법은 <MDXLink title="Next.js와 nodemailer를 사용해서 이메일 보내는 방법 feat. 문의하기 form 폼, Gmail 설정하기" href="https://recodelog.com/blog/nodemailer/nodemailer"/>에서 확인할 수 있습니다.
+
+이번에는 파일 전송방법만 추가로 알아보고, 자세한 내용은 이전 포스팅을 참고하시면 됩니다.
+
+## 목차
+
+1. [Form Ui 만들기](#1-form-ui-만들기)
+2. [nodemailer 설정하기](#2-nodemailer-설정하기)
+
+<br />
+
+## 1. Form Ui 만들기
+
+이메일 파일전송을 구현하기 위해 먼저 파일전송을 할 수 있는 Form Ui를 만들어야 합니다.
+
+```jsx title="components/Form.js"
+'use client';
+
+const Form = () => {
+  return (
+    <form action="">
+      <div className="flex flex-col gap-4 text-black">
+        <div>
+          <label htmlFor="name">이름: </label>
+          <input type="text" id="name" name="name" placeholder="이름" />
+        </div>
+        <input type="file" name="file" />
+      </div>
+      <button type="submit">전송</button>
+    </form>
+  );
+};
+
+export default Form;
+```
+
+간단한 Form 구현 방법이므로 이름과 파일을 전송할 수 있는 Form을 만들었습니다.
+
+> server Action, useFormState를 사용하기 때문에 반드시 name 속성을 추가해야 합니다.
+
+<br />
+
+## 2. nodemailer 설정하기
+
+nodemailer 패키지를 설치합니다.
+
+```bash
+npm install nodemailer
+```
+
+만약 타입스크립트를 사용한다면 `@types/nodemailer`도 설치합니다.
+
+```bash
+npm install --save-dev @types/nodemailer
+```
+
+nodemailerf를 설치했다면 다음 action에서 함수를 만들어 줍니다.
+
+우선 이메일 로직은 제외하고 파일이 안전하게 잘 들어가는지 확인합니다.
+
+```ts title="lib/action.ts"
+'use server';
+export const sendEmail = async (prevState: any, formData: FormData) => {
+  try {
+    const { name, file } = Object.fromEntries(formData);
+
+    console.log(name, file);
+
+    return { message: '파일 전송 성공' };
+  } catch (error) {
+    console.error(error);
+  }
+};
+```
+
+이제 Form 컴포넌트에서 파일을 전송할 수 있도록 수정합니다.
+
+```jsx title="components/Form.js"
+'use client';
+
+import { sendEmail } from '@/lib/action';
+import { useFormState } from 'react-dom';
+
+const Form = () => {
+  const [actionState, formAction] = useFormState(sendEmail, null);
+
+  console.log('Form', actionState);
+
+  return (
+    <form action={formAction}>
+      <div className="flex flex-col gap-4 text-black">
+        <div>
+          <label htmlFor="name">이름: </label>
+          <input type="text" id="name" name="name" placeholder="이름" />
+        </div>
+        <input type="file" name="file" />
+      </div>
+      <button type="submit">전송</button>
+    </form>
+  );
+};
+
+export default Form;
+```
+
+간단히 formAction을 추가하여 파일을 전송할 수 있도록 수정했습니다.
+
+이제 이름과 파일을 첨부하여 전송버튼을 클릭하고 콘솔에 이름과 파일이 잘 출력되는지 확인합니다.
+
+저는 ts.png 파일을 첨부하여 전송했습니다.
+
+다음 이미지처럼 터미널에서 파일이 잘 출력되는지 확인합니다.
+
+<MDXImage
+  src="./images/file-console.png"
+  title="파일 전송시 터미널 콘솔 화면"
+/>
+
+클라이언트에서 파일이 잘 받아 왔습니다.
+
+이제 받은 파일을 바이너리 데이터로 변환하는 작업을 해야합니다.
