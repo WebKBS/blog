@@ -94,7 +94,7 @@ export default function RootLayout({
   return (
     <html lang="ko" className="scroll-pt-[8rem]" suppressHydrationWarning>
       <head>
-        <GoogleTagManager gtmId="0DT0FKKXTM" />
+        <GoogleTagManager gtmId="GTM-5DZ7XFWX" />
         <meta
           name="naver-site-verification"
           content="e6a9b80e809cdb4abf3cd544886f44c7e4fc19da"
