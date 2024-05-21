@@ -39,7 +39,7 @@ Notion API를 사용하여 Notion 페이지를 Next.js 페이지에 렌더링하
 
 Notion 페이지를 추가하고 데이터베이스를 생성합니다.
 
-<MDXImage src="./images/notion-database.png" title="notion database" />
+<MDXImage src="./images/notion-database.png" alt="notion database" />
 
 > notion api를 사용한다면 notion을 사용할 줄 아는것으로 가정하여 자세한 설명은 생략합니다.
 
@@ -49,11 +49,11 @@ Notion 페이지를 추가하고 데이터베이스를 생성합니다.
 
 생성한 데이터베이스 페이지에서 상단 우측 더보기 (&centerdot;&centerdot;&centerdot;) 버튼을 클릭합니다.
 
-<MDXImage src="./images/connect.png" title="더보기 - 연결관리" />
+<MDXImage src="./images/connect.png" alt="더보기 - 연결관리" />
 
 더보기 -> 연결 항목 -> 연결 관리를 클릭합니다.
 
-<MDXImage src="./images/connect-detail.png" title="새 연결찾기 화면" />
+<MDXImage src="./images/connect-detail.png" alt="새 연결찾기 화면" />
 
 새 연결 찾기 화면에서 `API 연결 개발 또는 관리`를 클릭합니다.
 
@@ -61,11 +61,11 @@ Notion 페이지를 추가하고 데이터베이스를 생성합니다.
 
 새 API 통합 만들기 버튼을 클릭합니다.
 
-<MDXImage src="./images/create-api.png" title="새 API 통합 만들기" />
+<MDXImage src="./images/create-api.png" alt="새 API 통합 만들기" />
 
 기본 정보에서 연결할 워크스페이스를 선택한 뒤, 이름을 입력하고 `제출` 버튼을 클릭합니다.
 
-<MDXImage src="./images/secret.png" title="secret" />
+<MDXImage src="./images/secret.png" alt="secret" />
 
 API 키 페이지에서 생성된 키를 잘 복사해두세요.
 
@@ -75,7 +75,7 @@ API 키 페이지에서 생성된 키를 잘 복사해두세요.
 
 이제 다시 데이터베이스 페이지로 돌아가서 상단 우측 더보기 (&centerdot;&centerdot;&centerdot;) 버튼에서 연결 항목 중 생성한 API를 연결합니다.
 
-<MDXImage src="./images/menu.png" title="API 연결" />
+<MDXImage src="./images/menu.png" alt="API 연결" />
 
 이름은 본인이 설정한 이름으로 되어있습니다. 저는 API TEST로 설정했습니다.
 
@@ -129,7 +129,7 @@ export async function getData(rootPageId: string) {
 
 > 게시하지 않으면 API로 데이터를 가져올 수 없습니다. 반드시 공유된 페이지만 가져올 수 있습니다.
 
-<MDXImage src="./images/publish.png" title="페이지 웹에 게시하는 방법" />
+<MDXImage src="./images/publish.png" alt="페이지 웹에 게시하는 방법" />
 
 페이지에서 우측 상단의 공유 버튼을 클릭후 `게시` 버튼을 클릭합니다.
 
@@ -262,10 +262,7 @@ const pageId = '페이지 아이디';
 
 다음과 같이 notion 페이지를 렌더링할 수 있습니다.
 
-<MDXImage
-  src="./images/complete.png"
-  title="notion에서 가져온 완성된 페이지 "
-/>
+<MDXImage src="./images/complete.png" alt="notion에서 가져온 완성된 페이지 " />
 
 > css를 잘 다룰 수 있다면 커스텀도 가능합니다.
 

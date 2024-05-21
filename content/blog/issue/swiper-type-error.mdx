@@ -1,0 +1,157 @@
+---
+title: React Swiper 슬라이드 Type Error `Cannot convert undefined or null to object` 에러 해결방법
+date: 2024-05-19
+description: Next.js React Swiper 사용시 타입 에러 `Cannot convert undefined or null to object` 에러 해결방법을 알아보겠습니다.
+published: true
+tags:
+  - issue
+  - swiper
+  - react
+thumbnail: './images/swiper-error-log.png'
+---
+
+## Summary
+
+Next.js에서 Swiper를 사용하다가 타입 에러 TypeError: Cannot convert undefined or null to 에러가 발생하였습니다. 이 문제를 해결하기 위해 다음과 같은 방법을 사용하였습니다.
+
+## 문제점 발견
+
+<MDXImage alt="Swiper 타입에러" src="./images/swiper-error-log.png" />
+
+Next.js에서 Swiper Thumbs gallery loop <MDXLink href="https://swiperjs.com/demos#thumbs-gallery-loop" title="Swiper Thumbs gallery loop" />를 사용하다가 타입 에러가 발생하였습니다.
+
+빠르게 작업하려다보니 swiper에서 제공한 코드를 그대로 사용하였습니다.
+
+### swiper에서 제공한 코드
+
+```tsx title="swiper.tsx"
+import React, { useRef, useState } from 'react';
+// Import Swiper React components
+import { Swiper, SwiperSlide } from 'swiper/react';
+
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/free-mode';
+import 'swiper/css/navigation';
+import 'swiper/css/thumbs';
+
+import './styles.css';
+
+// import required modules
+import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
+
+export default function App() {
+  const [thumbsSwiper, setThumbsSwiper] = useState(null);
+
+  return (
+    <>
+      <Swiper
+        style={{
+          '--swiper-navigation-color': '#fff',
+          '--swiper-pagination-color': '#fff',
+        }}
+        loop={true}
+        spaceBetween={10}
+        navigation={true}
+        thumbs={{ swiper: thumbsSwiper }}
+        modules={[FreeMode, Navigation, Thumbs]}
+        className="mySwiper2"
+      >
+        <SwiperSlide>
+          <img src="https://swiperjs.com/demos/images/nature-1.jpg" />
+        </SwiperSlide>
+        {/* more .. */}
+      </Swiper>
+      <Swiper
+        onSwiper={setThumbsSwiper}
+        loop={true}
+        spaceBetween={10}
+        slidesPerView={4}
+        freeMode={true}
+        watchSlidesProgress={true}
+        modules={[FreeMode, Navigation, Thumbs]}
+        className="mySwiper"
+      >
+        <SwiperSlide>
+          <img src="https://swiperjs.com/demos/images/nature-1.jpg" />
+        </SwiperSlide>
+        {/* more .. */}
+      </Swiper>
+    </>
+  );
+}
+```
+
+swiper 공식문서에는 타입스크립트를 제공하지 않아서 타입을 자체적으로 지정해주어야합니다.
+
+문제는 `Swiper Thumbs gallery loop`를 사용하기 위해서는 useState를 사용해야하는데 이를 사용하면서 Type을 지정해주지 않아서 발생한 문제였습니다.
+
+null 타입이 있어서 swiper에서 제공하는 타입을 사용하였습니다.
+
+```tsx title="swiper.tsx"
+// ... 내용 같음
+const [thumbsSwiper, setThumbsSwiper] = useState<SwiperClass | null>(null);
+// ... 내용 같음
+```
+
+사실 처음에는 문제가 없었습니다.
+
+하지만 해당 페이지 로딩시 간헐적으로 타입 에러가 발생하였습니다.
+
+문제는 Swiper에서 제공해주는 props의 thumbs의 타입 null의 문제로 인해 발생하였습니다.
+
+```tsx title="swiper.tsx"
+// ... 내용 같음
+<Swiper
+  style={{
+    '--swiper-navigation-color': '#fff',
+    '--swiper-pagination-color': '#fff',
+  }}
+  loop={true}
+  spaceBetween={10}
+  navigation={true}
+  thumbs={{ swiper: thumbsSwiper }} // <-- thumbs의 타입이 null이라서 발생한 문제
+  modules={[FreeMode, Navigation, Thumbs]}
+  className="mySwiper2"
+>
+  {/* ... More */}
+</Swiper>
+```
+
+해당 코드의 해결방법을 위해서 조건을 추가하여 `thumbs` 의 타입을 null이 아닌 경우에만 사용하도록 변경하였습니다.
+
+```tsx title="swiper.tsx"
+<Swiper
+  style={{
+    '--swiper-navigation-color': '#fff',
+    '--swiper-pagination-color': '#fff',
+  }}
+  loop={true}
+  spaceBetween={10}
+  navigation={true}
+  thumbs={{
+    // 이 부분을 변경
+    swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
+  }}
+  modules={[FreeMode, Navigation, Thumbs]}
+  className="mySwiper2"
+>
+  {/* ... More */}
+</Swiper>
+```
+
+위 코드를 입력하고 다시 페이지를 로딩하였을 때 타입 에러가 발생하지 않았습니다.
+
+해결!
+
+## 참고
+
+깃허브 - <MDXLink
+  href="https://github.com/nolimits4web/swiper/issues/5630"
+  title="github swiper issue"
+/>
+
+스택오버플로우 - <MDXLink
+  href="https://stackoverflow.com/questions/73046820/swiper-react-cannot-convert-undefined-or-null-to-object"
+  title="stackoverflow swiper issue"
+/>

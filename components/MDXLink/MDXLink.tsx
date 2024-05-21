@@ -1,4 +1,8 @@
 const MDXLink = ({ href, title }: { href: string; title: string }) => {
+  if (!href || !title) {
+    throw new Error('href와 title 속성은 필수입니다');
+  }
+
   return (
     <a
       href={href}
