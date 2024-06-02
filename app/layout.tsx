@@ -99,6 +99,7 @@ export default function RootLayout({
           name="naver-site-verification"
           content="e6a9b80e809cdb4abf3cd544886f44c7e4fc19da"
         />
+        <meta name="google-adsense-account" content="ca-pub-6828580975511725" />
       </head>
       <body className={cn('min-h-screen select-none', inter.className)}>
         <ThemeProvider>
