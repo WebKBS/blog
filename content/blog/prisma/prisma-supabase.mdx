@@ -1,0 +1,179 @@
+---
+title: Next.js prisma와 supabase 연동 기초 설정
+date: 2024-06-16
+description: Next.js를 사용해서 prisma와 supabase를 연동하는 방법을 알아보겠습니다.
+published: true
+tags:
+  - Next.js
+  - prisma
+  - supabase
+  - database
+thumbnail: './images/prisma-supabase.svg'
+---
+
+## 목차
+
+1. [Prisma와 Supabase의 간단한 소개](#prisma와-supabase의-간단한-소개)
+
+- 1.1 [Prisma란?](#prisma란)
+- 1.2 [Supabase란?](#supabase란)
+
+2. [Prisma와 Supabase 연동하기](#prisma와-supabase-연동하기)
+
+- 2.1 [Prisma 설정하기](#prisma-설정하기)
+- 2.2 [Supabase 설정하기](#supabase-설정하기)
+
+3. [Prisma에서 Supabase로 데이터 마이그레이션하기](#prisma에서-supabase로-데이터-마이그레이션하기)
+
+## 1. Prisma와 Supabase의 간단한 소개
+
+### 1.1 Prisma란?
+
+Prisma는 Node.js 및 TypeScript 애플리케이션을 위한 데이터베이스 도구입니다. Prisma는 ORM(Object-Relational Mapping)과 유사한 방식으로 작동하지만, 더 나은 성능과 유연성을 제공합니다. Prisma는 데이터베이스 스키마를 기반으로 TypeScript 타입을 생성하고, 이를 통해 타입 안전성을 보장합니다.
+
+Prisma의 주요 기능은 다음과 같습니다.
+
+- 데이터베이스 마이그레이션 : Prisma는 데이터베이스 스키마를 변경하고, 마이그레이션을 자동으로 처리할 수 있습니다.
+
+- 타입 안전성 : Prisma는 데이터베이스 스키마를 기반으로 TypeScript 타입을 생성하므로, 타입 안전성을 보장합니다.
+
+- 데이터 액세스 : Prisma는 데이터베이스에 대한 CRUD(Create, Read, Update, Delete) 작업을 지원합니다.
+
+### 1.2 Supabase란?
+
+Supabase는 오픈 소스 Firebase 대체제로, 데이터베이스, 인증, 스토리지, 실시간 데이터 스트리밍 등의 백엔드 기능을 제공하는 플랫폼입니다. Supabase는 PostgreSQL 데이터베이스와 오픈 소스 도구를 활용하여 Firebase와 유사한 개발 경험을 제공합니다.
+
+Supabase의 주요 기능은 다음과 같습니다.
+
+- 데이터베이스 : Supabase는 PostgreSQL 데이터베이스를 제공하며, 데이터베이스 스키마를 정의하고, 데이터를 저장하고, 쿼리할 수 있습니다.
+
+- 인증 : Supabase는 사용자 인증을 위한 다양한 옵션(이메일/패스워드, 소셜 로그인, 제3자 JWT 등)을 제공합니다.
+
+- 실시간 데이터 스트리밍: Supabase의 실시간 데이터 스트리밍 기능을 통해 클라이언트 애플리케이션은 데이터베이스의 변경 사항을 실시간으로 수신할 수 있습니다.
+
+- 파일 스토리지: Supabase는 Amazon S3 호환 파일 스토리지를 제공하여 파일 업로드 및 다운로드를 지원합니다.
+
+## 2. Prisma와 Supabase 연동하기
+
+> Next.js 설치는 간략히 정리하겠습니다.
+
+```bash title="bash"
+npx create-next-app@latest /프로젝트 이름/
+```
+
+### 2.1 Prisma 설정하기
+
+먼저, Prisma를 설치합니다.
+
+```bash title="bash"
+npm install @prisma/client
+```
+
+그리고, Prisma CLI를 사용하여 Prisma 프로젝트를 초기화합니다.
+
+```bash title="bash"
+npx prisma init
+```
+
+`npx prisma init` 명령을 실행하면, `schema.prisma` 파일과 `.env` 파일이 생성됩니다. `schema.prisma` 파일은 Prisma의 데이터베이스 스키마를 정의하는 파일이며, `.env` 파일은 환경 변수를 설정하는 파일입니다.
+
+<MDXImage src="./images/prisma-init.png" alt="prisma-init" width="320px" />
+
+```prisma title="schema.prisma"
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+```
+
+Prisma의 데이터베이스 연결 정보는 `DATABASE_URL` 환경 변수를 통해 설정합니다. 이때, `.env` 파일을 생성하여 환경 변수를 설정합니다.
+
+```bash title=".env"
+DATABASE_URL="postgresql://johndoe:randompassword@localhost:5432/mydb?schema=public"
+```
+
+.env 파일은 외부에 노출되면 안되는 중요한 정보를 저장하는 파일이므로, `.gitignore` 파일에 추가하여 깃허브에 올리지 않도록 설정합니다.
+
+```bash title=".gitignore"
+.env
+```
+
+이제 기본적인 prisma 설치 및 설정이 완료되었습니다.
+
+다음 단계에서는 Supabase를 설정하겠습니다.
+
+### 2.2 Supabase 설정하기
+
+Supabase를 사용하기 위해서는 먼저, Supabase 계정을 생성하고, 데이터베이스를 생성해야 합니다. Supabase 계정을 생성하려면, <MDXLink href="https://supabase.io/" title="Supabase" /> 홈페이지에 접속하여 계정을 생성합니다.
+
+Supabase 계정을 생성하고, Dashboard 이동하여 데이터베이스를 생성합니다.
+
+<MDXImage src="./images/supabase-dashboard.png" alt="supabase-dashboard" />
+
+New Project 버튼을 클릭하고, 프로젝트 이름 및 비밀번호를 설정하여 데이터베이스를 생성합니다.
+
+<MDXImage src="./images/supabase-new-project.png" alt="supabase-new-project" />
+
+> 리전은 데이터베이스의 위치를 나타내며, 서비스하기에 가장 가까운 리전을 선택하면 더 빠른 속도로 데이터베이스에 접속할 수 있습니다.
+
+> 비밀번호는 데이터베이스에 접속할 때 사용하는 비밀번호이므로, 안전한 비밀번호를 설정합니다.
+
+데이터베이스를 생성하면, 데이터베이스 URL이 생성되는데, 이 URL을 Prisma의 `DATABASE_URL` 환경 변수에 설정합니다.
+
+url은 첫 dashboard 화면에서 우측 초록색 버튼 connect를 클릭하면 uri 탭에서 확인할 수 있습니다.
+
+next js를 사용하고 있기에 uri 탭에서 url을 활용하여 DATABASE_URL을 설정합니다.
+
+url을 복사 후 .env 파일의 DATABASE_URL를 수정해 줍니다.
+
+```bash title=".env"
+DATABASE_URL="postgres://~~~[YOUR-PASSWORD]~~~"
+```
+
+url을 보면 YOUR-PASSWORD 부분이 있습니다. 데이터베이스 생성시 설정한 비밀번호를 입력해주시면 됩니다.
+
+이제 Supabase와 Prisma를 연동하는 설정이 완료되었습니다.
+
+## 3. Prisma에서 Supabase로 데이터 마이그레이션하기
+
+Prisma에서 Supabase로 데이터 마이그레이션을 하려면, Prisma의 데이터베이스 스키마를 Supabase의 데이터베이스 스키마로 변환해야 합니다. 이때, Prisma의 데이터베이스 스키마를 SQL 파일로 변환하고, 이 파일을 Supabase의 데이터베이스에 적용합니다.
+
+먼저, 간단한 Prisma의 데이터베이스 스키마를 정의합니다.
+
+```prisma title="schema.prisma"
+// ... 이전 코드 생략
+model Post {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String?
+  createdAt DateTime @default(now())
+}
+```
+
+위의 Prisma의 데이터베이스 스키마를 SQL 파일로 변환하려면, Prisma CLI를 사용합니다.
+
+```bash title="bash"
+npx prisma migrate dev --name init
+```
+
+`npx prisma migrate dev --name init` 명령을 실행하면, `migrations` 폴더에 마이그레이션 파일이 생성됩니다.
+
+시간이 길면 몇 분 정도 소요될 수 있습니다.
+
+이제 마이그레이션 파일을 SQL 파일로 변환하고, Supabase의 데이터베이스에 적용합니다.
+
+```bash title="bash"
+npx prisma migrate dev
+```
+
+`npx prisma migrate dev` 명령을 실행하면, Prisma의 데이터베이스 스키마를 SQL 파일로 변환하고, 이 파일을 Supabase의 데이터베이스에 적용합니다.
+
+이제 Prisma에서 Supabase로 데이터 마이그레이션을 완료했습니다.
+
+이제 Next.js에서 Prisma와 Supabase를 사용하여 데이터베이스를 연동할 수 있습니다.
+
+이상으로 Next.js를 사용해서 prisma와 supabase를 연동하는 방법을 알아보았습니다.
