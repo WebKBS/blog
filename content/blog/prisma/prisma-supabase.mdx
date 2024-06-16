@@ -25,6 +25,7 @@ thumbnail: './images/prisma-supabase.svg'
 
 3. [Prisma에서 Supabase로 데이터 마이그레이션하기](#prisma에서-supabase로-데이터-마이그레이션하기)
 4. [npx prisma migrate dev --name init 안될때](#npx-prisma-migrate-dev---name-init-안될때)
+5. [supabase에서 prisma로 데이터 마이그레이션하기](#supabase에서-prisma로-데이터-마이그레이션하기)
 
 ## 1. Prisma와 Supabase의 간단한 소개
 
@@ -180,8 +181,6 @@ npx prisma migrate dev
 
 이제 Next.js에서 Prisma와 Supabase를 사용하여 데이터베이스를 연동할 수 있습니다.
 
-이상으로 Next.js를 사용해서 prisma와 supabase를 연동하는 방법을 알아보았습니다.
-
 ## npx prisma migrate dev --name init 안될때
 
 > `npx prisma migrate dev --name init` 명령어 사용시 아무일도 일어나지 않는다면, 반드시 DATABASE_URL과 DIRECT_URL을 확인해주세요.
@@ -204,3 +203,19 @@ Supabase 프로젝트 홈 > 우측 상단 connect 버튼 클릭 > ORMs 탭에서
 ```bash title="bash"
 npx prisma migrate dev --name init
 ```
+
+## supabase에서 prisma로 데이터 마이그레이션하기
+
+만약 미리 supabase에서 데이터베이스를 생성하였다면, prisma에서 supabase로 데이터 마이그레이션을 진행할 수 있습니다.
+
+```bash title="bash"
+npx prisma db pull
+```
+
+다음으로 prisma client를 생성하기 위해 다음 명령어를 실행합니다.
+
+```bash title="bash"
+npx prisma migrate
+```
+
+이상으로 Next.js를 사용해서 prisma와 supabase를 연동하는 방법을 알아보았습니다.
