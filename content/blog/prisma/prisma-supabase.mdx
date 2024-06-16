@@ -24,6 +24,7 @@ thumbnail: './images/prisma-supabase.svg'
 - 2.2 [Supabase 설정하기](#supabase-설정하기)
 
 3. [Prisma에서 Supabase로 데이터 마이그레이션하기](#prisma에서-supabase로-데이터-마이그레이션하기)
+4. [npx prisma migrate dev --name init 안될때](#npx-prisma-migrate-dev---name-init-안될때)
 
 ## 1. Prisma와 Supabase의 간단한 소개
 
@@ -87,13 +88,15 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 ```
 
-Prisma의 데이터베이스 연결 정보는 `DATABASE_URL` 환경 변수를 통해 설정합니다. 이때, `.env` 파일을 생성하여 환경 변수를 설정합니다.
+Prisma의 데이터베이스 연결 정보는 `DATABASE_URL`, `DIRECT_URL`환경 변수를 통해 설정합니다. 이때, `.env` 파일을 생성하여 환경 변수를 설정합니다.
 
 ```bash title=".env"
 DATABASE_URL="postgresql://johndoe:randompassword@localhost:5432/mydb?schema=public"
+DIRECT_URL="postgres://...."
 ```
 
 .env 파일은 외부에 노출되면 안되는 중요한 정보를 저장하는 파일이므로, `.gitignore` 파일에 추가하여 깃허브에 올리지 않도록 설정합니다.
@@ -132,6 +135,7 @@ url을 복사 후 .env 파일의 DATABASE_URL를 수정해 줍니다.
 
 ```bash title=".env"
 DATABASE_URL="postgres://~~~[YOUR-PASSWORD]~~~"
+DIRECT_URL="postgres://~~~[YOUR-PASSWORD]~~~"
 ```
 
 url을 보면 YOUR-PASSWORD 부분이 있습니다. 데이터베이스 생성시 설정한 비밀번호를 입력해주시면 됩니다.
@@ -177,3 +181,26 @@ npx prisma migrate dev
 이제 Next.js에서 Prisma와 Supabase를 사용하여 데이터베이스를 연동할 수 있습니다.
 
 이상으로 Next.js를 사용해서 prisma와 supabase를 연동하는 방법을 알아보았습니다.
+
+## npx prisma migrate dev --name init 안될때
+
+> `npx prisma migrate dev --name init` 명령어 사용시 아무일도 일어나지 않는다면, 반드시 DATABASE_URL과 DIRECT_URL을 확인해주세요.
+
+Next.js에서는 프리즈마 마이그레이션시 DATABASE_URL, DIRECT_URL 두가지를 모두 설정해주어야 합니다.
+
+```bash title=".env"
+DATABASE_URL="postgresql://johndoe:randompassword@localhost:5432/mydb?schema=public"
+DIRECT_URL="postgres://...."
+```
+
+두 환경변수는 다음에서 확인할 수 있습니다.
+
+Supabase 프로젝트 홈 > 우측 상단 connect 버튼 클릭 > ORMs 탭에서 확인할 수 있습니다.
+
+<MDXImage src="./images/supabase-connect.png" alt="supabase-connect" />
+
+위 코드를 입력하고 다시 마이그레이션을 진행해주시면 정상적으로 마이그레이션이 진행됩니다.
+
+```bash title="bash"
+npx prisma migrate dev --name init
+```
