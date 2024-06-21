@@ -17,6 +17,7 @@ Next.js를 사용하면서 슬라이드를 구현할 때 여러가지 라이브�
 
 - [1. React Swiper 라이브러리 설치](#1-react-swiper-라이브러리-설치)
 - [2. Swiper 컴포넌트 구현](#2-swiper-컴포넌트-구현)
+  - [2.1 Swiper 옵션 추가](#21-swiper-옵션-추가)
 - [3. 이미지 컴포넌트 사용](#3-이미지-컴포넌트-사용)
 - [4. 이미지 size 경고 처리](#4-이미지-size-경고-처리)
 - [5. 이미지 최적화](#5-이미지-최적화)
@@ -34,3 +35,93 @@ npm install swiper
 ```
 
 swiper를 설치하셨다면 이제 swiper css를 위치에 맞게 import 해줍니다.
+
+swiper를 여러 페이지에서 사용할 것이라면 최상단 레이아웃에 import 해주시면 됩니다.
+
+> swiper css import 할때 각 컴포넌트 및 페이지에서 모두 import 할 경우 중복으로 인해 css가 꼬일 수 있으니 `app/layout.tsx`에 import 해주시는 것을 추천합니다.
+
+```tsx title="app/layout.tsx"
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+```
+
+## 2. Swiper 컴포넌트 구현
+
+Swiper 컴포넌트를 구현합니다.
+
+```tsx
+import { Swiper, SwiperSlide } from 'swiper/react';
+import SwiperCore, { Navigation, Pagination } from 'swiper';
+
+const SwiperComponent = () => {
+  return (
+    <Swiper>
+      <SwiperSlide>Slide 1</SwiperSlide>
+      <SwiperSlide>Slide 2</SwiperSlide>
+      <SwiperSlide>Slide 3</SwiperSlide>
+    </Swiper>
+  );
+};
+
+export default SwiperComponent;
+```
+
+### 2.1 Swiper 옵션 추가
+
+자주 사용하는 옵션 목록
+
+| 옵션명          | 설명                      |
+| --------------- | ------------------------- |
+| `spaceBetween`  | 슬라이드 사이의 간격      |
+| `slidesPerView` | 한번에 보여줄 슬라이드 수 |
+| `navigation`    | 이전/다음 버튼            |
+| `pagination`    | 페이지 버튼               |
+| `autoplay`      | 자동 슬라이드             |
+| `loop`          | 무한 슬라이드             |
+
+```tsx title="SwiperComponent.tsx"
+// ... 생략
+const SwiperComponent = () => {
+  return (
+    <Swiper
+      spaceBetween={20}
+      slidesPerView={3}
+      navigation
+      pagination={{ clickable: true }}
+      autoplay={{ delay: 2500 }}
+      loop
+    >
+      <SwiperSlide>Slide 1</SwiperSlide>
+      <SwiperSlide>Slide 2</SwiperSlide>
+      <SwiperSlide>Slide 3</SwiperSlide>
+    </Swiper>
+  );
+};
+```
+
+자세한 내용의 옵션은 <MDXLink href="https://swiperjs.com/react" title="React Swiper 공식홈페이지" />를 참고하세요.
+
+대략적인 Swiper 구현 방법은 위와 같습니다.
+
+이제 이미지 컴포넌트와 함께 사용시 이미지 최적화에 대해 알아보겠습니다.
+
+## 3. 이미지 컴포넌트 사용
+
+Swiper 컴포넌트 내부에 이미지 컴포넌트를 사용할 때 이미지 컴포넌트를 사용하여 이미지 최적화를 할 수 있습니다.
+
+> 우선 로컬 이미지 로드시 저는 이미지를 import 방식으로 사용하는 것을 추천드립니다.
+
+```tsx
+import exampleImage from './images/example.jpg';
+```
+
+제가 쓴 글 이미지 컴포넌트 가이드에 대해 확인해보세요.
+
+<MDXLink
+  href="https://recodelog.com/blog/next/image-component"
+  title="Next.js Image 컴포넌트 가이드"
+/>
+
+`import` 방식을 추천하는 이유는 import 방식은 이미지 정보를 객체로 불러와서 사용하기 때문에
+width와 height를 따로 지정해 줄 필요가 없으며, 하드코딩 방식으로 이미지 경로를 사용하는 방식보다 이미지 로드 파일을 분리하여 관리하기 편리합니다.
