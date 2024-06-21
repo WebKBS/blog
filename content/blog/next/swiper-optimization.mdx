@@ -18,9 +18,11 @@ Next.js를 사용하면서 슬라이드를 구현할 때 여러가지 라이브�
 - [1. React Swiper 라이브러리 설치](#1-react-swiper-라이브러리-설치)
 - [2. Swiper 컴포넌트 구현](#2-swiper-컴포넌트-구현)
   - [2.1 Swiper 옵션 추가](#21-swiper-옵션-추가)
+  - [2.2 Pagenation 추가](#22-pagenation-추가)
+  - [2.3 Navigation 추가](#23-navigation-추가)
 - [3. 이미지 컴포넌트 사용](#3-이미지-컴포넌트-사용)
+  - [3.1 Image 컴포넌트 사용시 문제점](#31-image-컴포넌트-사용시-문제점)
 - [4. 이미지 size 경고 처리](#4-이미지-size-경고-처리)
-- [5. 이미지 최적화](#5-이미지-최적화)
 
 <br />
 
@@ -80,7 +82,7 @@ export default SwiperComponent;
 | `autoplay`      | 자동 슬라이드             |
 | `loop`          | 무한 슬라이드             |
 
-```tsx title="SwiperComponent.tsx"
+```tsx title="components/SwiperComponent.tsx"
 // ... 생략
 const SwiperComponent = () => {
   return (
@@ -100,11 +102,129 @@ const SwiperComponent = () => {
 };
 ```
 
-자세한 내용의 옵션은 <MDXLink href="https://swiperjs.com/react" title="React Swiper 공식홈페이지" />를 참고하세요.
+### 2.2 Pagenation 추가
 
-대략적인 Swiper 구현 방법은 위와 같습니다.
+Swiper에 pagination을 추가하면 현재 슬라이드의 위치를 시각적으로 표시할 수 있습니다.
 
-이제 이미지 컴포넌트와 함께 사용시 이미지 최적화에 대해 알아보겠습니다.
+Pagination을 추가하는 방법은 다음과 같습니다:
+
+- 1. Swiper 옵션에 pagination 속성을 추가합니다.
+- 2. Pagination 모듈을 import합니다.
+
+```tsx title="components/SwiperComponent.tsx"
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination } from 'swiper/modules';
+
+const SwiperComponent = () => {
+  return (
+    <Swiper
+      modules={[Pagination]}
+      pagination={{
+        clickable: true, // 페이지네이션 클릭 가능하게 설정
+        type: 'bullets', // 불릿 타입으로 설정 (기본값) 'bullets', 'fraction', 'progressbar', 'custom' 중 선택
+        // dynamicBullets: true, // 동적 불릿 효과 적용 (선택사항)
+      }}
+    >
+      {/* SwiperSlides... */}
+    </Swiper>
+  );
+};
+```
+
+Pagination 옵션:
+
+- clickable: 페이지네이션 클릭 시 해당 슬라이드로 이동
+- type: 'bullets', 'fraction', 'progressbar', 'custom' 중 선택
+- dynamicBullets: 동적으로 불릿 크기가 변하는 효과 적용
+
+추가로 페이지네이션의 스타일을 커스터마이즈하려면 CSS를 사용할 수 있습니다:
+
+```css
+.swiper-pagination-bullet {
+  background: #000; /* 비활성 불릿 색상 */
+}
+
+.swiper-pagination-bullet-active {
+  background: #007aff; /* 활성 불릿 색상 */
+}
+```
+
+### 2.3 Navigation 추가
+
+Swiper에 navigation을 추가하면 이전/다음 버튼을 추가하여 사용자가 슬라이드를 수동으로 제어할 수 있게 해줍니다.
+
+Navigation을 추가하는 방법은 다음과 같습니다:
+
+- 1. Swiper 옵션에 navigation 속성을 추가합니다.
+- 2. Navigation 모듈을 import합니다.
+
+```tsx title="components/SwiperComponent.tsx"
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation } from 'swiper/modules';
+
+const SwiperComponent = () => {
+  return (
+    <Swiper
+      modules={[Navigation]}
+      navigation={{
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      }}
+    >
+      {/* SwiperSlides... */}
+      <div className="swiper-button-next"></div>
+      <div className="swiper-button-prev"></div>
+    </Swiper>
+  );
+};
+```
+
+Navigation 옵션:
+
+- nextEl: 다음 버튼 클래스명
+- prevEl: 이전 버튼 클래스명
+
+기본적으로 Swiper는 내장된 네비게이션 버튼 스타일을 제공하지만, 커스텀 스타일을 적용하고 싶다면 다음과 같이 CSS를 사용할 수 있습니다.
+
+```css
+.swiper-button-next,
+.swiper-button-prev {
+  color: #007aff; /* 버튼 색상 */
+}
+
+.swiper-button-next:after,
+.swiper-button-prev:after {
+  font-size: 24px; /* 버튼 크기 */
+}
+
+.swiper-button-disabled {
+  opacity: 0.35; /* 비활성 버튼 투명도 */
+  cursor: auto;
+  pointer-events: none;
+}
+```
+
+추가로, 커스텀 아이콘이나 이미지를 사용하고 싶다면 다음과 같이 할 수 있습니다.
+
+```tsx title="components/SwiperComponent.tsx"
+const SwiperComponent = () => {
+  return (
+    <Swiper
+      modules={[Navigation]}
+      navigation={{
+        nextEl: '.custom-next-button',
+        prevEl: '.custom-prev-button',
+      }}
+    >
+      {/* SwiperSlides... */}
+      <button className="custom-next-button">다음</button>
+      <button className="custom-prev-button">이전</button>
+    </Swiper>
+  );
+};
+```
+
+기타 자세한 내용의 옵션은 <MDXLink href="https://swiperjs.com/react" title="React Swiper 공식홈페이지" />를 참고하세요.
 
 ## 3. 이미지 컴포넌트 사용
 
@@ -125,3 +245,168 @@ import exampleImage from './images/example.jpg';
 
 `import` 방식을 추천하는 이유는 import 방식은 이미지 정보를 객체로 불러와서 사용하기 때문에
 width와 height를 따로 지정해 줄 필요가 없으며, 하드코딩 방식으로 이미지 경로를 사용하는 방식보다 이미지 로드 파일을 분리하여 관리하기 편리합니다.
+
+```tsx
+import Image from 'next/image';
+import exampleImage from './images/example.jpg';
+import exampleImage1 from './images/example1.jpg';
+import exampleImage2 from './images/example2.jpg';
+
+const SwiperComponent = () => {
+  return (
+    <Swiper
+    // .. 옵션 생략
+    >
+      <SwiperSlide>
+        <Image src={exampleImage} alt="example" />
+      </SwiperSlide>
+      <SwiperSlide>
+        <Image src={exampleImage1} alt="example" />
+      </SwiperSlide>
+      <SwiperSlide>
+        <Image src={exampleImage2} alt="example" />
+      </SwiperSlide>
+    </Swiper>
+  );
+};
+```
+
+반복을 제거하기 위해 배열로 이미지 정보를 관리하고 map 함수를 사용하여 이미지 컴포넌트를 렌더링 할 수 있습니다.
+
+```tsx title="components/SwiperComponent.tsx"
+import Image from 'next/image';
+import exampleImage from './images/example.jpg';
+import exampleImage1 from './images/example1.jpg';
+import exampleImage2 from './images/example2.jpg';
+
+const images = [exampleImage, exampleImage1, exampleImage2];
+
+const SwiperComponent = () => {
+  return (
+    <Swiper
+    // .. 옵션 생략
+    >
+      {images.map((image, index) => (
+        <SwiperSlide key={index}>
+          <Image src={image} alt="example" />
+        </SwiperSlide>
+      ))}
+    </Swiper>
+  );
+};
+```
+
+한 페이지에 많은 양의 import를 사용하면 복잡해질 수 있으니 이미지 export 파일을 별도로 만들어 관리할 수도 있습니다.
+
+```tsx title="images.ts"
+import exampleImage from './example.jpg';
+import exampleImage1 from './example1.jpg';
+import exampleImage2 from './example2.jpg';
+
+export const images = [exampleImage, exampleImage1, exampleImage2];
+```
+
+```tsx title="components/SwiperComponent.tsx"
+import Image from 'next/image';
+import { images } from './images';
+
+const SwiperComponent = () => {
+  return (
+    <Swiper
+    // .. 옵션 생략
+    >
+      {images.map((image, index) => (
+        <SwiperSlide key={index}>
+          <Image src={image} alt="example" />
+        </SwiperSlide>
+      ))}
+    </Swiper>
+  );
+};
+```
+
+### 3.1 Image 컴포넌트 사용시 문제점
+
+이미지 컴포넌트를 사용하면 이미지가 늦게 뜨는 현상이 발생할 수 있습니다.
+
+Next.js 이미지 컴포넌트는 기본적으로 lazy loading이 default로 설정되어 있고, lazy loading으로 인해 이미지는 화면에 나타날 때 로드되기 때문에 이미지가 늦게 뜨는 현상이 발생할 수 있습니다.
+
+간혹 이미지가 늦게 떠서 사용자에게 이미지가 늦게 뜨는 현상이 발생할 수 있으니 `loading="eager"` 옵션을 사용하여 이미지를 미리 로드하도록 설정하여 이를 해결할 수 있습니다.
+
+> `loading="eager"` 옵션은 이미지를 미리 로드하여 사용자에게 이미지가 늦게 뜨는 현상을 해결할 수 있습니다.
+
+```tsx
+<Image src={image} alt="example" loading="eager" />
+```
+
+> priority 속성은 우선적 로드를 위해 사용되는 속성이며, `loading="eager"`와 함께 사용하면 더욱 빠른 이미지 로드를 기대할 수 있습니다.
+
+> 단, priority 속성만 사용한다면 이미지가 늦게 뜨는 현상을 해결할 수 없습니다. 반드시 `loading="eager"` 옵션을 사용해야 합니다.
+
+```tsx
+<Image src={image} alt="example" priority loading="eager" />
+```
+
+next js와 swiper 슬라이드 사용시 이미지가 늦게뜨는 현상을 해결하기 위해 `loading="eager"` 옵션을 반드시 사용하는것이 좋습니다.
+
+전체 코드 예시는 다음과 같습니다.
+
+```tsx title="components/SwiperComponent.tsx"
+import Image from 'next/image';
+import { images } from './images';
+
+const SwiperComponent = () => {
+  return (
+    <Swiper
+    // .. 옵션 생략
+    >
+      {images.map((image, index) => (
+        <SwiperSlide key={index}>
+          <Image src={image} alt="example" loading="eager" />
+        </SwiperSlide>
+      ))}
+    </Swiper>
+  );
+};
+```
+
+## 4. 이미지 size 경고 처리
+
+Next.js에서 이미지 컴포넌트를 사용할 때 이미지 사이즈 경고가 발생할 수 있습니다.
+
+예를들어 Swiper 옵션 중 `slidesPerView`를 사용하여 한번에 보여줄 슬라이드 수를 여러개 설정하면 이미지 사이즈 경고가 발생할 수 있습니다.
+
+아래 이미지처럼 `slidesPerView`를 4개로 설정한 경우 이미지 사이즈 경고가 발생할 수 있습니다.
+
+<MDXImage src="./images/slide.png" alt="Swiper 예시" />
+
+이미지 sizes 옵션을 사용하지 않고 위와 같은 슬라이드 구현 시 브라우저 콘솔에 다음과 같은 경고 메세지가 나타납니다.
+
+Image with src "이미지 주소" has "fill" but is missing "sizes" prop. Please add it to improve page performance.
+
+이미지 사이즈 경고를 해결하기 위해 `sizes` 속성을 추가하여 이미지 사이즈를 지정해주어야 합니다.
+
+```tsx
+<Image src={image} alt="example" loading="eager" sizes="25vw" />
+```
+
+sizes의 값은 viewport width 단위로 지정하며, 이미지 사이즈에 따라 적절한 값을 지정해주어야 합니다. 예시 이미지의 경우 4개의 슬라이드를 보여주기 때문에 25vw로 지정하였습니다.
+
+만약 breakpoint에 따라 이미지 사이즈를 다르게 지정하고 싶다면 다음과 같이 media query를 사용하여 지정할 수 있습니다.
+
+```tsx
+<Image
+  src={image}
+  alt="example"
+  loading="eager"
+  sizes="(max-width: 768px) 100vw, 50vw" // 768px 이하일 때 100vw, 그 이상일 때 50vw
+/>
+```
+
+이미지 사이즈 경고를 해결하기 위해 `sizes` 속성을 추가하여 이미지 사이즈를 지정해주면 이미지 사이즈 경고를 해결할 수 있습니다.
+
+그리고, `sizes`속성을 사용하여 이미지 사이즈를 지정하면 브라우저가 이미지를 렌더링할 때 더욱 효율적으로 처리할 수 있어 페이지 성능을 향상시킬 수 있습니다.
+
+<br />
+이상으로 Next.js에서 React Swiper 라이브러리를 사용하는 방법과 이미지 컴포넌트를
+사용하여 이미지 최적화하는 방법을 알아보았습니다.
