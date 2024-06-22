@@ -1,33 +1,13 @@
-"use client";
+import { cn } from "@/lib/utils";
+import Width from "@/components/DeviceView/Width";
+import Height from "@/components/DeviceView/Height";
 
-import React, { useEffect, useState } from "react";
-import { throttle } from "lodash";
-
-const DeviceSize = () => {
-  const [size, setSize] = useState({ width: 0, height: 0 });
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const handleResize = throttle(() => {
-        setSize({
-          width: window.outerWidth,
-          height: window.outerHeight,
-        });
-      }, 500);
-
-      window.addEventListener("resize", handleResize);
-      handleResize(); // 초기 크기 설정
-      return () => {
-        window.removeEventListener("resize", handleResize);
-      };
-    }
-  }, []);
-
+const DeviceSize = ({ className }: { className?: string }) => {
   return (
-    <div className="flex items-center justify-center gap-1">
-      <p>{size.width}</p>
+    <div className={cn("flex items-center justify-center gap-1", className)}>
+      <Width />
       <span>x</span>
-      <p>{size.height}</p>
+      <Height />
     </div>
   );
 };
