@@ -17,6 +17,7 @@ export default function Home() {
       <h1 className="relative text-4xl md:text-6xl lg:text-8xl font-extrabold uppercase mb-12 md:mb-32 md:mt-10 recodelog">
         Recode Log
       </h1>
+
       {/*<h2 className="mb-6 text-sm">*/}
       {/*  RecodeLog는 Recode(기록)과 Log(로그)의 합성 및<br />*/}
       {/*  Re + Code + Log의 합성어로 다시쓰는 코드 및 기록하는 블로그입니다.*/}
