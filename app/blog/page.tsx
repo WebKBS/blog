@@ -1,11 +1,12 @@
-import { posts } from '#site/content';
-import LinkCard from '@/components/LinkCard';
-import { sortPosts } from '@/lib/utils';
-import TagsCard from './_components/TagsCard';
+import { posts } from "#site/content";
+import LinkCard from "@/components/LinkCard";
+import { sortPosts } from "@/lib/utils";
+import TagsCard from "./_components/TagsCard";
+import Link from "next/link";
 
 export const metadata = {
-  title: 'BLOG',
-  description: '기술 블로그',
+  title: "BLOG",
+  description: "기술 블로그",
 };
 
 const BlogPage = ({ searchParams }: { searchParams: { tag?: string } }) => {
@@ -13,14 +14,16 @@ const BlogPage = ({ searchParams }: { searchParams: { tag?: string } }) => {
 
   const tagParam = searchParams.tag;
   const tagPage = sortedPosts.filter((post) =>
-    post.tags.includes(tagParam || '')
+    post.tags.includes(tagParam || ""),
   );
 
   // console.log(posts.length);
 
   return (
     <section className="pb-24 pt-12 max-w-screen-lg px-6 mx-auto">
-      <h1 className="text-2xl font-semibold">기술 블로그</h1>
+      <h1 className="text-2xl font-semibold hover:underline">
+        <Link href={"/blog"}>기술 블로그</Link>
+      </h1>
       <TagsCard />
       <ul className="flex flex-col gap-4">
         {tagPage.length > 0
