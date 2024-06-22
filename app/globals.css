@@ -47,14 +47,45 @@
     --input: 215 27.9% 16.9%;
     --ring: 263.4 70% 50.4%;
   }
+
+
 }
 
 @layer base {
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
+  }
+
+  .recodelog:after {
+    content: "Recode Log";
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: rotateX(180deg);
+    line-height: 0.9em;
+    transform-origin: bottom;
+    background: linear-gradient(0deg, #000000 0, transparent 80%);
+    -webkit-background-clip: text;
+    color: transparent;
+    opacity: 0.5;
+  }
+
+  .dark .recodelog:after {
+    content: "Recode Log";
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: rotateX(180deg);
+    line-height: 0.9em;
+    transform-origin: bottom;
+    background: linear-gradient(0deg, #ffffff 0, transparent 80%);
+    -webkit-background-clip: text;
+    color: transparent;
+    opacity: 0.5;
   }
 }
 
@@ -65,3 +96,6 @@ html {
 a {
   word-break: break-all;
 }
+
+
+
