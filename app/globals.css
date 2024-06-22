@@ -72,6 +72,7 @@
     -webkit-background-clip: text;
     color: transparent;
     opacity: 0.5;
+
   }
 
   .dark .recodelog:after {
@@ -87,6 +88,8 @@
     color: transparent;
     opacity: 0.5;
   }
+
+  
 }
 
 html {
