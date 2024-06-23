@@ -2,7 +2,7 @@ export const defaultData = {
   title: "RecodeLog",
   description: "나만의 개발 블로그, 기록 또 기록",
   url: "https://recodelog.com",
-  author: "dev Kang",
+  author: "WebKBS",
   email: "dev21c2020@gmail.com",
   links: {
     github: "https://github.com/WebKBS",

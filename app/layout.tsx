@@ -1,89 +1,89 @@
-import Footer from '@/components/Footer';
-import Header from '@/components/Header';
-import SideMenu from '@/components/SideMenu';
-import { defaultData } from '@/config/defaultData';
-import { cn } from '@/lib/utils';
-import { ThemeProvider } from '@/providers/ThemeProvider';
-import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google';
-import { Analytics } from '@vercel/analytics/react';
-import { SpeedInsights } from '@vercel/speed-insights/next';
-import type { Metadata, Viewport } from 'next';
-import { Inter } from 'next/font/google';
-import './globals.css';
+import Footer from "@/components/Footer";
+import Header from "@/components/Header";
+import SideMenu from "@/components/SideMenu";
+import { defaultData } from "@/config/defaultData";
+import { cn } from "@/lib/utils";
+import { ThemeProvider } from "@/providers/ThemeProvider";
+import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import type { Metadata, Viewport } from "next";
+import { Inter } from "next/font/google";
+import "./globals.css";
 import React from "react";
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   //
   title: {
-    default: 'RecodeLog',
-    template: '%s - RecodeLog',
+    default: "RecodeLog",
+    template: "%s - RecodeLog",
   },
-  description: '나만의 개발 블로그, 기록 또 기록',
+  description: "나만의 개발 블로그, 기록 또 기록",
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_APP_URL ??
       defaultData.url ??
-      `http:localhost:${process.env.PORT || 3000}`
+      `http:localhost:${process.env.PORT || 3000}`,
   ),
-  robots: 'index, follow',
+  robots: "index, follow",
   formatDetection: {
     telephone: false,
   },
 
   appleWebApp: {
     capable: true,
-    title: 'RecodeLog',
-    statusBarStyle: 'default',
-    startupImage: '/apple-icon.png',
+    title: "RecodeLog",
+    statusBarStyle: "default",
+    startupImage: "/apple-icon.png",
   },
 
   openGraph: {
-    title: 'RecodeLog',
-    description: '나만의 개발 블로그, 기록 또 기록',
-    type: 'website',
+    title: "RecodeLog",
+    description: "나만의 개발 블로그, 기록 또 기록",
+    type: "website",
     url: defaultData.url,
-    siteName: 'RecodeLog',
+    siteName: "RecodeLog",
 
     images: [
       {
-        url: '/icon.png',
-        alt: 'RecodeLog',
+        url: "/icon.png",
+        alt: "RecodeLog",
       },
     ],
   },
   twitter: {
-    card: 'summary_large_image',
-    site: '@recodelog',
-    creator: '@recodelog',
-    title: 'RecodeLog',
-    description: '나만의 개발 블로그, 기록 또 기록',
+    card: "summary_large_image",
+    site: "@recodelog",
+    creator: "@recodelog",
+    title: "RecodeLog",
+    description: "나만의 개발 블로그, 기록 또 기록",
 
     images: [
       {
-        url: '/icon.png',
-        alt: 'RecodeLog',
+        url: "/icon.png",
+        alt: "RecodeLog",
       },
     ],
   },
 
-  generator: 'Next.js', // 웹사이트를 생성한 소프트웨어의 이름을 나타냅니다.
-  applicationName: 'Next.js', // 웹사이트를 실행하는 소프트웨어의 이름을 나타냅니다.
+  generator: "Next.js", // 웹사이트를 생성한 소프트웨어의 이름을 나타냅니다.
+  applicationName: "Next.js", // 웹사이트를 실행하는 소프트웨어의 이름을 나타냅니다.
 
   authors: [
-    { name: 'recodelog' },
-    { name: 'recodelog', url: 'https://recodelog.com' },
+    { name: "recodelog" },
+    { name: "recodelog", url: "https://recodelog.com" },
   ], // 웹사이트의 저자를 나타냅니다.
-  creator: 'dev Kang', // 웹사이트의 제작자를 나타냅니다.
-  publisher: 'dev Kang', // 웹사이트의 발행자를 나타냅니다.
+  creator: "WebKBS", // 웹사이트의 제작자를 나타냅니다.
+  publisher: "WebKBS", // 웹사이트의 발행자를 나타냅니다.
 };
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
     {
-      media: '(prefers-color-scheme: dark)',
-      color: '#000000',
+      media: "(prefers-color-scheme: dark)",
+      color: "#000000",
     },
   ],
 };
@@ -103,7 +103,7 @@ export default function RootLayout({
         />
         <meta name="google-adsense-account" content="ca-pub-6828580975511725" />
       </head>
-      <body className={cn('min-h-screen select-none', inter.className)}>
+      <body className={cn("min-h-screen select-none", inter.className)}>
         <ThemeProvider>
           <div className="min-h-dvh flex flex-col">
             <Header />
