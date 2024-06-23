@@ -16,3 +16,145 @@ Next.js 14.1 버전 이상에서 제공하는 getImageProps 함수를 사용하�
 
 > Next.js 14.1 버전 이상에서만 사용 가능합니다. 반드시 확인하세요!
 
+
+웹 개발에서 이미지 최적화는 성능과 사용자 경험을 향상시키는 핵심 요소입니다. Next.js 14.1 버전부터 도입된 `getImageProps` 함수는 반응형 이미지 구현을 더욱 쉽고 효율적으로 만들어 줍니다. 이 블로그 포스트에서는 `getImageProps`를 활용하여 다양한 디바이스와 화면 크기에 최적화된 이미지를 제공하는 방법을 자세히 알아보겠습니다.
+
+## getImageProps 함수 소개
+
+`getImageProps`는 Next.js에서 제공하는 유틸리티 함수로, `<Image/>` 컴포넌트의 기능을 더욱 유연하게 활용할 수 있게 해줍니다. 이 함수를 사용하면 HTML의 `<picture>` 요소와 결합하여 강력한 반응형 이미지 솔루션을 구축할 수 있습니다.
+
+### 주요 특징:
+- 다양한 화면 크기에 대응하는 이미지 소스 생성
+- 자동 이미지 최적화 (크기 조정, 포맷 변환)
+- 레이아웃 시프트 방지를 위한 사이즈 계산
+
+## 기본 구현 방법
+
+`getImageProps`를 사용한 기본적인 반응형 이미지 구현 방법은 다음과 같습니다:
+
+```tsx
+import { getImageProps } from 'next/image'
+
+export default function ResponsiveImage() {
+  const commonProps = { alt: '반응형 이미지 예제', sizes: '100vw' }
+
+  const {
+    props: { srcSet: desktopSrcSet },
+  } = getImageProps({
+    ...commonProps,
+    width: 1440,
+    height: 800,
+    src: '/images/desktop.jpg',
+  })
+
+  const {
+    props: { srcSet: tabletSrcSet },
+  } = getImageProps({
+    ...commonProps,
+    width: 768,
+    height: 1024,
+    src: '/images/tablet.jpg',
+  })
+
+  const {
+    props: { srcSet: mobileSrcSet, ...imgProps },
+  } = getImageProps({
+    ...commonProps,
+    width: 375,
+    height: 667,
+    src: '/images/mobile.jpg',
+  })
+
+  return (
+    <picture>
+      <source media="(min-width: 1024px)" srcSet={desktopSrcSet} />
+      <source media="(min-width: 768px)" srcSet={tabletSrcSet} />
+      <img {...imgProps} srcSet={mobileSrcSet} style={{ width: '100%', height: 'auto' }} />
+    </picture>
+  )
+}
+```
+
+이 예제에서는 데스크톱, 태블릿, 모바일 각각에 대한 이미지를 정의하고, 미디어 쿼리를 통해 적절한 이미지를 선택하도록 구현했습니다.
+
+getImageProps는 `<Image/>` 컴포넌트 속성과 비슷한 객체를 받습니다.
+
+- src: 이미지 경로
+- width: 이미지 너비
+- height: 이미지 높이
+- quality: 이미지 품질
+- alt: 대체 텍스트
+- sizes: 이미지 크기
+
+picture 태그의 속성은 다음과 같습니다.
+
+- `<source>`: 미디어 쿼리에 따라 다른 이미지 제공
+- media: 미디어 쿼리
+- srcSet: 이미지 경로
+- `<img>`: 기본 이미지
+
+const common은 공통 속성을 정의한 객체입니다. `...` 스프레드 연산자를 사용하여 getImageProps에 공통 값을 전달합니다.
+
+
+`src` 이미지 경로는 import 구문을 사용하여 이미지를 불러올 수 있습니다.
+
+이전에 설명한 Image 컴포넌트 처럼 import 구문을 사용하여 이미지를 불러올 때 width와 height 속성을 지정하지 않고 객체로 가져온 이미지 정보를 대신하여 사용할 수 있습니다.
+
+참고: <MDXLink title="Next.js Image 컴포넌트 가이드" href="/blog/next/image-component"/>
+
+```tsx
+// ... 생략
+import desktop from '/desktop.jpg'
+import tablet from '/tablet.jpg'
+import mobile from '/mobile.jpg'
+
+export default function Home() {
+  const common = { alt: 'Art Direction Example', sizes: '100vw' }
+  const {
+    props: { srcSet: desktop },
+  } = getImageProps({
+    ...common,
+    quality: 80,
+    src: desktop,
+  })
+    const {
+      props: { srcSet: tablet, ...rest },
+    } = getImageProps({
+      ...common,
+      quality: 70,
+      src: tablet,
+    })
+  const {
+    props: { srcSet: mobile, ...rest },
+  } = getImageProps({
+    ...common,
+    quality: 70,
+    src: mobile,
+  })
+
+  return (
+    <picture>
+      <source media="(min-width: 1000px)" srcSet={desktop} />
+      <source media="(min-width: 500px)" srcSet={tablet} />
+      <source media="(min-width: 500px)" srcSet={mobile} />
+      <img {...rest} style={{ width: '100%', height: 'auto' }} />
+    </picture>
+  )
+}
+```
+
+
+
+이렇게 Next.js에서 지원하는 getImageProps를 사용하여 반응형 이미지를 구현할 수 있습니다.
+
+## 성능 최적화 팁
+
+적절한 sizes 속성 사용: 이미지가 실제로 표시될 크기를 정확히 지정하여 불필요한 리소스 낭비를 방지합니다.
+Lazy Loading 활용: 화면 밖의 이미지는 지연 로딩하여 초기 로딩 속도를 개선합니다.
+이미지 CDN 활용: Next.js의 이미지 최적화 기능과 함께 CDN을 사용하여 전세계 사용자에게 빠른 이미지 전송을 보장합니다.
+
+## 주의사항 및 제한 사항
+
+getImageProps는 Next.js 14.1 이상 버전에서만 사용 가능합니다.
+서버 사이드 렌더링 환경에서는 일부 기능에 제한이 있을 수 있으므로 주의가 필요합니다.
+외부 이미지 URL을 사용할 경우 next.config.js에 해당 도메인을 추가해야 합니다.
