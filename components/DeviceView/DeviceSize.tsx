@@ -1,13 +1,13 @@
 import { cn } from "@/lib/utils";
-import Width from "@/components/DeviceView/Width";
-import Height from "@/components/DeviceView/Height";
+import InnerWidth from "@/components/DeviceView/InnerWidth";
+import InnerHeight from "@/components/DeviceView/InnerHeight";
 
 const DeviceSize = ({ className }: { className?: string }) => {
   return (
     <div className={cn("flex items-center justify-center gap-1", className)}>
-      <Width />
+      <InnerWidth />
       <span>x</span>
-      <Height />
+      <InnerHeight />
     </div>
   );
 };

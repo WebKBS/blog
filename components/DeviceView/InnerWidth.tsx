@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { throttle } from "lodash";
 
-const Width = ({ className }: { className?: string }) => {
+const InnerWidth = ({ className }: { className?: string }) => {
   const [width, setWidth] = useState(0);
 
   useEffect(() => {
@@ -23,4 +23,4 @@ const Width = ({ className }: { className?: string }) => {
   return <p className={className}>{width}</p>;
 };
 
-export default Width;
+export default InnerWidth;

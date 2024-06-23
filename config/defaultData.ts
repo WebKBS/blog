@@ -12,7 +12,7 @@ export const defaultData = {
 export const navigationData = [
   { name: "home", href: "/" },
   { name: "blog", href: "/blog" },
-  // { name: "device", href: "/device" },
+  { name: "device", href: "/device" },
   // { name: 'life', href: '/life' },
 ];
 
