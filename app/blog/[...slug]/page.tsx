@@ -1,16 +1,17 @@
-import { posts } from '#site/content';
-import ScrollProgress from '@/components/ScrollProgress';
-import ShareButton from '@/components/ShareButton';
-import { MDXContent } from '@/components/mdx-content';
-import { Badge } from '@/components/ui/badge';
+import { posts } from "#site/content";
+import ScrollProgress from "@/components/ScrollProgress";
+import ShareButton from "@/components/ShareButton";
+import { MDXContent } from "@/components/mdx-content";
+import { Badge } from "@/components/ui/badge";
 
-import { defaultData } from '@/config/defaultData';
-import { formatDate } from '@/lib/utils';
-import '@/styles/mdx.css';
-import { Metadata } from 'next';
-import Link from 'next/link';
-import { notFound } from 'next/navigation';
-import Crumb from '../_components/Crumb';
+import { defaultData } from "@/config/defaultData";
+import { formatDate } from "@/lib/utils";
+import "@/styles/mdx.css";
+import { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import Crumb from "../_components/Crumb";
+import ScrollUpButton from "@/components/Buttons/ScrollUpButton";
 
 interface BlogDetailProps {
   params: {
@@ -18,14 +19,12 @@ interface BlogDetailProps {
   };
 }
 
-const getPost = async (params: BlogDetailProps['params']) => {
-  const slug = params?.slug?.join('/');
+const getPost = async (params: BlogDetailProps["params"]) => {
+  const slug = params?.slug?.join("/");
   // console.log('slug: ', slug);
-  const post = posts.find((post) => post.permalink === slug);
-
   // console.log('내부: ', post);
 
-  return post;
+  return posts.find((post) => post.permalink === slug);
 };
 
 export async function generateMetadata({
@@ -38,8 +37,8 @@ export async function generateMetadata({
   }
 
   const ogSearchParams = new URLSearchParams();
-  ogSearchParams.set('title', post.title);
-  ogSearchParams.set('description', post.description);
+  ogSearchParams.set("title", post.title);
+  ogSearchParams.set("description", post.description);
 
   return {
     title: post.title,
@@ -48,7 +47,7 @@ export async function generateMetadata({
     openGraph: {
       title: post.title,
       description: post.description,
-      type: 'article',
+      type: "article",
       url: post.slug,
       images: {
         url: `/api/og?${ogSearchParams.toString()}`,
@@ -76,7 +75,7 @@ export const generateStaticParams = async () => {
   return posts
     .filter((post) => post.published)
     .map((post) => ({
-      slug: post.permalink.split('/'),
+      slug: post.permalink.split("/"),
     }));
 };
 
@@ -101,16 +100,17 @@ const BlogDetail = async ({ params: { slug } }: BlogDetailProps) => {
   // console.log('post: ', `https://recodelog.com/${post.slug}`);
 
   const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'BlogPosting',
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
     name: post.title,
     description: post.description,
-    datePublished: new Date(post.date).toISOString().split('T')[0],
+    datePublished: new Date(post.date).toISOString().split("T")[0],
     url: `https://recodelog.com/blog/${slug}`,
   };
 
   return (
     <>
+      <ScrollUpButton />
       <Crumb title={post.title} />
       <section className="pb-24 pt-4 max-w-screen-lg px-6 mx-auto prose dark:prose-invert select-none">
         <script
