@@ -12,6 +12,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Crumb from "../_components/Crumb";
 import ScrollUpButton from "@/components/Buttons/ScrollUpButton";
+import { WithContext, BlogPosting } from "schema-dts";
 
 interface BlogDetailProps {
   params: {
@@ -99,12 +100,25 @@ const BlogDetail = async ({ params: { slug } }: BlogDetailProps) => {
 
   // console.log('post: ', `https://recodelog.com/${post.slug}`);
 
-  const jsonLd = {
+  const jsonLd: WithContext<BlogPosting> = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
-    name: post.title,
-    description: post.description,
+    headline: post.title,
     datePublished: new Date(post.date).toISOString().split("T")[0],
+    dateModified: new Date(post.date).toISOString().split("T")[0],
+    author: {
+      "@type": "Person",
+      name: "WebKBS",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Recode Log",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://recodelog.com/logo.png",
+      },
+    },
+    description: post.description,
     url: `https://recodelog.com/blog/${slug}`,
   };
 

@@ -4,6 +4,7 @@ import InnerWidth from "@/components/DeviceView/InnerWidth";
 import InnerHeight from "@/components/DeviceView/InnerHeight";
 import OuterWidth from "@/components/DeviceView/OuterWidth";
 import OuterHeight from "@/components/DeviceView/OuterHeight";
+import { WebPage, WithContext } from "schema-dts";
 
 export const metadata = {
   title: "DEVICE SIZE CHECK",
@@ -11,8 +12,35 @@ export const metadata = {
 };
 
 const DevicePage = () => {
+  const jsonLd: WithContext<WebPage> = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: "DEVICE SIZE CHECK",
+    description: "현재 브라우저의 크기 확인. Viewport, Window 크기 확인",
+    url: "https://recodelog.com/device",
+    inLanguage: "ko-KR",
+    datePublished: "2024-06-25",
+    dateModified: new Date().toISOString().split("T")[0],
+    author: {
+      "@type": "Person",
+      name: "WebKBS",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Recode Log",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://recodelog.com/logo.png",
+      },
+    },
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <DeviceView />
       <section className="pb-24 pt-12 max-w-screen-lg px-6 mx-auto">
         <h1 className="text-2xl font-semibold">브라우저 크기 확인</h1>
