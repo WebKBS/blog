@@ -8,7 +8,7 @@ const MDXLink = ({ href, title }: { href: string; title: string }) => {
       href={href}
       target={href.includes('recodelog.com') ? '_self' : '_blank'}
       rel={href.includes('recodelog.com') ? '' : 'noopener noreferrer'}
-      className="text-slate-400 italic bg-secondary px-2 py-1 rounded-md"
+      className="text-slate-400 italic bg-secondary px-2 py-1 rounded-md inline-block mb-2"
     >
       `{title}`
     </a>
