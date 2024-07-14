@@ -1,36 +1,35 @@
-import React from "react";
-import DeviceView from "@/components/DeviceView";
-import InnerWidth from "@/components/DeviceView/InnerWidth";
-import InnerHeight from "@/components/DeviceView/InnerHeight";
-import OuterWidth from "@/components/DeviceView/OuterWidth";
-import OuterHeight from "@/components/DeviceView/OuterHeight";
-import { WebPage, WithContext } from "schema-dts";
+import DeviceView from '@/components/DeviceView';
+import InnerHeight from '@/components/DeviceView/InnerHeight';
+import InnerWidth from '@/components/DeviceView/InnerWidth';
+import OuterHeight from '@/components/DeviceView/OuterHeight';
+import OuterWidth from '@/components/DeviceView/OuterWidth';
+import { WebPage, WithContext } from 'schema-dts';
 
 export const metadata = {
-  title: "DEVICE SIZE CHECK",
-  description: "현재 브라우저의 크기 확인. Viewport, Window 크기 확인",
+  title: '브라우저 Viewport 사이즈 확인',
+  description: '브라우저 Viewport 사이즈 확인. Viewport, Window 사이즈 확인',
 };
 
 const DevicePage = () => {
   const jsonLd: WithContext<WebPage> = {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    name: "DEVICE SIZE CHECK",
-    description: "현재 브라우저의 크기 확인. Viewport, Window 크기 확인",
-    url: "https://recodelog.com/device",
-    inLanguage: "ko-KR",
-    datePublished: "2024-06-25",
-    dateModified: new Date().toISOString().split("T")[0],
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: '브라우저 Viewport 사이즈 확인',
+    description: '브라우저 Viewport 사이즈 확인. Viewport, Window 사이즈 확인',
+    url: 'https://recodelog.com/device',
+    inLanguage: 'ko-KR',
+    datePublished: '2024-06-25',
+    dateModified: new Date().toISOString().split('T')[0],
     author: {
-      "@type": "Person",
-      name: "WebKBS",
+      '@type': 'Person',
+      name: 'WebKBS',
     },
     publisher: {
-      "@type": "Organization",
-      name: "Recode Log",
+      '@type': 'Organization',
+      name: 'Recode Log',
       logo: {
-        "@type": "ImageObject",
-        url: "https://recodelog.com/logo.png",
+        '@type': 'ImageObject',
+        url: 'https://recodelog.com/logo.png',
       },
     },
   };
@@ -43,32 +42,36 @@ const DevicePage = () => {
       />
       <DeviceView />
       <section className="pb-24 pt-12 max-w-screen-lg px-6 mx-auto">
-        <h1 className="text-2xl font-semibold">브라우저 크기 확인</h1>
+        <h1 className="text-2xl font-semibold">
+          브라우저 Viewport 사이즈 확인
+        </h1>
         <p className="mt-4 text-lg text-zinc-500 mb-6">
-          현재 브라우저의 크기입니다.
+          현재 브라우저의 Viewport 사이즈입니다.
         </p>
         <div className="space-y-6">
           <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-6 rounded-lg shadow-md text-white">
-            <h2 className="text-xl font-bold mb-4">브라우저 뷰포트 크기</h2>
+            <h2 className="text-xl font-bold mb-4">브라우저 Viewport 사이즈</h2>
             <p className="mb-4">
-              브라우저 뷰포트 크기는 웹 페이지가 표시되는 영역의 크기를
+              브라우저 Viewport 사이즈는 웹 페이지가 표시되는 영역의 사이즈를
               의미합니다. 여기에는 주소 표시줄, 즐겨찾기 바, 개발자 도구 등이
               포함되지 않습니다.
             </p>
             <div className="flex items-center space-x-2">
-              <p className="flex-shrink-0">브라우저 뷰포트 width:</p>
+              <p className="flex-shrink-0">브라우저 Viewport width:</p>
               <InnerWidth />
             </div>
             <div className="flex items-center space-x-2 mt-2">
-              <p className="flex-shrink-0">브라우저 뷰포트 height:</p>
+              <p className="flex-shrink-0">브라우저 Viewport height:</p>
               <InnerHeight />
             </div>
           </div>
 
           <div className="bg-gradient-to-r from-green-500 to-teal-600 p-6 rounded-lg shadow-md text-white">
-            <h2 className="text-xl font-bold mb-4">브라우저 전체 창의 크기</h2>
+            <h2 className="text-xl font-bold mb-4">
+              브라우저 전체 창의 사이즈
+            </h2>
             <p className="mb-4">
-              브라우저 전체 창의 크기는 브라우저의 전체 크기를 의미합니다.
+              브라우저 전체 창의 사이즈는 브라우저의 전체 사이즈를 의미합니다.
               여기에는 브라우저의 경계선, 스크롤바, 주소 표시줄 등이 포함됩니다.
             </p>
             <div className="flex items-center space-x-2">
