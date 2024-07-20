@@ -1,0 +1,184 @@
+---
+title: flutter ios, android 앱 아이콘 변경하는 방법
+date: 2024-07-20
+description: 플러터 ios(아이폰) 및 안드로이드 앱 아이콘 변경하는 방법을 알아보겠습니다.
+published: true
+tags:
+  - flutter
+thumbnail: './images/app-icon/flutter.svg'
+---
+
+플러터에서 sdk를 사용하지 않고 직접 ios(아이폰) 및 안드로이드 앱 아이콘을 변경하는 방법을 알아보겠습니다.
+
+<MDXImage
+  src="./images/app-icon/mobile-image.jpeg"
+  alt="모바일 아이콘 화면"
+  width="320px"
+/>
+
+위 이미지는 웹의 아이콘 예시입니다.
+플러터로 제작한 모바일 앱에서 위 아이콘 처럼 브렌드 아이콘을 변경하는 방법을 알아보겠습니다.
+
+## 이미지 준비
+
+아이콘을 변경하려면 이미지를 준비해야 합니다.
+
+- 1024x1024 크기의 이미지를 준비합니다.
+- png 파일 형식으로 준비합니다.
+
+저는 제 아이콘을 준비하였습니다.
+
+<MDXImage
+  src="./images/app-icon/recodelog-logo.png"
+  alt="
+recodelog 로고 이미지"
+  width="120px"
+/>
+
+실제 아이콘 사이즈는 1024x1024 크기로 준비해야합니다.
+
+다음 사이트로 이동하여 아이콘 이미지를 Generate 합니다.
+
+<MDXLink href="https://appicon.co/" title="https://appicon.co/" />
+
+위 사이트에서 이미지를 업로드하고 필요한 옵션을 선택한 뒤 Generate 버튼을 클릭합니다.
+
+<MDXImage src="./images/app-icon/appicon-co.png" alt="appicon.co 이미지" />
+
+앱 아이콘을 다운 받고 압축을 해제하면 다음과 같이 아이콘 이미지가 준비됩니다.
+
+<MDXImage src="./images/app-icon/app-icon.png" alt="앱 아이콘 이미지" />
+
+android 폴더 - 안드로이드 앱 아이콘에 사용됩니다.
+
+Assets.xcassets - ios 앱 아이콘에 사용됩니다.
+
+## ios(아이폰) 앱 아이콘 변경
+
+ios(아이폰) 앱 아이콘을 변경하려면 `Runner` 폴더에 `Assets.xcassets` 폴더를 찾아야 합니다.
+
+vscode 및 android studio에서 다음 경로로 이동합니다.
+
+```text
+ios/Runner/Assets.xcassets
+
+---
+
+ios
+  └ Runner
+    └ Assets.xcassets
+```
+
+Assets.xcassets 폴더에 우클릭하여 해당 폴더를 열어줍니다.
+
+안드로이드 스튜디오 맥 os 기준
+우클릭 - Open in - finder
+
+vscode 맥 os 기준
+우클릭 - Reveal in Finder
+
+<MDXImage
+  src="./images/app-icon/ios-assets.png"
+  alt="ios Assets.xcassets 이미지"
+/>
+
+Runner 폴더에서 `Assets.xcassets` 폴더를 삭제하고, 다운 받은 `Assets.xcassets` 폴더를 붙여넣기 합니다.
+
+<MDXImage src="./images/app-icon/ios-screen.png" alt="변경된 아이콘 이미지" />
+
+이제 ios(아이폰) 앱 아이콘 변경이 완료되었습니다.
+
+## android 앱 아이콘 변경
+
+android 앱 아이콘을 변경하려면 `android` 폴더에 `app/src/main/res` 폴더를 찾아야 합니다.
+
+vscode 및 android studio에서 다음 경로로 이동합니다.
+
+```text
+android/app/src/main/res
+
+---
+
+android
+  └ app
+    └ src
+      └ main
+        └ res
+```
+
+res 폴더로 이동하면 다음과 같은 폴더들이 있습니다.
+
+<MDXImage
+  src="./images/app-icon/android-res.png"
+  alt="android res 폴더 이미지"
+/>
+
+다운 받은 파일에서 `android` 폴더 안의 폴더를 복사합니다.
+
+android 폴더안의 다음 이미지와 같이 폴더들을 복사합니다.
+
+<MDXImage
+  src="./images/app-icon/android-folder.png"
+  alt="android 폴더 이미지"
+/>
+
+res 폴더에서 동일한 이름의 폴더를 삭제하고, 다운 받은 폴더를 붙여넣기 합니다.
+
+<MDXImage
+  src="./images/app-icon/android-screen.png"
+  alt="변경된 아이콘 이미지"
+  width="360px"
+/>
+
+위 이미지와 같이 아이콘이 변경된 것을 확인할 수 있습니다.
+
+하지만 뭔가 이상합니다? 아이콘이 축소되어 나타납니다.
+
+이를 해결하기 위해서는 안드로이드 스튜디오에서 다음과 같이 진행합니다.
+
+> 플러터가 아닌 안드로이드 환경에서 진행 해야합니다.
+
+ide에서 플러터 내부의 android 폴더를 열어서 진행합니다.
+
+다음 이미지는 ide에서 android 폴더를 열어서 진행하는 방법입니다.
+
+<MDXImage
+  src="./images/app-icon/android-studio.png"
+  alt="android studio 이미지"
+/>
+
+res 폴더에서 우클릭 - New - Image Asset 을 클릭합니다.
+
+> 만약 Image Asset이 없다면, 최신 버전 업데이트를 해주세요.
+
+Image Asset을 클릭하면 다음과 같은 화면이 나타납니다.
+
+<MDXImage
+  src="./images/app-icon/android-studio2.png"
+  alt="android studio 이미지"
+/>
+
+Path의 이미지 경로를 설정합니다. 우측 버튼을 클릭후 다운 받은 이미지 경로를 설정합니다.
+
+<MDXImage
+  src="./images/app-icon/android-studio3.png"
+  alt="android studio 이미지"
+/>
+
+크기 조절을 하기위해 Resize로 원하는 아이콘의 크기를 설정합니다.
+
+Next 버튼을 클릭하면 변경된 로그를 확인할 수 있습니다.
+
+Finish 버튼을 클릭하면 아이콘이 변경됩니다.
+
+이제 android 앱 아이콘 변경이 완료되었습니다.
+
+<MDXImage
+  src="./images/app-icon/mobile-image.png"
+  alt="모바일 아이콘 화면"
+  width="320px"
+/>
+
+위 이미지와 같이 아이콘이 변경된 것을 확인할 수 있습니다.
+
+이상으로 ios(아이폰) 및 안드로이드 앱 아이콘 변경하는 방법을 알아보았습니다.
