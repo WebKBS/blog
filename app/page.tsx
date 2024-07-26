@@ -14,7 +14,7 @@ export default function Home() {
 
   return (
     <div className="pb-24 pt-12 max-w-screen-lg px-6 mx-auto">
-      <h1 className="relative text-4xl md:text-6xl lg:text-8xl font-extrabold uppercase mb-12 md:mb-32 md:mt-10 recodelog">
+      <h1 className="relative text-4xl md:text-6xl lg:text-8xl font-extrabold uppercase mb-12 md:mb-32 md:mt-10 recodelog notranslate">
         Recode Log
       </h1>
 

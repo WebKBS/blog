@@ -1,19 +1,19 @@
-'use client';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
-import { ChevronsUpDown } from 'lucide-react';
-import { useTheme } from 'next-themes';
-import { useEffect, useState } from 'react';
-import Tags from './Tags';
-import styles from './TagsCard.module.css';
+"use client";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { ChevronsUpDown } from "lucide-react";
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
+import Tags from "./Tags";
+import styles from "./TagsCard.module.css";
 
 const TagsCard = () => {
   const [open, setOpen] = useState(false);
   const { resolvedTheme } = useTheme();
   const [theme, setTheme] = useState(false);
-  console.log(resolvedTheme);
+
   useEffect(() => {
-    if (resolvedTheme === 'dark') {
+    if (resolvedTheme === "dark") {
       setTheme(false);
     } else {
       setTheme(true);
@@ -25,25 +25,26 @@ const TagsCard = () => {
   };
 
   return (
-    <div className={'pt-4 mb-6 relative'}>
+    <div className={"pt-4 mb-6 relative"}>
       <Button
-        variant={'outline'}
+        variant={"outline"}
         size="icon"
         className="absolute top-[-32px] right-0"
         onClick={handleOpen}
+        aria-label={"태그 목록 열기/닫기"}
       >
         <ChevronsUpDown size={20} />
       </Button>
       <div
         className={cn(
-          'overflow-hidden relative pb-2',
+          "overflow-hidden relative pb-2",
           theme ? styles.gradientWhite : styles.gradient,
           open
-            ? cn('max-h-screen', styles.active)
-            : cn('max-h-[106px]', styles.inactive)
+            ? cn("max-h-screen", styles.active)
+            : cn("max-h-[106px]", styles.inactive),
         )}
       >
-        <ul className={'flex flex-wrap gap-2'}>
+        <ul className={"flex flex-wrap gap-2"}>
           <Tags />
         </ul>
       </div>

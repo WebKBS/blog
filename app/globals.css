@@ -100,5 +100,7 @@ a {
   word-break: break-all;
 }
 
+#goog-gt-tt {
+  display: none !important;
 
-
+}

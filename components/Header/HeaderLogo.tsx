@@ -8,7 +8,7 @@ const HeaderLogo = () => {
   const setTags = useTagStore((state) => state.setTags);
 
   return (
-    <p className="text-xl font-bold uppercase ">
+    <p className="text-xl font-bold uppercase notranslate">
       <Link
         href="/"
         className="flex items-center gap-2"

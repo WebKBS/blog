@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useTagStore } from '@/store/tagStore';
-import { useEffect, useMemo, useState } from 'react';
-import { Badge } from '../ui/badge';
+import { useTagStore } from "@/store/tagStore";
+import { useEffect, useMemo, useState } from "react";
+import { Badge } from "../ui/badge";
 
 interface TagBadgeProps {
   tags: string[];
@@ -10,7 +10,7 @@ interface TagBadgeProps {
 
 const TagBadge = ({ tags }: TagBadgeProps) => {
   const tagState = useTagStore((state) => state.tagState);
-  const [tagStyle, setTagStyle] = useState('');
+  const [tagStyle, setTagStyle] = useState("");
 
   const memoizedTags = useMemo(() => tags, [tags]);
 
@@ -18,7 +18,7 @@ const TagBadge = ({ tags }: TagBadgeProps) => {
     if (memoizedTags.includes(tagState)) {
       setTagStyle(tagState);
     } else {
-      setTagStyle('default');
+      setTagStyle("default");
     }
   }, [tagState, memoizedTags]);
 
@@ -26,7 +26,10 @@ const TagBadge = ({ tags }: TagBadgeProps) => {
     <>
       {tags.map((tag) => (
         <li key={tag}>
-          <Badge variant={tag === tagStyle ? 'default' : 'secondary'}>
+          <Badge
+            variant={tag === tagStyle ? "default" : "secondary"}
+            className="notranslate"
+          >
             {tag}
           </Badge>
         </li>
