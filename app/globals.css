@@ -47,8 +47,6 @@
     --input: 215 27.9% 16.9%;
     --ring: 263.4 70% 50.4%;
   }
-
-
 }
 
 @layer base {
@@ -61,7 +59,7 @@
   }
 
   .recodelog:after {
-    content: "Recode Log";
+    content: 'Recode Log';
     position: absolute;
     top: 0;
     left: 0;
@@ -72,11 +70,10 @@
     -webkit-background-clip: text;
     color: transparent;
     opacity: 0.5;
-
   }
 
   .dark .recodelog:after {
-    content: "Recode Log";
+    content: 'Recode Log';
     position: absolute;
     top: 0;
     left: 0;
@@ -88,8 +85,6 @@
     color: transparent;
     opacity: 0.5;
   }
-
-  
 }
 
 html {
@@ -102,5 +97,8 @@ a {
 
 #goog-gt-tt {
   display: none !important;
+}
 
+.goog-te-combo {
+  @apply text-secondary-foreground;
 }

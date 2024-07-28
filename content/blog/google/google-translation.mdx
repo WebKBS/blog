@@ -1,0 +1,171 @@
+---
+title: Next.js에서 Google 무료 번역 API 사용하기
+date: 2024-07-27
+description: Next.js에서 구글 무료 번역 API를 사용하는 방법을 알아보겠습니다.
+published: true
+tags:
+  - Next.js
+  - google
+  - translation
+thumbnail: './images/google.svg'
+---
+
+이번 블로그 포스트에서는 Next.js 프로젝트에 구글에서 제공하는 Google 번역 API를 방법을 알아보겠습니다.
+
+구현은 두개의 주요 컴포넌트로 구성됩니다.
+
+1. TranslateButton: 번역 기능을 토글하는 버튼 컴포넌트
+2. GoogleTranslate: Google 번역 스크립트를 로드하고 번역 요소를 관리하는 컴포넌트
+
+우선 TranslateButton 컴포넌트를 구현해보겠습니다.
+
+components 폴더에 TranslateButton.tsx 파일을생성하고 아래 코드를 추가합니다.
+
+```tsx title="components/TranslateButton.tsx"
+'use client';
+import { useState } from 'react';
+
+const TranslateButton = () => {
+  const [visible, setVisible] = useState(false);
+
+  const handleClick = () => {
+    const element = document.getElementById('google_translate_element');
+    if (element) {
+      element.style.display = visible ? 'none' : 'block';
+    }
+    setVisible(!visible);
+  };
+
+  return (
+    <button
+      onClick={handleClick}
+      aria-label="번역 버튼"
+      className="border p-2"
+      type="button"
+    >
+      번역하기
+    </button>
+  );
+};
+
+export default TranslateButton;
+```
+
+TranslateButton 컴포넌트는 사용자가 번역 기능을 켜고 끌 수 있는 인터페이스를 제공합니다. 주요 특징은 다음과 같습니다.
+
+- "use client" 지시어: 이는 Next.js 13 이상에서 클라이언트 사이드 렌더링을 명시적으로 선언합니다. 이 컴포넌트가 브라우저에서 실행되어야 함을 나타냅니다.
+- useState 훅: visible 상태를 관리하여 번역 요소의 표시 여부를 제어합니다.
+- handleClick 함수: 버튼 클릭 시 실행되며, Google 번역 요소의 가시성을 토글합니다.
+
+<br/>
+
+이제 GoogleTranslate 컴포넌트를 구현해보겠습니다.
+
+components 폴더에 GoogleTranslate.tsx 파일을 생성하고 아래 코드를 추가합니다.
+
+```tsx title="components/GoogleTranslate.tsx"
+'use client';
+import Script from 'next/script';
+
+declare global {
+  interface Window {
+    googleTranslateElementInit: () => void;
+    google: any;
+  }
+}
+
+const GoogleTranslate = () => {
+  return (
+    <>
+      <Script
+        src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
+        strategy="afterInteractive"
+        id="google-translate-script"
+        onLoad={() => {
+          window.googleTranslateElementInit = () => {
+            new window.google.translate.TranslateElement(
+              {
+                pageLanguage: 'ko', // 기본 언어 설정
+                includedLanguages: 'en,ko,ja,zh-CN,zh-TW"', // 지원할 언어 설정
+              },
+              'google_translate_element'
+            );
+          };
+        }}
+      />
+      <div
+        id="google_translate_element"
+        style={{ display: 'none' }}
+        className="absolute right-0 top-[80px] min-w-[160px] bg-white px-[16px]"
+      />
+    </>
+  );
+};
+
+export default GoogleTranslate;
+
+```
+
+GoogleTranslate 컴포넌트는 Google 번역 스크립트를 로드하고 번역 요소를 관리합니다. 주요 특징은 다음과 같습니다.
+
+- declare global: window 객체에 googleTranslateElementInit 함수와 google 객체를 선언합니다.
+- Script 컴포넌트: Next.js의 Script 컴포넌트를 사용하여 Google 번역 스크립트를 비동기적으로 로드합니다.
+- googleTranslateElementInit 함수: Google 번역 요소를 초기화하는 함수로, 페이지 언어와 지원할 언어를 설정합니다.
+- 번역 요소 컨테이너: 실제 Google 번역 요소가 렌더링될 div 요소입니다.
+
+<br/>
+
+마지막으로 TranslateButton과 GoogleTranslate 컴포넌트를 함께 사용하여 번역 기능을 구현해보겠습니다.
+
+```tsx title="page.tsx"
+import TranslateButton from '../components/TranslateButton';
+import GoogleTranslate from '../components/GoogleTranslate';
+
+export default function Home() {
+  return (
+    <div className="flex flex-col items-center justify-center min-h-screen py-2">
+      <TranslateButton />
+      <GoogleTranslate />
+    </div>
+  );
+}
+```
+
+위 코드를 실행하면 번역하기 버튼을 클릭하면 번역 요소가 표시되고, 다시 클릭하면 숨겨집니다.
+
+아래 StackBlitz 링크를 통해 전체 코드를 확인할 수 있습니다.
+
+<iframe
+  src="https://stackblitz.com/edit/stackblitz-starters-5zqpww?embed=1&file=components%2FTranslateButton.tsx&view=preview"
+  className="w-full"
+  height="600"
+/>
+
+## 팁
+
+번역 사용 후 자동으로 나타나는 원본 텍스트 모달로 인해 사용성이 불편할 수 있습니다.
+이를 방지하기 위해 global css에서 모달을 display: none을 처리할 수 있습니다.
+
+```css title="globals.css"
+#goog-gt-tt {
+  display: none !important;
+}
+```
+
+위와 같이 처리하면 번역 후 나타나는 모달이 더 이상 표시되지 않습니다.
+
+
+## 주의사항 및 마무리
+
+1. Google 번역 사용시 각 나라의 언어마다 레이아웃이 다르게 나타날 수 있습니다.
+이를 방지 하기위해 각 레이아웃의 css 스타일 "word-break"를 사용하여 줄바꿈 조절이 필요할 수 있습니다.
+
+2. 자동 번역으로 인해 실제 번역과 다른 결과가 나올 수 있으니 주의해야 합니다.
+이런 경우 next-intl 라이브러리를 사용하여 번역을 직접 관리하는 방법도 있습니다.
+
+3. next.js와 google 번역 사용시 google 번역은 dom 트리를 변경하는 것이라 브라우저 에러가 간헐적으로 발생할 수 있습니다.
+> Application error: a client-side exception has occurred (see the browser console for more information).
+
+4. light house 테스트에서 서드파티 쿠키 사용으로 인해 권장사항 점수가 낮아질 수 있습니다.
+
+이상으로 Next.js에서 Google 무료 번역 API 사용하기 포스트를 마치겠습니다.

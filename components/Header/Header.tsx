@@ -1,10 +1,10 @@
-import Navigation from "../Navigation";
-import SideMenuButton from "../SideMenu/SideMenuButton";
-import Sns from "../Sns";
-import HeaderLogo from "./HeaderLogo";
-import ThemeToggleButton from "./ThemeToggleButton";
-import TranslateButton from "@/components/Buttons/TranslateButton";
-import GoogleTranslate from "@/components/Google/GoogleTranslate";
+import TranslateButton from '@/components/Buttons/TranslateButton';
+import GoogleTranslate from '@/components/Google/GoogleTranslate';
+import Navigation from '../Navigation';
+import SideMenuButton from '../SideMenu/SideMenuButton';
+import Sns from '../Sns';
+import HeaderLogo from './HeaderLogo';
+import ThemeToggleButton from './ThemeToggleButton';
 
 const Header = () => {
   return (
