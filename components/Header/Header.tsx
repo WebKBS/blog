@@ -1,3 +1,5 @@
+import TranslateButton from '@/components/Buttons/TranslateButton';
+import GoogleTranslate from '@/components/Google/GoogleTranslate';
 import Navigation from '../Navigation';
 import SideMenuButton from '../SideMenu/SideMenuButton';
 import Sns from '../Sns';
@@ -16,8 +18,8 @@ const Header = () => {
         <div className="flex items-center gap-2 relative">
           <ThemeToggleButton />
           <Sns className="hidden md:flex md:items-center md:gap-2" />
-          {/* <TranslateButton />
-          <GoogleTranslate /> */}
+          <TranslateButton />
+          <GoogleTranslate />
         </div>
       </div>
     </header>
