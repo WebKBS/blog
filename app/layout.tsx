@@ -9,9 +9,8 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
 import React from "react";
-import { ErrorBoundary } from "next/dist/client/components/error-boundary";
+import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -103,6 +102,8 @@ export default function RootLayout({
           content="e6a9b80e809cdb4abf3cd544886f44c7e4fc19da"
         />
         <meta name="google-adsense-account" content="ca-pub-6828580975511725" />
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6828580975511725"
+     crossorigin="anonymous"></script>
       </head>
       <body className={cn("min-h-screen select-none", inter.className)}>
         <ThemeProvider>
