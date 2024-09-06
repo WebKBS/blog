@@ -1,16 +1,33 @@
-import rehypeAutolinkHeadings from 'rehype-autolink-headings';
-import rehypePrettyCode from 'rehype-pretty-code';
-import rehypeSlug from 'rehype-slug';
-import { defineCollection, defineConfig, s } from 'velite';
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import rehypePrettyCode from "rehype-pretty-code";
+import rehypeSlug from "rehype-slug";
+import { defineCollection, defineConfig, s } from "velite";
 
 const computedFields = <T extends { slug: string }>(data: T) => ({
   ...data,
-  permalink: data.slug.split('/').slice(1).join('/'),
+  permalink: data.slug.split("/").slice(1).join("/"),
 });
 
 const posts = defineCollection({
-  name: 'Post',
-  pattern: 'blog/**/*.mdx',
+  name: "Post",
+  pattern: "blog/**/*.mdx",
+  schema: s
+    .object({
+      slug: s.path(),
+      title: s.string().max(100),
+      description: s.string().max(200),
+      date: s.isodate(),
+      thumbnail: s.image().optional().nullable(),
+      published: s.boolean().default(false),
+      body: s.mdx(),
+      tags: s.array(s.string()),
+    })
+    .transform(computedFields),
+});
+
+const issues = defineCollection({
+  name: "Issue",
+  pattern: "issues/**/*.mdx",
   schema: s
     .object({
       slug: s.path(),
@@ -26,26 +43,26 @@ const posts = defineCollection({
 });
 
 export default defineConfig({
-  root: 'content',
+  root: "content",
   output: {
-    data: '.velite',
-    assets: 'public/static',
-    base: '/static/',
-    name: '[name]-[hash:6].[ext]',
+    data: ".velite",
+    assets: "public/static",
+    base: "/static/",
+    name: "[name]-[hash:6].[ext]",
     clean: true,
   },
-  collections: { posts },
+  collections: { posts, issues },
   mdx: {
     rehypePlugins: [
       rehypeSlug,
-      [rehypePrettyCode, { theme: 'dark-plus' }],
+      [rehypePrettyCode, { theme: "dark-plus" }],
       [
         rehypeAutolinkHeadings,
         {
-          behavior: 'wrap',
+          behavior: "wrap",
           properties: {
-            className: ['subheading-anchor'],
-            ariaLabel: 'Link to section',
+            className: ["subheading-anchor"],
+            ariaLabel: "Link to section",
           },
         },
       ],

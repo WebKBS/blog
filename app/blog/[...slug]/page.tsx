@@ -6,7 +6,6 @@ import { Badge } from "@/components/ui/badge";
 
 import { defaultData } from "@/config/defaultData";
 import { formatDate } from "@/lib/utils";
-import "@/styles/mdx.css";
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
