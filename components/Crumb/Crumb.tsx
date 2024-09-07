@@ -1,12 +1,18 @@
+"use client";
 import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
-import Link from 'next/link';
+} from "@/components/ui/breadcrumb";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 const Crumb = ({ title }: { title: string }) => {
+  const pathname = usePathname();
+
+  const path = pathname.split("/")?.[1];
+
   return (
     <div className="sticky top-14 left-0 z-10 backdrop-blur-2xl py-2 bg-background/75">
       <div className="max-w-screen-lg mx-auto  px-6">
@@ -20,7 +26,7 @@ const Crumb = ({ title }: { title: string }) => {
             <BreadcrumbSeparator />
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
-                <Link href="/blog">Blog</Link>
+                <Link href={`/${path}`}>{path}</Link>
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />

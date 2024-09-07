@@ -7,7 +7,11 @@ import { useEffect, useState } from "react";
 import Tags from "./Tags";
 import styles from "./TagsCard.module.css";
 
-const TagsCard = () => {
+export interface TagsCardProps {
+  tagData: { tags: string[] }[];
+}
+
+const TagsCard = ({ tagData }: TagsCardProps) => {
   const [open, setOpen] = useState(false);
   const { resolvedTheme } = useTheme();
   const [theme, setTheme] = useState(false);
@@ -45,7 +49,7 @@ const TagsCard = () => {
         )}
       >
         <ul className={"flex flex-wrap gap-2"}>
-          <Tags />
+          <Tags tagData={tagData} />
         </ul>
       </div>
     </div>

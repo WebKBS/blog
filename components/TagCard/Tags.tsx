@@ -1,15 +1,19 @@
 "use client";
-import { posts } from "#site/content";
 import { badgeVariants } from "@/components/ui/badge";
 import { useTagStore } from "@/store/tagStore";
 import Link from "next/link";
 import { notFound, usePathname, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
+import { TagsCardProps } from "@/components/TagCard/TagsCard";
 
-const Tags = () => {
+const Tags = ({ tagData }: TagsCardProps) => {
   const { setTags } = useTagStore();
 
-  const tags = posts.map((post) => post.tags).flat();
+  const tags = tagData
+    .map((data) => data.tags)
+    .flat()
+    .sort((a, b) => a.localeCompare(b));
+
   const tagCount = tags.reduce(
     (acc, tag) => {
       acc[tag] = (acc[tag] || 0) + 1;

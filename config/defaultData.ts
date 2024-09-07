@@ -12,11 +12,10 @@ export const defaultData = {
 export const navigationData = [
   { name: "home", href: "/" },
   { name: "blog", href: "/blog" },
+  { name: "issue", href: "/issues" },
   { name: "device", href: "/device" },
   // { name: 'life', href: '/life' },
 ];
-
-export type DefaultData = typeof defaultData;
 
 export const blogStackData = [
   { name: "Next.js", href: "https://nextjs.org/" },
