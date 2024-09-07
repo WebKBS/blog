@@ -26,7 +26,7 @@ const posts = defineCollection({
 });
 
 const issues = defineCollection({
-  name: "Issue",
+  name: "Issues",
   pattern: "issues/**/*.mdx",
   schema: s
     .object({
