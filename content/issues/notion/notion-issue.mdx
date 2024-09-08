@@ -1,16 +1,126 @@
 ---
-title: Notion API 사용시 주의사항
+title: Next.js Notion 데이터베이스 API Vercel 사용시 주의사항(feat. 이미지 컴포넌트)
 date: 2024-09-07
-description: Notion API를 사용할 때 주의해야 할 사항들을 알아보겠습니다.
-published: false
+description: Next.js에서 Notion 데이터베이스 API를 사용할 때 Vercel 배포시 이미지 컴포넌트 사용 주의사항을 알아보겠습니다.
+published: true
 tags:
   - notion
   - api
   - Next.js
-  - notion-client
-  - react-notion-x
-  - notionhq/client
+  - vercel
 thumbnail: './images/notion-logo.svg'
 ---
 
-Notion API를 사용한 Next.js 페이지 만드는 방법 feat. react-notion-x
+## Summary
+
+Next.js와 Notion Api를 사용하여 vercel에 배포시 주의사항에 대해 알아보겠습니다.
+
+실제 겪었던 문제를 토대로 작성하였습니다.
+
+## Vercel의 이미지 컴포넌트 사용량 제한
+
+Vercel은 배포시 이미지를 최적화 기능이 있습니다.
+
+Next.js 사용시 이미지 컴포넌트를 사용하면 Vercel에서 이미지를 최적화하여 제공합니다.
+
+<MDXLink
+  href="https://vercel.com/docs/image-optimization"
+  title="Vercel 이미지 최적화 - 공식문서"
+/>
+
+하지만, 이미지 컴포넌트 사용시 제한이 있습니다.
+
+이미지 컴포넌트는 무료 버전에서 1000개까지 사용 가능합니다.
+
+만약, 결제를 통한 Pro 버전을 사용한다면 5000개 이상 사용 가능합니다.
+
+<MDXLink
+  href="https://vercel.com/docs/image-optimization/limits-and-pricing"
+  title="Vercel 이미지 최적화 및 가격정책 - 공식문서"
+/>
+
+무료 버전의 1000개가 횟수로 치면 적은양 일 수 있으나, Next js의 캐싱기능으로 인해 사용자가 많더라도 적은 횟수로 사용할 수 있으며 1000회는 제법 쓸만한 양입니다.
+
+> 사용량 제한에서 카운팅 횟수는 `<Image />` 이미지 컴포넌트 사용시에만 카운팅됩니다.
+>
+> `<img />` 태그처럼 일반적인 이미지 태그는 카운팅되지 않습니다.
+
+만약 최적화를 원하지 않는다면, `<img />` 태그를 사용하여 이미지를 불러오는 방법도 있으며,
+
+다음과 같이 이미지 컴포넌트에 unoptimized 속성을 추가하여 최적화를 사용하지 않을 수 있습니다.
+
+```tsx {6}
+import Image from 'next/image';
+
+export default function ImageExample() {
+  return (
+    <Image
+      unoptimized
+      src="https://unsplash.com/photos/MpL4w1vb798"
+      alt="Picture of a triangle"
+      width={500}
+      height={500}
+    />
+  );
+}
+```
+
+<MDXLink
+  href="https://vercel.com/docs/image-optimization/managing-image-optimization-costs"
+  title="이미지 최적화 사용 및 비용 관리 - 공식문서"
+/>
+
+Next.js는 기본적인 환경에서 캐싱을 지원하므로 static 이미지, GET 방식의 이미지를 가져오는 방식에는 이미지 최적화 횟수에 큰 영향을 미치지 않습니다.
+
+<br />
+
+## notion API와 이미지 컴포넌트 사용시 주의사항
+
+Notion API는 데이터를 가져올 때 GET 방식이 아닌 POST 방식으로 데이터를 가져오기 때문에 이미지 컴포넌트를 사용하면 이미지 최적화 횟수에 영향을 줍니다.
+
+> HTTP POST 방식은 캐싱이 되지 않으므로 이미지 최적화 횟수에 영향을 줍니다.
+
+<MDXLink
+  href="https://developers.notion.com/reference/post-database-query"
+  title="Query a Database - Notion API 공식문서"
+/>
+
+POST 방식으로 데이터를 가져오는 경우, 캐싱이 되지 않으므로 이미지 컴포넌트를 사용하면 매번 데이터를 요청하고 받아오는 과정에서 이미지 최적화 횟수가 카운팅됩니다.
+
+이미지 최적화 횟수를 줄이기 위해서는 이미지 컴포넌트 대신 `<img />` 태그를 사용하여 이미지를 불러오는 방법도 있으며,
+
+또한, 이미지 컴포넌트에 unoptimized 속성을 추가하여 최적화를 사용하지 않을 수 있습니다.
+
+이전에 Notion 데이터베이스 API를 사용하여 개발 당시 이미지 컴포넌트를 사용하였는데, 이미지 최적화 횟수(월 1000회)가 초과되어 이미지가 불러와지지 않는 문제가 발생하였습니다.
+
+개발하면서 저장시마다 POST 요청으로 인해 이미지 최적화 횟수가 순식간에 소진되었습니다.
+
+이후 저는 `<Image />` 이미지 컴포넌트 대신 `<img />` 태그를 사용하여 이미지를 불러오는 방법으로 문제를 해결하였습니다.
+
+## 요약
+
+### 1. Vercel의 이미지 최적화 기능과 사용량 제한:
+
+- Next.js의 `<Image />` 컴포넌트 사용 시 Vercel에서 자동으로 이미지를 최적화함
+- 무료 버전은 1000회, Pro 버전은 5000회 이상 사용 가능
+- 일반 `<img />` 태그는 이 제한에 포함되지 않음
+
+### 2. 이미지 최적화 회피 방법:
+
+- `<img />` 태그 사용
+- `<Image />` 컴포넌트에 unoptimized 속성 추가
+
+### 3. Notion API와 이미지 컴포넌트 사용 시 주의사항:
+
+- Notion API는 POST 방식으로 데이터를 가져오므로 캐싱이 되지 않음
+- POST 요청으로 인해 이미지 최적화 횟수가 빠르게 소진될 수 있음
+
+### 4. 문제 해결 방법:
+
+- `<Image />` 컴포넌트 대신 `<img />` 태그 사용
+- unoptimized 속성을 이용하여 이미지 최적화 비활성화
+
+### 5. 개발 시 주의사항:
+
+- Notion API 사용 시 이미지 최적화 횟수에 주의
+- 개발 과정에서 불필요한 이미지 최적화 요청을 줄이는 것이 중요
