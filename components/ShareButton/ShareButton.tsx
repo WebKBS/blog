@@ -1,32 +1,38 @@
-'use client';
-import { SquareArrowOutUpRight } from 'lucide-react';
-import { useState } from 'react';
+"use client";
+import { SquareArrowOutUpRight } from "lucide-react";
+import { useState } from "react";
+import { sendGAEvent } from "@next/third-parties/google";
 
 const ShareButton = () => {
   const [copySuccess, setCopySuccess] = useState(false);
 
   const shareHandler = async () => {
+    sendGAEvent({
+      event_category: "Share",
+      event_label: "공유하기 버튼 클릭",
+    });
+
     if (navigator.share) {
       try {
         await navigator.share({
           title: document.title,
           url: window.location.href,
         });
-        console.log('공유 성공!');
+        console.log("공유 성공!");
       } catch (error) {
-        console.error('공유 실패:', error);
+        console.error("공유 실패:", error);
       }
     } else {
       try {
         await navigator.clipboard.writeText(window.location.href);
         setCopySuccess(true);
-        console.log('클립보드에 복사되었습니다!');
+        console.log("클립보드에 복사되었습니다!");
 
         setTimeout(() => {
           setCopySuccess(false);
         }, 2000);
       } catch (error) {
-        console.error('클립보드에 복사 실패:', error);
+        console.error("클립보드에 복사 실패:", error);
       }
     }
   };

@@ -1,8 +1,10 @@
-import { formatDate } from '@/lib/utils';
-import Logo from '@/public/icon.svg';
-import Image, { StaticImageData } from 'next/image';
-import Link from 'next/link';
-import TagBadge from '../TagsBadge';
+"use client";
+import { formatDate } from "@/lib/utils";
+import Logo from "@/public/icon.svg";
+import Image, { StaticImageData } from "next/image";
+import Link from "next/link";
+import TagBadge from "../TagsBadge";
+import { sendGAEvent } from "@next/third-parties/google";
 
 interface LinkCardProps {
   title: string;
@@ -26,6 +28,9 @@ const LinkCard = ({
       <Link
         href={`/${slug}`}
         className="border rounded-md flex flex-col overflow-hidden px-4 py-4 gap-4 sm:flex-row-reverse hover:border-primary transition-all duration-300 shadow-md"
+        onClick={() => {
+          sendGAEvent("blog", "click", title);
+        }}
       >
         <div className="w-full relative pt-[50%] overflow-hidden sm:pt-0 sm:w-44 sm:h-44 dark:bg-white rounded-md border shadow-sm">
           {thumbnail ? (

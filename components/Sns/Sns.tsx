@@ -1,6 +1,8 @@
-import { GitHubLogoIcon } from '@radix-ui/react-icons';
-import Link from 'next/link';
-import { sns } from './Sns-data';
+"use client";
+import { GitHubLogoIcon } from "@radix-ui/react-icons";
+import Link from "next/link";
+import { sns } from "./Sns-data";
+import { sendGAEvent } from "@next/third-parties/google";
 
 const Sns = ({ className }: { className: string }) => {
   return (
@@ -12,6 +14,9 @@ const Sns = ({ className }: { className: string }) => {
             target="_blank"
             aria-label={item.title}
             title={item.title}
+            onClick={() => {
+              sendGAEvent("sns", "click", item.title);
+            }}
           >
             <GitHubLogoIcon
               width={36}
