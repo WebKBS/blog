@@ -3,6 +3,9 @@ import LinkCard from "@/components/LinkCard";
 import { sortPosts } from "@/lib/utils";
 import TagsCard from "../../components/TagCard/TagsCard";
 import Link from "next/link";
+import Paginations from "@/components/Pagination/Paginations";
+import { POST_COUNT } from "@/constants/pageCount";
+import PageItem from "@/app/blog/_components/PageItem";
 
 export const metadata = {
   title: "BLOG",
@@ -23,24 +26,13 @@ const BlogPage = ({ searchParams }: { searchParams: { tag?: string } }) => {
     );
   }
 
-  const tagParam = searchParams.tag;
-  const tagPage = sortedPosts.filter((post) =>
-    post.tags.includes(tagParam || ""),
-  );
-
-  // console.log(posts.length);
-
   return (
     <section className="pb-24 pt-12 max-w-screen-lg px-6 mx-auto">
       <h1 className="text-2xl font-semibold hover:underline">
         <Link href={"/blog"}>기술 블로그</Link>
       </h1>
       <TagsCard tagData={sortedPosts} />
-      <ul className="flex flex-col gap-4">
-        {tagPage.length > 0
-          ? tagPage.map((post) => <LinkCard key={post.slug} {...post} />)
-          : sortedPosts.map((post) => <LinkCard key={post.slug} {...post} />)}
-      </ul>
+      <PageItem sortedPosts={sortedPosts} />
     </section>
   );
 };
