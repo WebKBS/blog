@@ -1,1 +1,1 @@
-export const POST_COUNT = 6;
+export const POST_COUNT = 8;
