@@ -1,0 +1,5 @@
+User-Agent: *
+Allow: /
+Sitemap: https://recodelog.com/sitemap.xml
+
+#DaumWebMasterTool:5b2d80ba531bbce6e4b68dbd4d9cb0f13659a9c2ffe69c86e5aa9e08b07b8c2b:/akwG3lRlVJkjc/gZAuQDA==
