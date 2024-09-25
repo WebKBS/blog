@@ -1,19 +1,15 @@
-import { posts } from "#site/content";
+import { issues, posts } from "#site/content";
 import LinkCard from "@/components/LinkCard";
-import { buttonVariants } from "@/components/ui/button";
 import { blogStackData } from "@/config/defaultData";
 import { sortPosts } from "@/lib/utils";
-import { ArrowUpRight, ExternalLink } from "lucide-react";
 import Link from "next/link";
-import { sendGAEvent } from "@next/third-parties/google";
 import LatestLink from "@/components/LinkCard/LatestLink";
 import SeeMoreLink from "@/components/LinkCard/SeeMoreLink";
 
 export default function Home() {
-  const sortedPosts = sortPosts(posts.filter((post) => post.published)).splice(
-    0,
-    4,
-  );
+  const allPosts = [...posts, ...issues];
+  const sortedPosts = sortPosts(allPosts.filter((post) => post.published));
+  const latestData = sortedPosts.splice(0, 6);
 
   return (
     <div className="pb-24 pt-12 max-w-screen-lg px-6 mx-auto">
@@ -25,7 +21,7 @@ export default function Home() {
           <LatestLink />
         </h2>
         <ul className="flex flex-col gap-4">
-          {sortedPosts.map((post) => (
+          {latestData.map((post) => (
             <LinkCard key={post.slug} {...post} />
           ))}
         </ul>

@@ -24,7 +24,7 @@ const Navigation = ({ className }: { className: string }) => {
           <Link
             href={item.href}
             onClick={() => clickHandler(item.name)}
-            scroll={false}
+            scroll={true}
           >
             {item.name}
           </Link>
