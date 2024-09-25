@@ -12,6 +12,7 @@ import { notFound } from "next/navigation";
 import Crumb from "../../../components/Crumb/Crumb";
 import ScrollUpButton from "@/components/Buttons/ScrollUpButton";
 import { WithContext, BlogPosting } from "schema-dts";
+import Utterances from "@/components/Utterances/Utterances";
 
 interface BlogDetailProps {
   params: {
@@ -157,6 +158,7 @@ const BlogDetail = async ({ params: { slug } }: BlogDetailProps) => {
             ))}
           </ul>
         </div>
+        <Utterances />
       </section>
     </>
   );

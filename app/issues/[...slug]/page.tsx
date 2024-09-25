@@ -12,6 +12,7 @@ import { notFound } from "next/navigation";
 import Crumb from "../../../components/Crumb/Crumb";
 import ScrollUpButton from "@/components/Buttons/ScrollUpButton";
 import { WithContext, BlogPosting } from "schema-dts";
+import Utterances from "@/components/Utterances/Utterances";
 
 interface IssueDetailProps {
   params: {
@@ -138,6 +139,7 @@ const IssueDetail = async ({ params: { slug } }: IssueDetailProps) => {
             ))}
           </ul>
         </div>
+        <Utterances />
       </section>
     </>
   );
