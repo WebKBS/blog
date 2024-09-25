@@ -19,7 +19,7 @@ const MDXImage = ({ src, alt, width }: IMDXImage) => {
         height={1024}
         alt={alt}
         className="w-auto mb-2 border border-gray-200 dark:border-gray-700 rounded-md"
-        style={width ? { width } : {}}
+        style={width ? { width } : {width: "640px"}}
         quality={100}
       />
       <p className="text-center text-gray-500 dark:text-gray-400 m-0 text-sm">
