@@ -31,7 +31,10 @@ export async function generateMetadata({
   const issue = await getPost(params);
 
   if (!issue || !issue.published) {
-    return {};
+    return {
+      title: "404 Not Found",
+      description: "페이지를 찾을 수 없습니다.",
+    };
   }
 
   const ogSearchParams = new URLSearchParams();
