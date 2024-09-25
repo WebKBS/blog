@@ -1,9 +1,10 @@
-import DetailSkeleton from "@/components/Skeleton/DetailSkeleton";
+import SkeletonCard from '@/components/Skeleton/SkeletonCard';
 
 const loading = () => {
   return (
     <section className="pb-24 pt-12 max-w-screen-lg px-6 mx-auto">
-      <DetailSkeleton />
+      <SkeletonCard />
+      <SkeletonCard />
     </section>
   );
 };
