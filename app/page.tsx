@@ -5,7 +5,6 @@ import { sortPosts } from "@/lib/utils";
 import Link from "next/link";
 import LatestLink from "@/components/LinkCard/LatestLink";
 import SeeMoreLink from "@/components/LinkCard/SeeMoreLink";
-import Script from "next/script";
 
 export default function Home() {
   const jsonLd = {
@@ -37,7 +36,7 @@ export default function Home() {
 
   return (
     <>
-      <Script
+      <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
