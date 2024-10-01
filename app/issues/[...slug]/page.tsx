@@ -80,7 +80,11 @@ export const generateStaticParams = async () => {
 const IssueDetail = async ({ params: { slug } }: IssueDetailProps) => {
   const issue = await getPost({ slug });
 
-  if (!issue || !issue.published) {
+  if (!issue) {
+    return notFound();
+  }
+
+  if (process.env.NODE_ENV === "production" && !issue.published) {
     return notFound();
   }
 

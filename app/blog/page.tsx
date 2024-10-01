@@ -1,10 +1,7 @@
-import { posts } from "#site/content";
-import LinkCard from "@/components/LinkCard";
+import { Post, posts } from "#site/content";
 import { sortPosts } from "@/lib/utils";
 import TagsCard from "../../components/TagCard/TagsCard";
 import Link from "next/link";
-import Paginations from "@/components/Pagination/Paginations";
-import { POST_COUNT } from "@/constants/pageCount";
 import PageItem from "@/app/blog/_components/PageItem";
 
 export const metadata = {
@@ -12,8 +9,14 @@ export const metadata = {
   description: "기술 블로그",
 };
 
-const BlogPage = ({ searchParams }: { searchParams: { tag?: string } }) => {
-  const sortedPosts = sortPosts(posts.filter((post) => post.published));
+const BlogPage = () => {
+  let sortedPosts: Array<Post>;
+
+  if (process.env.NODE_ENV === "production") {
+    sortedPosts = sortPosts(posts.filter((post) => post.published));
+  } else {
+    sortedPosts = sortPosts(posts);
+  }
 
   if (sortedPosts.length === 0) {
     return (

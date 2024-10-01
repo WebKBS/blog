@@ -1,0 +1,189 @@
+---
+title: Next js 14+ 에서 iframe 차단하는 방법. X-Frame-Options와 Content-Security-Policy 설정
+date: 2024-09-30
+description: Next.js에서 X-Frame-Options와 Content-Security-Policy를 설정하여 iframe을 차단하는 방법에 대해 알아보겠습니다.
+published: true
+tags:
+  - Next.js
+  - iframe
+  - security
+thumbnail: '../../../assets/logos/nextjs-logo.svg'
+---
+
+<MDXAlert message="이 글은 Next.js 14 버전 이상(App router)에서 iframe 차단을 설정하는 방법에 대해 다룹니다." type="info"/>
+
+웹 사이트를 개발하다 보면, 종종 보안이나 콘텐츠 제어 측면에서 다른 사이트가 iframe을 통해 내 사이트를 임베드하는 것을 막아야 할 때가 있습니다. iframe을 통한 외부 노출은 Clickjacking 공격이나 의도치 않은 콘텐츠 도용 등을 야기할 수 있기 때문에, 이를 방지하는 것은 매우 중요한 보안 조치 중 하나입니다.
+
+## iframe 차단을 통한 이점
+
+- 클릭재킹 방지
+
+클릭 재킹이란 사용자가 의도하지 않은 클릭을 유도하여 사용자의 정보를 탈취하는 공격 기법입니다.
+
+- 브랜딩 보호
+
+클릭재킹으로 인한 브랜딩 훼손 및 다른 사이트에서 iframe을 통해 특정 사이트를 노출하면 또한 브랜딩이 훼손될 수 있습니다.
+
+- 트래픽 방지
+
+다른 사이트에서 iframe을 통해 특정 사이트를 노출하면 해당 사이트의 트래픽이 증가할 수 있습니다. 만약 트래픽 분석 및 관리가 필요한 경우에는 iframe 차단이 필요합니다.
+
+아래는 구글을 iframe으로 렌더링하는 예시입니다.
+
+<iframe src={"https://google.com"}></iframe>
+
+보시는 바와 같이 위처럼 google을 iframe으로 렌더링하면 연결을 거부하는 내용이 나타나게 됩니다.
+
+대부분의 대규모 플랫폼들(ex: naver, google, facebook, instagram 등)은 iframe을 통한 렌더링을 차단하고 있습니다.
+
+이제 Next.js에서 iframe을 차단하는 방법에 대해 알아보겠습니다.
+
+
+## 1. X-Frame-Options 헤더 설정
+
+X-Frame-Options는 브라우저가 특정 페이지가 iframe을 통해 임베드되는 것을 허용할지 여부를 결정하는 HTTP 응답 헤더입니다.
+
+주로 다음과 같은 두 가지 값을 설정할 수 있습니다.
+
+- DENY: 어떤 출처에서도 페이지를 iframe으로 임베드할 수 없도록 합니다.
+- SAMEORIGIN: 동일한 출처에서만 iframe 임베드를 허용합니다. 즉, 내 사이트 내에서만 임베드가 가능합니다.
+- allow-form url: 특정 출처에서만 iframe 임베드를 허용합니다.
+
+Next.js 14 버전에서 헤더 설정은 다음과 같이 `next.config.js` 파일에 추가할 수 있습니다.
+
+```tsx title="next.config.js"
+module.exports = {
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'X-Frame-Options',
+            value: 'DENY', // DENY, SAMEORIGIN, allow-from https://example.com
+          },
+        ],
+      },
+    ];
+  },
+};
+```
+
+만약 mjs인 모듈 스크립트를 사용하고 있다면 다음과 같이 설정할 수 있습니다.
+
+```tsx title="next.config.mjs"
+const nextConfig = {
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'X-Frame-Options',
+            value: 'DENY', // DENY, SAMEORIGIN, allow-from https://example.com
+          },
+        ],
+      },
+    ];
+  },
+};
+
+export default nextConfig;
+```
+
+위의 코드에서는 사이트의 모든 경로에 대해 DENY로 설정하여 iframe으로의 임베딩을 완전히 차단합니다.
+
+만약 동일 출처에서만 iframe을 허용하고 싶다면 SAMEORIGIN을 사용할 수 있습니다.
+
+또한 특정 출처에서만 iframe을 허용하고 싶다면 allow-from을 사용할 수 있습니다.
+
+<br/>
+
+X-Frame-Options 헤더에 대한 자세한 내용은 다음 링크를 참고하시기 바랍니다.
+<MDXLink href="https://developer.mozilla.org/ko/docs/Web/HTTP/Headers/X-Frame-Options" title="MDN - X-Frame-Options"/>
+
+<br/>
+
+## 2. Content-Security-Policy 설정
+
+Content-Security-Policy (CSP)는 웹 애플리케이션이 특정 리소스와 상호작용할 수 있는 범위를 정의하는 보안 표준입니다.
+
+그중 frame-ancestors 지시어를 통해 iframe에 대한 정책을 세부적으로 제어할 수 있습니다.
+
+frame-ancestors는 어떤 출처가 내 페이지를 iframe으로 임베드할 수 있는지를 지정합니다.
+
+frame-ancestors의 값으로는 다음과 같은 것들이 있습니다.
+
+- 'none': 어떤 출처에서도 페이지를 iframe으로 임베드할 수 없도록 합니다.
+- 'self': 동일한 출처에서만 iframe 임베드를 허용합니다. 즉, 내 사이트 내에서만 임베드가 가능합니다.
+
+
+다음은 Content-Security-Policy를 설정하는 방법입니다.
+
+```tsx title="next.config.js"
+module.exports = {
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'Content-Security-Policy',
+            value: "frame-ancestors 'none'",
+          },
+        ],
+      },
+    ];
+  },
+};
+```
+
+만약 mjs인 모듈 스크립트를 사용하고 있다면 다음과 같이 설정할 수 있습니다.
+
+```tsx title="next.config.mjs"
+const nextConfig = {
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'Content-Security-Policy',
+            value: "frame-ancestors 'none'",
+          },
+        ],
+      },
+    ];
+  },
+};
+
+export default nextConfig;
+```
+
+이 코드는 사이트의 모든 경로에 대해 iframe을 통한 외부 사이트의 임베드를 차단하는 Content-Security-Policy를 설정합니다.
+
+'none'으로 설정하면 iframe을 통한 임베딩이 완전히 차단되며, 'self'로 설정하면 동일 도메인 내에서만 임베드가 가능합니다.
+
+
+해당 내용에 대한 자세한 내용은 다음 링크를 참고하시기 바랍니다.
+<MDXLink href="https://developer.mozilla.org/ko/docs/Web/HTTP/CSP" title="MDN - Content-Security-Policy"/>
+<br/>
+<MDXLink href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/frame-ancestors" title="MDN - frame-ancestors"/>
+
+
+## 3. 두 방법의 차이점
+
+X-Frame-Options: iframe에 대한 단순하고 빠른 제어를 제공합니다. 하지만 이 헤더는 세밀한 제어가 부족하며, 같은 사이트 내에서도 iframe을 사용하지 않을 경우 강력한 보안 정책으로 적합합니다.
+
+Content-Security-Policy (CSP): 보다 유연한 설정을 제공하며, 여러 보안 정책을 통합적으로 관리할 수 있습니다. 특히 frame-ancestors는 X-Frame-Options보다 더 세밀한 제어가 가능합니다.
+
+
+## 4. 결론
+
+iframe을 통한 외부 사이트 노출을 차단하는 것은 보안을 강화하는 중요한 방법 중 하나입니다.
+
+특히 Clickjacking 공격을 방지하기 위해서는 이러한 보안 헤더를 반드시 적용하는 것이 필요합니다.
+
+X-Frame-Options는 간단하고 빠르게 설정할 수 있지만, 더 정밀한 제어가 필요한 경우 Content-Security-Policy의 frame-ancestors 지시어를 사용하는 것을 권장합니다.
+
+이제 Next.js에서 iframe 차단을 통해 보안을 강화하는 방법에 대해 알아보았습니다.

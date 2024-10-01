@@ -1,4 +1,4 @@
-import { issues } from "#site/content";
+import { Issues, issues } from "#site/content";
 import LinkCard from "@/components/LinkCard";
 import { sortPosts } from "@/lib/utils";
 
@@ -11,7 +11,13 @@ export const metadata = {
 };
 
 const IssuePage = ({ searchParams }: { searchParams: { tag?: string } }) => {
-  const sortedIssues = sortPosts(issues.filter((issue) => issue.published));
+  let sortedIssues: Array<Issues>;
+
+  if (process.env.NODE_ENV === "production") {
+    sortedIssues = sortPosts(issues.filter((issue) => issue.published));
+  } else {
+    sortedIssues = sortPosts(issues);
+  }
 
   if (sortedIssues.length === 0) {
     return (

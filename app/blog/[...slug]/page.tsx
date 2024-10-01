@@ -97,7 +97,11 @@ export const generateStaticParams = async () => {
 const BlogDetail = async ({ params: { slug } }: BlogDetailProps) => {
   const post = await getPost({ slug });
 
-  if (!post || !post.published) {
+  if (!post) {
+    return notFound();
+  }
+
+  if (process.env.NODE_ENV === "production" && !post.published) {
     return notFound();
   }
 
