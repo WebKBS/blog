@@ -8,6 +8,10 @@ interface AlertProps {
 }
 
 const MDXAlert = ({ type, message, href }: AlertProps) => {
+  if (!type || !message) {
+    throw new Error('type과 message 속성은 필수입니다');
+  }
+
   const renderIcon = () => {
     switch (type) {
       case 'success':
