@@ -15,13 +15,13 @@ const MDXAlert = ({ type, message, href }: AlertProps) => {
   const renderIcon = () => {
     switch (type) {
       case 'success':
-        return <CheckCircle className="w-6 h-6 text-green-500" />;
+        return <CheckCircle className="w-6 h-7 text-green-500 self-start" />;
       case 'error':
-        return <AlertCircle className="w-6 h-6 text-red-500" />;
+        return <AlertCircle className="w-6 h-7 text-red-500 self-start" />;
       case 'warning':
-        return <AlertTriangle className="w-6 h-6 text-yellow-500" />;
+        return <AlertTriangle className="w-6 h-7 text-yellow-500 self-start" />;
       case 'info':
-        return <Info className="w-6 h-6 text-blue-500" />;
+        return <Info className="w-6 h-7 text-blue-500 self-start" />;
       default:
         return null;
     }
@@ -32,7 +32,7 @@ const MDXAlert = ({ type, message, href }: AlertProps) => {
       className={`flex items-center p-4 mb-4 rounded-lg border flex-wrap ${getAlertClass(type)}`}
     >
       {renderIcon()}
-      <span className="ml-3">{message}</span>
+      <span className="ml-3 flex-1">{message}</span>
       {href && (
         <Link href={href} className="text-blue-500 underline ml-2">
           {href}
