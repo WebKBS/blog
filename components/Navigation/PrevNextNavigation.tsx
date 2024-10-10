@@ -23,7 +23,7 @@ const PrevNextNavigation = ({
     <div className="flex gap-6 flex-col md:flex-row flex-wrap">
       {/* Previous Post */}
       {previousPost && (
-        <Link href={`/${previousPost.slug}`} className="flex-1">
+        <Link href={`/${previousPost.slug}`} className="flex-1" scroll={true}>
           <div className="relative block rounded-lg border border-gray-500 p-4">
             <div className="absolute left-4 top-4 flex items-center gap-2">
               <ChevronLeft className="w-5 h-5" />
@@ -40,7 +40,7 @@ const PrevNextNavigation = ({
 
       {/* Next Post */}
       {nextPost && (
-        <Link href={`/${nextPost.slug}`} className="flex-1">
+        <Link href={`/${nextPost.slug}`} className="flex-1" scroll={true}>
           <div className="relative block rounded-lg border border-gray-500 p-4">
             <div className="absolute right-4 top-4 flex items-center gap-2">
               <span className="text-sm font-semibold">다음글</span>
