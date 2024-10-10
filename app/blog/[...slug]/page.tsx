@@ -21,16 +21,14 @@ interface BlogDetailProps {
   };
 }
 
-const getPost = async (params: BlogDetailProps["params"]) => {
+const getPost = (params: BlogDetailProps["params"]) => {
   const slug = params?.slug?.join("/");
 
   return posts.find((post) => post.permalink === slug);
 };
 
-export async function generateMetadata({
-  params,
-}: BlogDetailProps): Promise<Metadata> {
-  const post = await getPost(params);
+export function generateMetadata({ params }: BlogDetailProps): Metadata {
+  const post = getPost(params);
 
   if (!post || !post.published) {
     return {
@@ -72,7 +70,7 @@ export async function generateMetadata({
 
 // https://nextjs.org/docs/app/api-reference/functions/generate-static-params
 // 빌드 시점에 정적으로 생성할 페이지의 경로를 반환.
-export const generateStaticParams = async () => {
+export const generateStaticParams = () => {
   // posts 배열에서 published가 true인 것만 필터링하여 slug만 반환
 
   return posts
@@ -85,8 +83,8 @@ export const generateStaticParams = async () => {
 // https://nextjs.org/docs/app/api-reference/functions/generate-static-params#catch-all-dynamic-segment
 // 포괄적 동적 세그먼트를 사용하는 페이지를 생성할 때 사용 generateStaticParams와 함께 사용
 
-const BlogDetail = async ({ params: { slug } }: BlogDetailProps) => {
-  const post = await getPost({ slug });
+const BlogDetail = ({ params: { slug } }: BlogDetailProps) => {
+  const post = getPost({ slug });
 
   if (!post) {
     return notFound();
