@@ -13,6 +13,7 @@ import Crumb from "../../../components/Crumb/Crumb";
 import ScrollUpButton from "@/components/Buttons/ScrollUpButton";
 import { WithContext, BlogPosting } from "schema-dts";
 import Utterances from "@/components/Utterances/Utterances";
+import PrevNextNavigation from "@/components/Navigation/PrevNextNavigation";
 
 interface BlogDetailProps {
   params: {
@@ -22,8 +23,6 @@ interface BlogDetailProps {
 
 const getPost = async (params: BlogDetailProps["params"]) => {
   const slug = params?.slug?.join("/");
-  // console.log('slug: ', slug);
-  // console.log('내부: ', post);
 
   return posts.find((post) => post.permalink === slug);
 };
@@ -86,14 +85,6 @@ export const generateStaticParams = async () => {
 // https://nextjs.org/docs/app/api-reference/functions/generate-static-params#catch-all-dynamic-segment
 // 포괄적 동적 세그먼트를 사용하는 페이지를 생성할 때 사용 generateStaticParams와 함께 사용
 
-// console.log(
-//   posts
-//     .filter((post) => post.published)
-//     .map((post) => ({
-//       slug: post.permalink.split('/'),
-//     }))
-// );
-
 const BlogDetail = async ({ params: { slug } }: BlogDetailProps) => {
   const post = await getPost({ slug });
 
@@ -105,7 +96,7 @@ const BlogDetail = async ({ params: { slug } }: BlogDetailProps) => {
     return notFound();
   }
 
-  // console.log('post: ', `https://recodelog.com/${post.slug}`);
+  const filteredPosts = posts.filter((post) => post.published);
 
   const jsonLd: WithContext<BlogPosting> = {
     "@context": "https://schema.org",
@@ -147,7 +138,9 @@ const BlogDetail = async ({ params: { slug } }: BlogDetailProps) => {
         </div>
         <hr className="my-6" />
         <MDXContent code={post.body} />
-        <hr />
+        <hr className="my-6" />
+        <PrevNextNavigation filteredPosts={filteredPosts} post={post} />
+        <hr className="my-6" />
         <div>
           <p>관련 태그</p>
           <ul className="list-none flex p-0 flex-wrap gap-2">

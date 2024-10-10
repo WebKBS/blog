@@ -31,6 +31,7 @@ const LinkCard = ({
         onClick={() => {
           sendGAEvent("blog", "click", title);
         }}
+        scroll={false}
       >
         <div className="w-full relative pt-[50%] overflow-hidden sm:pt-0 sm:w-44 sm:h-44 dark:bg-white rounded-md border shadow-sm">
           {thumbnail ? (
