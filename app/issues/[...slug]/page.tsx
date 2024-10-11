@@ -5,7 +5,7 @@ import { MDXContent } from "@/components/mdx-content";
 import { Badge } from "@/components/ui/badge";
 
 import { defaultData } from "@/config/defaultData";
-import { formatDate } from "@/lib/utils";
+import { formatDate, sortPosts } from "@/lib/utils";
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -13,6 +13,7 @@ import Crumb from "../../../components/Crumb/Crumb";
 import ScrollUpButton from "@/components/Buttons/ScrollUpButton";
 import { WithContext, BlogPosting } from "schema-dts";
 import Utterances from "@/components/Utterances/Utterances";
+import PrevNextNavigation from "@/components/Navigation/PrevNextNavigation";
 
 interface IssueDetailProps {
   params: {
@@ -20,16 +21,14 @@ interface IssueDetailProps {
   };
 }
 
-const getPost = async (params: IssueDetailProps["params"]) => {
+const getPost = (params: IssueDetailProps["params"]) => {
   const slug = params?.slug?.join("/");
 
   return issues.find((issue) => issue.permalink === slug);
 };
 
-export async function generateMetadata({
-  params,
-}: IssueDetailProps): Promise<Metadata> {
-  const issue = await getPost(params);
+export function generateMetadata({ params }: IssueDetailProps): Metadata {
+  const issue = getPost(params);
 
   if (!issue || !issue.published) {
     return {
@@ -69,7 +68,7 @@ export async function generateMetadata({
   };
 }
 
-export const generateStaticParams = async () => {
+export const generateStaticParams = () => {
   return issues
     .filter((issue) => issue.published)
     .map((issue) => ({
@@ -77,8 +76,8 @@ export const generateStaticParams = async () => {
     }));
 };
 
-const IssueDetail = async ({ params: { slug } }: IssueDetailProps) => {
-  const issue = await getPost({ slug });
+const IssueDetail = ({ params: { slug } }: IssueDetailProps) => {
+  const issue = getPost({ slug });
 
   if (!issue) {
     return notFound();
@@ -87,6 +86,8 @@ const IssueDetail = async ({ params: { slug } }: IssueDetailProps) => {
   if (process.env.NODE_ENV === "production" && !issue.published) {
     return notFound();
   }
+
+  const filteredPosts = sortPosts(issues.filter((issue) => issue.published));
 
   const jsonLd: WithContext<BlogPosting> = {
     "@context": "https://schema.org",
@@ -128,7 +129,9 @@ const IssueDetail = async ({ params: { slug } }: IssueDetailProps) => {
         </div>
         <hr className="my-6" />
         <MDXContent code={issue.body} />
-        <hr />
+        <hr className="my-6" />
+        <PrevNextNavigation filteredPosts={filteredPosts} post={issue} />
+        <hr className="my-6" />
         <div>
           <p>관련 태그</p>
           <ul className="list-none flex p-0 flex-wrap gap-2">

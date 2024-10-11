@@ -5,7 +5,7 @@ import { MDXContent } from "@/components/mdx-content";
 import { Badge } from "@/components/ui/badge";
 
 import { defaultData } from "@/config/defaultData";
-import { formatDate } from "@/lib/utils";
+import { formatDate, sortPosts } from "@/lib/utils";
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -94,7 +94,7 @@ const BlogDetail = ({ params: { slug } }: BlogDetailProps) => {
     return notFound();
   }
 
-  const filteredPosts = posts.filter((post) => post.published);
+  const filteredPosts = sortPosts(posts.filter((post) => post.published));
 
   const jsonLd: WithContext<BlogPosting> = {
     "@context": "https://schema.org",
