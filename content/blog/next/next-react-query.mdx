@@ -1,0 +1,167 @@
+---
+title: Next.js (App router)에서 React Query 사용하기
+date: 2024-10-07
+description: Next js(App router)에서 React Query를 사용하는 방법에 대해 알아봅니다.
+published: false
+tags:
+  - Next.js
+  - react-query
+thumbnail: '../../../assets/logos/react-query.svg'
+---
+
+> 들어가기에 앞서, 이 글은 Next.js 14 App router 및 React Query v5를 사용하는 경우에 대해 설명합니다.
+
+## 목차
+
+1. [Next js App router에서 React Query 설치 및 세팅](#1-next-js-app-router에서-react-query-설치-및-세팅)
+
+## 1. Next js App router에서 React Query 설치 및 세팅
+
+```bash
+npm i @tanstack/react-query
+
+# Devtools가 필요하다면
+npm i @tanstack/react-query-devtools
+```
+
+> React Query를 Next js App router에서 사용하기 위해서는 따로 Provider를 추가해주어야 합니다.
+
+폴더 구조는 다음과 같이 구성하였습니다.
+
+```
+root & src/
+  ├── app/
+  ├── providers/
+  │   ├── TanStackProvider.tsx
+  ...
+```
+
+providers 폴더를 만들고 TanStackProvider.tsx 파일을 생성합니다.
+
+```tsx title="providers/TanStackProvider.tsx"
+'use client';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { ReactNode } from 'react';
+
+export default function TanStackProvider({
+  children,
+}: {
+  children: ReactNode;
+}) {
+  const queryClient = new QueryClient();
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      {children}
+      <ReactQueryDevtools /> {/* Devtools가 필요하다면 */}
+    </QueryClientProvider>
+  );
+}
+```
+
+그리고 layout.tsx 파일에서 Provider를 추가합니다.
+
+```tsx title="app/layout.tsx"
+// ... 생략
+<html lang="en">
+  <body>
+    <TanStackProvider>{children}</TanStackProvider>
+  </body>
+</html>
+```
+
+이제 페이제 어디에서든지 React Query를 사용할 수 있습니다.
+
+간단한 예시를 만들어 보겠습니다.
+
+post API를 호출하는 함수를 만들어보겠습니다.
+
+```tsx title="lib/posts.ts"
+export const fetchPost = async (): Promise<Post[]> => {
+  const response = await fetch('https://jsonplaceholder.typicode.com/posts');
+  if (!response.ok) {
+    throw new Error('Network response was not ok');
+  }
+  return response.json();
+};
+```
+
+그리고 해당 함수를 사용하여 데이터를 가져오는 컴포넌트를 만들어보겠습니다.
+
+<MDXAlert
+  message="App router에서 React query를 사용하기 위해서는 반드시 파일 최상단 'use client'가 필요합니다."
+  type="error"
+/>
+
+```tsx title="page.tsx"
+'use client'; // 반드시 최상단에 위치해야 합니다.
+import { useQuery } from '@tanstack/react-query';
+import { fetchPost } from 'lib/posts';
+
+export default function Home() {
+  const { data, isError, isLoading, error } = useQuery({
+    queryKey: ['posts'],
+    queryFn: fetchPost,
+  });
+
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>{error.toString()}</div>;
+
+  return (
+    <div>
+      <h1>QueryPosts</h1>
+      {data?.map((post) => (
+        <div key={post.id}>
+          <div>{post.userId}</div>
+          <div>{post.title}</div>
+          <div>{post.body}</div>
+        </div>
+      ))}
+    </div>
+  );
+}
+```
+
+page.tsx에서 'use client'를 사용하면 Next js App router의 서버 사이드 랜더링 효과를 얻지 못합니다.
+
+page.tsx는 layout.tsx에서 사용하는 페이지입니다. page.tsx에서 'use client'를 사용하면 하위 컴포넌트 모두에 영향을 미칩니다.
+
+이를 해결하기 위해서 데이터 가져오는 컴포넌트를 생성하고 해당 컴포넌트를 사용하여 데이터를 가져오는 방법을 사용합니다.
+
+```tsx title="components/QueryPosts.tsx"
+'use client'; // 반드시 최상단에 위치해야 합니다.
+import { useQuery } from '@tanstack/react-query';
+import { fetchPost } from 'lib/posts';
+
+export default function QueryPosts() {
+  const { data, isError, isLoading, error } = useQuery({
+    queryKey: ['posts'],
+    queryFn: fetchPost,
+  });
+
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>{error.toString()}</div>;
+
+  return (
+    // ... 이하 동일
+  )
+}
+```
+
+이제 page.tsx에서 QueryPosts 컴포넌트를 사용하여 데이터를 가져옵니다.
+
+```tsx title="page.tsx"
+// 기존 있던 'use client'를 제거합니다.
+import QueryPosts from 'components/QueryPosts';
+
+export default function Home() {
+  return (
+    <div>
+      <h1>QueryPosts</h1>
+      <QueryPosts />
+    </div>
+  );
+}
+```
