@@ -2,7 +2,7 @@
 title: Next.js (App router)에서 React Query 사용하기
 date: 2024-10-07
 description: Next js(App router)에서 React Query를 사용하는 방법에 대해 알아봅니다.
-published: false
+published: true
 tags:
   - Next.js
   - react-query
@@ -14,6 +14,7 @@ thumbnail: '../../../assets/logos/react-query.svg'
 ## 목차
 
 1. [Next js App router에서 React Query 설치 및 세팅](#1-next-js-app-router에서-react-query-설치-및-세팅)
+2. [React Query의 단점](#2-react-query의-단점)
 
 ## 1. Next js App router에서 React Query 설치 및 세팅
 
@@ -78,9 +79,16 @@ export default function TanStackProvider({
 
 post API를 호출하는 함수를 만들어보겠습니다.
 
+<MDXAlert
+  message="next js에서 fetch API는 기본적으로 캐싱이 되기 때문에 cache: no-store를 사용하여 캐싱을 막아 줍니다."
+  type="warning"
+/>
+
 ```tsx title="lib/posts.ts"
 export const fetchPost = async (): Promise<Post[]> => {
-  const response = await fetch('https://jsonplaceholder.typicode.com/posts');
+  const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
+    cache: 'no-store',
+  });
   if (!response.ok) {
     throw new Error('Network response was not ok');
   }
@@ -165,3 +173,37 @@ export default function Home() {
   );
 }
 ```
+
+useMutation도 동일한 방식으로 사용할 수 있습니다.
+
+## 2. React Query의 단점
+
+React Query는 클라이언트 사이드에서 데이터를 캐싱하고 관리하는데 사용됩니다.
+
+간단한 예시로 jsonplaceholder API를 사용하여 데이터를 가져와봤습니다.
+
+<MDXImage
+  src="./images/react-query-jsonplaceholder.png"
+  alt="가져온 데이터 목록"
+/>
+
+브라우저에서 우클릭 -> 페이지 소스보기를 클릭하여 가져온 데이터를 확인해보면, 데이터가 노출되지 않습니다.
+
+<MDXImage src="./images/react-query-source.png" alt="데이터가 노출되지 않음" />
+
+Loading... 이라는 글자만 노출되고 가져온 데이터는 노출되지 않습니다.
+
+구글에서는 CSR 방식으로 데이터를 가져오는 경우, SEO를 지원한다곤 하였으나, 네이버, 다음, 빙 등 다른 검색엔진의 SEO를 고려해야 하기때문에 CSR 방식으로 데이터를 가져오는 경우, SEO에 미치는 영향을 고려해야 합니다.
+
+고로 SEO를 고려해야 하는 경우, Next fetch API를 사용하여 데이터를 가져오는 방법을 사용하는 것이 좋습니다.
+
+React Query를 사용하기 좋은 경우는 개인화된 데이터를 가져오는 경우, Admin 등 사용자가 로그인을 하여 가져오는 데이터는 SEO가 필요하지 않기 때문에 React Query를 사용해도 무방합니다.
+
+단, 사용자가 로그인하여 개인화된 블로그 글 같은 SEO가 필요한 경우, SEO에 미치는 영향을 고려해야 합니다. 이때는 Next fetch API를 사용하여 데이터를 가져오는 것이 좋습니다.
+
+만약, Next.js에서 React Query를 사용하여 SSR - 서버사이드 렌더링을 하고 싶다면, 다음 글을 참고해주세요.
+
+<MDXLink
+  href="https://tanstack.com/query/latest/docs/framework/react/guides/advanced-ssr"
+  title="공식문서 - Advanced Server Rendering"
+/>
