@@ -207,3 +207,10 @@ React Query를 사용하기 좋은 경우는 개인화된 데이터를 가져오
   href="https://tanstack.com/query/latest/docs/framework/react/guides/advanced-ssr"
   title="공식문서 - Advanced Server Rendering"
 />
+
+## 마지막으로
+
+<MDXAlert
+  title="개인화가 되어있는 사용자 정보가 있는, 노출되어선 안되는 페이지는 next fetch나 react-query를 어느것을 사용하더라도 반드시 크롤러가 접근하지 못하도록 robots.txt 파일 설정(Disallow)을 하고, html meta tag에 noindex, nofollow를 추가해주세요."
+  type="warning"
+/>
