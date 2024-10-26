@@ -61,7 +61,7 @@ const Utterances = () => {
       script.setAttribute('data-repo-id', 'R_kgDOM2084A');
       script.setAttribute('data-category', 'Comments');
       script.setAttribute('data-category-id', 'DIC_kwDOM2084M4Cjtd5');
-      script.setAttribute('data-mapping', 'pathname');
+      script.setAttribute('data-mapping', 'title');
       script.setAttribute('data-strict', '0');
       script.setAttribute('data-reactions-enabled', '1');
       script.setAttribute('data-emit-metadata', '0');
